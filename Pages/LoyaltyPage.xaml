@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BufeApp.Pages.LoyaltyPage"
+             Title="LoyaltyPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Primary">#ee8c2b</Color>
+            <Color x:Key="PrimaryDark">#d97b20</Color>
+            <Color x:Key="BgLight">#f8f7f6</Color>
+            <Color x:Key="BgDark">#222</Color>
+            <Color x:Key="SurfaceLight">#ffffff</Color>
+            <Color x:Key="SurfaceDark">#333</Color>
+            <Color x:Key="TextGray">#6b7280</Color>
+
+            <x:String x:Key="IconStar">M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z</x:String>
+            <x:String x:Key="IconCoffee">M2,21H20V19H2M20,8H18V5H20M20,3H4V13A4,4 0 0,0 8,17H14A4,4 0 0,0 18,13V10H20A2,2 0 0,0 22,8V5C22,3.89 21.1,3 20,3Z</x:String>
+
+            <Style TargetType="Label">
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource BgDark}}">
+        <VerticalStackLayout Spacing="24" Padding="20,10,20,40">
+
+            <Label Text="Buffet Points" 
+           FontSize="20" FontAttributes="Bold"
+           HorizontalOptions="Center"
+           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+
+            <Border StrokeThickness="0" 
+            StrokeShape="RoundRectangle 20"
+            HeightRequest="180"
+            Shadow="{Shadow Radius=10, Opacity=0.3, Offset='0,5'}">
+
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="{StaticResource Primary}" Offset="0.1" />
+                        <GradientStop Color="#FF6B00" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <Grid RowDefinitions="Auto,*,Auto" Padding="24">
+                    <Ellipse Grid.RowSpan="3" WidthRequest="150" HeightRequest="150" 
+                     Fill="White" Opacity="0.1" 
+                     HorizontalOptions="End" VerticalOptions="Start" TranslationX="40" TranslationY="-40"/>
+
+                    <Label Grid.Row="0" Text="TOTAL BALANCE" 
+                   TextColor="#CCFFFFFF" FontSize="12" FontAttributes="Bold" 
+                   HorizontalOptions="Center"/>
+
+                    <HorizontalStackLayout Grid.Row="1" Spacing="10" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Path Data="{StaticResource IconStar}" Fill="White" Aspect="Uniform" HeightRequest="32" WidthRequest="32" VerticalOptions="Center"/>
+                        <Label Text="1,250" TextColor="White" FontSize="48" FontAttributes="Bold" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+
+                    <Border Grid.Row="2" BackgroundColor="#33FFFFFF" StrokeThickness="1" Stroke="White"
+                    StrokeShape="RoundRectangle 15" HorizontalOptions="Center" Padding="12,4">
+                        <Label Text="Top 5% of students!" TextColor="White" FontSize="12" FontAttributes="Bold"/>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <Border BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+            StrokeThickness="0" StrokeShape="RoundRectangle 16" Padding="20">
+                <Grid ColumnDefinitions="50, *" ColumnSpacing="15">
+
+                    <Border Grid.Column="0" HeightRequest="50" WidthRequest="50" StrokeShape="RoundRectangle 25"
+                    BackgroundColor="#1AEE8C2B" StrokeThickness="0" VerticalOptions="Start">
+                        <Path Data="{StaticResource IconCoffee}" Fill="{StaticResource Primary}" 
+                      Aspect="Uniform" Margin="12" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    </Border>
+
+                    <VerticalStackLayout Grid.Column="1" Spacing="8">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <VerticalStackLayout Grid.Column="0">
+                                <Label Text="Free Smoothie" FontAttributes="Bold" FontSize="16"
+                               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                                <Label Text="50 pts to go!" FontSize="12" TextColor="{StaticResource TextGray}"/>
+                            </VerticalStackLayout>
+                            <Label Grid.Column="1" Text="150/200" TextColor="{StaticResource Primary}" FontAttributes="Bold"/>
+                        </Grid>
+
+                        <Grid HeightRequest="10">
+                            <BoxView BackgroundColor="{AppThemeBinding Light=#E5E7EB, Dark=#374151}" CornerRadius="5" HeightRequest="10"/>
+                            <BoxView BackgroundColor="{StaticResource Primary}" CornerRadius="5" HeightRequest="10" 
+                             HorizontalOptions="Start" WidthRequest="247"/>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <Grid ColumnDefinitions="*, Auto" Margin="0,10,0,0">
+                <Label Text="Redeem Rewards" FontSize="18" FontAttributes="Bold"
+               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                <Label Grid.Column="1" Text="View All" TextColor="{StaticResource Primary}" FontAttributes="Bold"/>
+            </Grid>
+
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto, Auto" ColumnSpacing="15" RowSpacing="15">
+
+                <Border Grid.Row="0" Grid.Column="0" StrokeShape="RoundRectangle 12" StrokeThickness="0"
+                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+                    <Grid RowDefinitions="110, Auto">
+                        <Image Grid.Row="0" Source="drink_cola.png" Aspect="AspectFill" BackgroundColor="#EEE"/>
+                        <Border Grid.Row="0" BackgroundColor="#99000000" StrokeThickness="0" StrokeShape="RoundRectangle 6"
+                        HorizontalOptions="End" VerticalOptions="Start" Margin="8" Padding="6,2">
+                            <Label Text="150 pts" TextColor="White" FontSize="10" FontAttributes="Bold"/>
+                        </Border>
+                        <VerticalStackLayout Grid.Row="1" Padding="12" Spacing="6">
+                            <Label Text="Free Soft Drink" FontAttributes="Bold" LineBreakMode="TailTruncation"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                            <Label Text="Any fountain size" FontSize="11" TextColor="{StaticResource TextGray}"/>
+                            <Button Text="Redeem" BackgroundColor="{StaticResource Primary}" 
+                            TextColor="White" FontAttributes="Bold" HeightRequest="36" CornerRadius="8" Padding="0" Margin="0,4,0,0"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="0" Grid.Column="1" StrokeShape="RoundRectangle 12" StrokeThickness="0"
+                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+                    <Grid RowDefinitions="110, Auto">
+                        <Image Grid.Row="0" Source="sandwich.png" Aspect="AspectFill" BackgroundColor="#EEE"/>
+                        <Border Grid.Row="0" BackgroundColor="#99000000" StrokeThickness="0" StrokeShape="RoundRectangle 6"
+                        HorizontalOptions="End" VerticalOptions="Start" Margin="8" Padding="6,2">
+                            <Label Text="300 pts" TextColor="White" FontSize="10" FontAttributes="Bold"/>
+                        </Border>
+                        <VerticalStackLayout Grid.Row="1" Padding="12" Spacing="6">
+                            <Label Text="20% Off Sandwich" FontAttributes="Bold" LineBreakMode="TailTruncation"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                            <Label Text="Any signature item" FontSize="11" TextColor="{StaticResource TextGray}"/>
+                            <Button Text="Redeem" BackgroundColor="{StaticResource Primary}" 
+                            TextColor="White" FontAttributes="Bold" HeightRequest="36" CornerRadius="8" Padding="0" Margin="0,4,0,0"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1" Grid.Column="0" StrokeShape="RoundRectangle 12" StrokeThickness="0"
+                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+                    <Grid RowDefinitions="110, Auto">
+                        <Image Grid.Row="0" Source="cookie.png" Aspect="AspectFill" BackgroundColor="#EEE"/>
+                        <Border Grid.Row="0" BackgroundColor="#99000000" StrokeThickness="0" StrokeShape="RoundRectangle 6"
+                        HorizontalOptions="End" VerticalOptions="Start" Margin="8" Padding="6,2">
+                            <Label Text="100 pts" TextColor="White" FontSize="10" FontAttributes="Bold"/>
+                        </Border>
+                        <VerticalStackLayout Grid.Row="1" Padding="12" Spacing="6">
+                            <Label Text="Free Cookie" FontAttributes="Bold" LineBreakMode="TailTruncation"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                            <Label Text="Fresh baked" FontSize="11" TextColor="{StaticResource TextGray}"/>
+                            <Button Text="Redeem" BackgroundColor="{StaticResource Primary}" 
+                            TextColor="White" FontAttributes="Bold" HeightRequest="36" CornerRadius="8" Padding="0" Margin="0,4,0,0"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1" Grid.Column="1" StrokeShape="RoundRectangle 12" StrokeThickness="0"
+                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+                    <Grid RowDefinitions="110, Auto">
+                        <Image Grid.Row="0" Source="combo.png" Aspect="AspectFill" BackgroundColor="#EEE"/>
+                        <Border Grid.Row="0" BackgroundColor="#99000000" StrokeThickness="0" StrokeShape="RoundRectangle 6"
+                        HorizontalOptions="End" VerticalOptions="Start" Margin="8" Padding="6,2">
+                            <Label Text="500 pts" TextColor="White" FontSize="10" FontAttributes="Bold"/>
+                        </Border>
+                        <VerticalStackLayout Grid.Row="1" Padding="12" Spacing="6">
+                            <Label Text="Combo Upgrade" FontAttributes="Bold" LineBreakMode="TailTruncation"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                            <Label Text="Make it a meal" FontSize="11" TextColor="{StaticResource TextGray}"/>
+                            <Button Text="Need 500" BackgroundColor="{AppThemeBinding Light=#E5E7EB, Dark=#374151}" 
+                            TextColor="{StaticResource TextGray}" FontAttributes="Bold" HeightRequest="36" CornerRadius="8" Padding="0" Margin="0,4,0,0" InputTransparent="True"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
