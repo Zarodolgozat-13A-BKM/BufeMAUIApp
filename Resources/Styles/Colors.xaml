@@ -6,8 +6,9 @@
 
     <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
 
-    <Color x:Key="Primary">#512BD4</Color>
-    <Color x:Key="PrimaryDark">#ac99ea</Color>
+    <!-- Updated Primary color to match buffet app theme -->
+    <Color x:Key="Primary">#ee8c2b</Color>
+    <Color x:Key="PrimaryDark">#d97b20</Color>
     <Color x:Key="PrimaryDarkText">#242424</Color>
     <Color x:Key="Secondary">#DFD8F7</Color>
     <Color x:Key="SecondaryDarkText">#9880e5</Color>
@@ -27,6 +28,21 @@
     <Color x:Key="Gray600">#404040</Color>
     <Color x:Key="Gray900">#212121</Color>
     <Color x:Key="Gray950">#141414</Color>
+
+    <!-- Background colors -->
+    <Color x:Key="BgLight">#f8f7f6</Color>
+    <Color x:Key="BgDark">#222</Color>
+    
+    <!-- Surface colors -->
+    <Color x:Key="SurfaceLight">#ffffff</Color>
+    <Color x:Key="SurfaceDark">#333</Color>
+    
+    <!-- Text colors -->
+    <Color x:Key="TextGray">#6b7280</Color>
+    <Color x:Key="TextMainLight">#181411</Color>
+    <Color x:Key="TextMainDark">#ffffff</Color>
+    <Color x:Key="TextSecLight">#897561</Color>
+    <Color x:Key="TextSecDark">#d1d5db</Color>
 
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>

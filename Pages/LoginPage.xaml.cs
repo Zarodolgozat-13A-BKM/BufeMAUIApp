@@ -11,16 +11,27 @@ public partial class LoginPage : ContentPage
 
     private async void LoginButton_Clicked(object sender, EventArgs e)
     {
-		try 
+		((Button)sender).IsEnabled = false;
+        try 
 		{
             await UserService.LoginUser(Email_Entry.Text, Password_Entry.Text);
-			DisplayAlert("Login Successful", $"You have been logged in. {UserService.BearerToken}", "OK");
-			//await Shell.Current.GoToAsync("//MainPage");
+			await DisplayAlert("Login Successful", $"You have been logged in.", "OK");
+			await Shell.Current.GoToAsync("//MainPage");
+            ((Button)sender).IsEnabled = true;
+            return;
         } 
 		catch 
 		{
-			DisplayAlert("Login Failed", "Invalid email or password.", "OK");
-			return;
+			await DisplayAlert("Login Failed", "Invalid email or password.", "OK");
+            ((Button)sender).IsEnabled = true;
+            return;
         }
+        
+    }
+
+    private async void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+    {
+        // Navigate to the PasswordResetPage
+		await Shell.Current.GoToAsync(nameof(PasswordResetPage));
     }
 }
