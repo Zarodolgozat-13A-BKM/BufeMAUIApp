@@ -5,20 +5,8 @@
              Title="LoyaltyPage">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Color x:Key="Primary">#ee8c2b</Color>
-            <Color x:Key="PrimaryDark">#d97b20</Color>
-            <Color x:Key="BgLight">#f8f7f6</Color>
-            <Color x:Key="BgDark">#222</Color>
-            <Color x:Key="SurfaceLight">#ffffff</Color>
-            <Color x:Key="SurfaceDark">#333</Color>
-            <Color x:Key="TextGray">#6b7280</Color>
-
             <x:String x:Key="IconStar">M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z</x:String>
             <x:String x:Key="IconCoffee">M2,21H20V19H2M20,8H18V5H20M20,3H4V13A4,4 0 0,0 8,17H14A4,4 0 0,0 18,13V10H20A2,2 0 0,0 22,8V5C22,3.89 21.1,3 20,3Z</x:String>
-
-            <Style TargetType="Label">
-                <Setter Property="FontFamily" Value="OpenSansRegular" />
-            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 

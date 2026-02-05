@@ -7,6 +7,11 @@ namespace BufeApp
         public AppShell()
         {
             InitializeComponent();
+            
+            // Register routes for navigation
+            Routing.RegisterRoute(nameof(Pages.PasswordResetPage), typeof(Pages.PasswordResetPage));
+            Routing.RegisterRoute(nameof(Pages.PasswordResetConfirmPage), typeof(Pages.PasswordResetConfirmPage));
+
             InitializeNavigation();
         }
 
