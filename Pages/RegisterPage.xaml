@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:BufeApp.Controls"
+             xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+             x:Class="BufeApp.Pages.RegisterPage"
+             Title="">
+    <ContentPage.Resources>
+        <x:String x:Key="IconPerson">M367-527q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm296.5-343.5Q560-607 560-640t-23.5-56.5Q513-720 480-720t-56.5 23.5Q400-673 400-640t23.5 56.5Q447-560 480-560t56.5-23.5ZM480-640Zm0 400Z</x:String>
+        <x:String x:Key="IconCheck">M80-160v-112q0-33 17-62t47-44q51-26 115-44t141-18q30 0 58.5 3t55.5 9l-70 70q-11-2-21.5-2H400q-71 0-127.5 17T180-306q-9 5-14.5 14t-5.5 20v32h250l80 80H80Zm542 16L484-282l56-56 82 82 202-202 56 56-258 258ZM287-527q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47Zm123 287Zm46.5-343.5Q480-607 480-640t-23.5-56.5Q433-720 400-720t-56.5 23.5Q320-673 320-640t23.5 56.5Q367-560 400-560t56.5-23.5ZM400-640Z</x:String>
+    </ContentPage.Resources>
+
+    <VerticalStackLayout>
+        <controls:AnimatedSvgIcon x:Name="MyIconControl"
+            StartIcon="{StaticResource IconPerson}" 
+            EndIcon="{StaticResource IconCheck}"
+            HeightRequest="60" 
+            WidthRequest="60" />
+
+        <skia:SKLottieView x:Name="CheckAnimation"
+                           Source="check_anim.json"
+                           
+                           RepeatCount="0"
+                           HeightRequest="150"
+                           WidthRequest="150"
+                           HorizontalOptions="Center" />
+
+        <Button Text="Toggle Icon" 
+            Clicked="Button_Clicked" />
+
+        <Button Text="Play Animation" 
+                Clicked="Button_Clicked2" />
+    </VerticalStackLayout>
+</ContentPage>

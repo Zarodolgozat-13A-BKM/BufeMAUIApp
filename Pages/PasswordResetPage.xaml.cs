@@ -12,11 +12,5 @@ public partial class PasswordResetPage : ContentPage
 		InitializeComponent();
     }
 
-    private async void Button_Clicked(object sender, EventArgs e)
-    {
-        Email_Entry.Text = string.Empty;
-        Shell.Current.GoToAsync(nameof(PasswordResetConfirmPage));
-    }
-
    
 }
