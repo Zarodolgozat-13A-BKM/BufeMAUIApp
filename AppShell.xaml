@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:BufeApp"
     xmlns:pages="clr-namespace:BufeApp.Pages"
     Shell.FlyoutBehavior="Disabled"
+    Shell.ForegroundColor="{StaticResource Primary}"
     Title="BufeApp">
 
     <ShellContent
