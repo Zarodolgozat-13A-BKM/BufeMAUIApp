@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BufeApp.Pages.CartPage"
+             Shell.NavBarIsVisible="False"
+             Title="">
+    <VerticalStackLayout BackgroundColor="{AppThemeBinding Light=#E6f8f7, Dark={StaticResource BgDark}}">
+
+    </VerticalStackLayout>
+</ContentPage>

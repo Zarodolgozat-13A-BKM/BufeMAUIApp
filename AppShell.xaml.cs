@@ -17,6 +17,7 @@ namespace BufeApp
 
         private async void InitializeNavigation()
         {
+            //await GoToAsync("//MainPage");
             await UserService.GetTokenFromStorage();
             //await UserService.LogoutUser(); // For testing purposes only, remove in production
 

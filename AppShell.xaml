@@ -8,14 +8,32 @@
     Shell.FlyoutBehavior="Disabled"
     Title="BufeApp">
 
+    <!-- Login page outside of TabBar -->
     <ShellContent
         Title="Login"
         ContentTemplate="{DataTemplate pages:LoginPage}"
-        Route="LoginPage" />
+        Route="LoginPage"
+        Shell.TabBarIsVisible="False" />
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <!-- TabBar for main navigation -->
+    <TabBar Route="MainTabs">
+        <ShellContent
+            Title="Home"
+            Icon="home.svg"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Route="MainPage" />
+
+        <ShellContent
+            Title="Cart"
+            Icon="cart.svg"
+            ContentTemplate="{DataTemplate pages:CartPage}"
+            Route="CartPage" />
+
+        <ShellContent
+            Title="Loyalty"
+            Icon="star.svg"
+            ContentTemplate="{DataTemplate pages:LoyaltyPage}"
+            Route="LoyaltyPage" />
+    </TabBar>
 
 </Shell>

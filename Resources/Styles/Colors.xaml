@@ -44,6 +44,10 @@
     <Color x:Key="TextSecLight">#897561</Color>
     <Color x:Key="TextSecDark">#d1d5db</Color>
 
+    <!-- Border colors -->
+    <Color x:Key="BorderLight">#E5E7EB</Color>
+    <Color x:Key="BorderDark">#374151</Color>
+
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
     <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>
