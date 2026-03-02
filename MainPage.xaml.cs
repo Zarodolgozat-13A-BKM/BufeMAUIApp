@@ -19,6 +19,7 @@ namespace BufeApp
             InitializeComponent();
             _viewModel = vm;
             _viewModel.ScrollToCategoryRequested += OnScrollToCategoryRequested;
+            _viewModel.CategorySelectionChanged += OnCategorySelectionChanged;
             this.BindingContext = _viewModel;
         }
 
@@ -109,6 +110,31 @@ namespace BufeApp
             }
         }
 
+        private async void OnCategorySelectionChanged(object? sender, CategorieResponseModel category)
+        {
+            // Scroll the category bar horizontally to show selected category at the left
+            await ScrollCategoryBarToSelected(category);
+        }
+
+        private async Task ScrollCategoryBarToSelected(CategorieResponseModel category)
+        {
+            // Find the index of the selected category
+            int index = _viewModel.Categories.IndexOf(category);
+            if (index < 0) return;
+
+            // Calculate approximate horizontal position (each button is roughly 100px wide with spacing)
+            // We'll use a more dynamic approach by calculating based on index
+            double buttonWidth = 100; // Approximate width including padding
+            double spacing = 12;
+            double targetX = index * (buttonWidth + spacing);
+
+            // Scroll both category bars to show selected at left
+            await Task.WhenAll(
+                CategoryBarScrollView.ScrollToAsync(targetX, 0, true),
+                StickyCategoryBarScrollView.ScrollToAsync(targetX, 0, true)
+            );
+        }
+
         private async void OnScrollToCategoryRequested(object? sender, CategorieResponseModel category)
         {
             // Recalculate positions if needed
@@ -136,6 +162,7 @@ namespace BufeApp
     public partial class MainViewModel : ObservableObject
     {
         public event EventHandler<CategorieResponseModel>? ScrollToCategoryRequested;
+        public event EventHandler<CategorieResponseModel>? CategorySelectionChanged;
         
         public string Username => UserService.Name;
 
@@ -215,6 +242,9 @@ namespace BufeApp
             // Select the new category
             category.IsSelected = true;
             SelectedCategory = category;
+            
+            // Notify to scroll the category bar horizontally
+            CategorySelectionChanged?.Invoke(this, category);
         }
 
         [RelayCommand]
