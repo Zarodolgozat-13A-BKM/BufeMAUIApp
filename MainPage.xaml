@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:BufeApp.Models"
+             xmlns:converters="clr-namespace:BufeApp.Converters"
              x:Class="BufeApp.MainPage"
              NavigationPage.HasNavigationBar="False"
              Shell.NavBarIsVisible="False">
@@ -15,16 +17,31 @@
             <!-- Border colors -->
             <Color x:Key="BorderLight">#E5E7EB</Color>
             <Color x:Key="BorderDark">#374151</Color>
+            
+            <!-- Converters for category selection -->
+            <converters:BoolToColorConverter x:Key="SelectedBgConverter" 
+                TrueColor="{StaticResource Primary}" 
+                FalseColorLight="{StaticResource SurfaceLight}" 
+                FalseColorDark="{StaticResource SurfaceDark}" />
+            <converters:BoolToColorConverter x:Key="SelectedTextConverter" 
+                TrueColor="White" 
+                FalseColorLight="{StaticResource TextMainLight}" 
+                FalseColorDark="White" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <Grid BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource BgDark}}">
 
-        <ScrollView VerticalScrollBarVisibility="Never" Padding="0,0,0,90">
+        <ScrollView x:Name="MainScrollView" VerticalScrollBarVisibility="Never" Padding="0,0,0,90"
+                    Scrolled="OnMainScrollViewScrolled">
             <VerticalStackLayout Spacing="0">
 
+                <!-- Header with profile -->
                 <Grid ColumnDefinitions="Auto, *" Padding="20,16,20,10">
                     <HorizontalStackLayout Spacing="12">
+                        <HorizontalStackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding LogoutCommand}" />
+                        </HorizontalStackLayout.GestureRecognizers>
                         <Grid HeightRequest="44" WidthRequest="44">
                             <Border Stroke="{AppThemeBinding Light=White, Dark={StaticResource BorderDark}}" StrokeThickness="2"
                                 StrokeShape="RoundRectangle 22" HeightRequest="40" WidthRequest="40" VerticalOptions="Start" HorizontalOptions="Start">
@@ -37,11 +54,12 @@
 
                         <VerticalStackLayout VerticalOptions="Center">
                             <Label Text="Good Morning," FontSize="12" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" FontAttributes="Bold"/>
-                            <Label Text="Alex Johnson" FontSize="18" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}" FontAttributes="Bold"/>
+                            <Label Text="{Binding Username}" FontSize="18" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}" FontAttributes="Bold"/>
                         </VerticalStackLayout>
                     </HorizontalStackLayout>
                 </Grid>
 
+                <!-- Search bar -->
                 <Border Margin="20,10" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
                     Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark=Transparent}" StrokeThickness="1"
                     StrokeShape="RoundRectangle 12" HeightRequest="50">
@@ -55,139 +73,145 @@
                     </Grid>
                 </Border>
 
-                <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never" Padding="20,20,20,0">
-                    <HorizontalStackLayout Spacing="12">
-                        <Button Text="🔥 Specials" BackgroundColor="{StaticResource Primary}" TextColor="White" 
-                            CornerRadius="20" HeightRequest="40" Padding="16,0" FontAttributes="Bold" />
-                        <Button Text="🍔 Mains" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}" 
-                            TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" 
-                            CornerRadius="20" HeightRequest="40" Padding="16,0" FontAttributes="Bold"
-                            BorderColor="{AppThemeBinding Light={StaticResource BorderLight}, Dark=Transparent}" BorderWidth="1"/>
-                        <Button Text="🥗 Salads" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}" 
-                            TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" 
-                            CornerRadius="20" HeightRequest="40" Padding="16,0" FontAttributes="Bold"
-                            BorderColor="{AppThemeBinding Light={StaticResource BorderLight}, Dark=Transparent}" BorderWidth="1"/>
-                        <Button Text="🥤 Drinks" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}" 
-                            TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" 
-                            CornerRadius="20" HeightRequest="40" Padding="16,0" FontAttributes="Bold"
-                            BorderColor="{AppThemeBinding Light={StaticResource BorderLight}, Dark=Transparent}" BorderWidth="1"/>
-                    </HorizontalStackLayout>
-                </ScrollView>
+                <!-- Category Bar (inline, will scroll with content) -->
+                <Border x:Name="CategoryBarContainer"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource BgDark}}"
+                        Stroke="Transparent" StrokeThickness="0" Padding="0,8" ZIndex="100">
+                    <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never" Padding="20,0">
+                        <HorizontalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding Categories}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:CategorieResponseModel">
+                                    <Border StrokeShape="RoundRectangle 20" HeightRequest="40" Padding="16,0"
+                                            StrokeThickness="1"
+                                            BackgroundColor="{Binding IsSelected, Converter={StaticResource SelectedBgConverter}}"
+                                            Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark=Transparent}">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer 
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectCategoryCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                        </Border.GestureRecognizers>
+                                        <Label Text="{Binding Name}" 
+                                               TextColor="{Binding IsSelected, Converter={StaticResource SelectedTextConverter}}"
+                                               HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold"/>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </HorizontalStackLayout>
+                    </ScrollView>
+                </Border>
 
+                <!-- Featured Items Header -->
                 <Grid ColumnDefinitions="*, Auto" Padding="20,12,20,12">
-                    <Label Text="Daily Specials" FontSize="22" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}"/>
+                    <Label Text="Featured Items" FontSize="22" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}"/>
                     <Label Grid.Column="1" Text="See All" TextColor="{StaticResource Primary}" FontAttributes="Bold" VerticalOptions="Center"/>
                 </Grid>
 
+                <!-- Featured Items (Horizontal Scroll) -->
                 <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never" Padding="20,0,20,20">
-                    <HorizontalStackLayout Spacing="16">
-
-                        <Border WidthRequest="260" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
-                            Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark=Transparent}" StrokeThickness="1" StrokeShape="RoundRectangle 16">
-                            <VerticalStackLayout>
-                                <Grid HeightRequest="150">
-                                    <Image Source="special_wrap.png" Aspect="AspectFill" />
-                                    <Border BackgroundColor="#E6FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 8" 
-                                        HorizontalOptions="Start" VerticalOptions="Start" Margin="12" Padding="8,4">
-                                        <Label Text="450 cal" TextColor="{StaticResource Primary}" FontSize="12" FontAttributes="Bold"/>
-                                    </Border>
-                                </Grid>
-                                <VerticalStackLayout Padding="16" Spacing="8">
-                                    <Label Text="Spicy Chicken Wrap" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}"/>
-                                    <Label Text="Whole wheat tortilla, grilled chicken" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}"/>
-                                    <Grid ColumnDefinitions="*, Auto" Margin="0,8,0,0">
-                                        <Label Text="$5.50" TextColor="{StaticResource Primary}" FontSize="20" FontAttributes="Bold" VerticalOptions="Center"/>
-                                        <Border Grid.Column="1" BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 18" HeightRequest="36" WidthRequest="36">
-                                            <Path Data="{StaticResource IconAdd}" Fill="White" Aspect="Uniform" WidthRequest="18" HeightRequest="18" HorizontalOptions="Center" VerticalOptions="Center"/>
-                                        </Border>
-                                    </Grid>
-                                </VerticalStackLayout>
-                            </VerticalStackLayout>
-                        </Border>
-
-                        <Border WidthRequest="260" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
-                            Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark=Transparent}" StrokeThickness="1" StrokeShape="RoundRectangle 16">
-                            <VerticalStackLayout>
-                                <Grid HeightRequest="150">
-                                    <Image Source="special_pizza.png" Aspect="AspectFill" />
-                                    <Border BackgroundColor="#E6FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 8" 
-                                        HorizontalOptions="Start" VerticalOptions="Start" Margin="12" Padding="8,4">
-                                        <HorizontalStackLayout Spacing="4" VerticalOptions="Center">
-                                            <Path Data="{StaticResource IconEco}" Fill="#16a34a" Aspect="Uniform" HeightRequest="14" VerticalOptions="Center"/>
-                                            <Label Text="Veggie" TextColor="#15803d" FontSize="12" FontAttributes="Bold" VerticalOptions="Center"/>
-                                        </HorizontalStackLayout>
-                                    </Border>
-                                </Grid>
-                                <VerticalStackLayout Padding="16" Spacing="8">
-                                    <Label Text="Veggie Pizza Slice" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}"/>
-                                    <Label Text="Peppers, onions, mozzarella" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}"/>
-                                    <Grid ColumnDefinitions="*, Auto" Margin="0,8,0,0">
-                                        <Label Text="$4.00" TextColor="{StaticResource Primary}" FontSize="20" FontAttributes="Bold" VerticalOptions="Center"/>
-                                        <Border Grid.Column="1" BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 18" HeightRequest="36" WidthRequest="36">
-                                            <Path Data="{StaticResource IconAdd}" Fill="White" Aspect="Uniform" HeightRequest="16" HorizontalOptions="Center" VerticalOptions="Center"/>
-                                        </Border>
-                                    </Grid>
-                                </VerticalStackLayout>
-                            </VerticalStackLayout>
-                        </Border>
-
+                    <HorizontalStackLayout Spacing="16" BindableLayout.ItemsSource="{Binding FeaturedItems}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:ItemModel">
+                                <Border WidthRequest="260" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+                                    Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark=Transparent}" StrokeThickness="1" StrokeShape="RoundRectangle 16">
+                                    <VerticalStackLayout>
+                                        <Grid HeightRequest="150">
+                                            <Image Source="{Binding PictureUrl}" Aspect="AspectFill" />
+                                            <Border BackgroundColor="#E6FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 8" 
+                                                HorizontalOptions="Start" VerticalOptions="Start" Margin="12" Padding="8,4">
+                                                <Label Text="⭐ Featured" TextColor="{StaticResource Primary}" FontSize="12" FontAttributes="Bold"/>
+                                            </Border>
+                                        </Grid>
+                                        <VerticalStackLayout Padding="16" Spacing="8">
+                                            <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}" LineBreakMode="TailTruncation" MaxLines="1"/>
+                                            <Label Text="{Binding Description}" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" LineBreakMode="TailTruncation" MaxLines="2"/>
+                                            <Grid ColumnDefinitions="*, Auto" Margin="0,8,0,0">
+                                                <Label Text="{Binding Price, StringFormat='${0:F2}'}" TextColor="{StaticResource Primary}" FontSize="20" FontAttributes="Bold" VerticalOptions="Center"/>
+                                                <Border Grid.Column="1" BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 18" HeightRequest="36" WidthRequest="36">
+                                                    <Path Data="{StaticResource IconAdd}" Fill="White" Aspect="Uniform" WidthRequest="18" HeightRequest="18" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                                </Border>
+                                            </Grid>
+                                        </VerticalStackLayout>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
                     </HorizontalStackLayout>
                 </ScrollView>
 
-                <VerticalStackLayout Padding="20,10" Spacing="16">
-                    <Label Text="Snacks &amp; Drinks" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}"/>
+                <!-- All Categories with their Items -->
+                <VerticalStackLayout x:Name="CategorySectionsContainer" Spacing="0" BindableLayout.ItemsSource="{Binding Categories}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:CategorieResponseModel">
+                            <VerticalStackLayout Padding="20,10" Spacing="12">
+                                <!-- Category Header -->
+                                <Label Text="{Binding Name}" FontSize="20" FontAttributes="Bold" 
+                                       TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}"
+                                       Margin="0,10,0,5"/>
+                                
+                                <!-- Items in this category -->
+                                <VerticalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding Items}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="models:ItemModel">
+                                            <Border BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+                                                Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark=Transparent}" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="12">
+                                                <Grid ColumnDefinitions="96, *" ColumnSpacing="16">
+                                                    <Border Grid.Column="0" StrokeShape="RoundRectangle 8" StrokeThickness="0" HeightRequest="96" WidthRequest="96">
+                                                        <Image Source="{Binding PictureUrl}" Aspect="AspectFill"/>
+                                                    </Border>
+                                                    <Grid Grid.Column="1" RowDefinitions="Auto, *, Auto">
+                                                        <Label Grid.Row="0" Text="{Binding Name}" FontSize="16" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}" LineBreakMode="TailTruncation" MaxLines="1"/>
+                                                        <Label Grid.Row="1" Text="{Binding Description}" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" LineBreakMode="TailTruncation" MaxLines="2" VerticalOptions="Start" Margin="0,4,0,0"/>
 
-                    <Border BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
-                        Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark=Transparent}" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="12">
-                        <Grid ColumnDefinitions="96, *" ColumnSpacing="16">
-                            <Border Grid.Column="0" StrokeShape="RoundRectangle 8" StrokeThickness="0" HeightRequest="96" WidthRequest="96">
-                                <Image Source="fruit_cup.png" Aspect="AspectFill"/>
-                            </Border>
-                            <Grid Grid.Column="1" RowDefinitions="Auto, *, Auto">
-                                <Label Grid.Row="0" Text="Seasonal Fruit Cup" FontSize="16" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}"/>
-                                <Label Grid.Row="1" Text="Fresh melon, grapes, and seasonal berries." FontSize="12" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" LineBreakMode="TailTruncation" MaxLines="2" VerticalOptions="Start" Margin="0,4,0,0"/>
-
-                                <Grid Grid.Row="2" ColumnDefinitions="*, Auto" VerticalOptions="End">
-                                    <Label Text="$3.00" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}" VerticalOptions="Center"/>
-                                    <Border Grid.Column="1" BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark=#3a2f26}" StrokeThickness="0" StrokeShape="RoundRectangle 8" HeightRequest="32">
-                                        <HorizontalStackLayout Spacing="0">
-                                            <Button Text="-" TextColor="{StaticResource Primary}" BackgroundColor="Transparent" FontAttributes="Bold" WidthRequest="36"/>
-                                            <Label Text="1" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="20" HorizontalTextAlignment="Center"/>
-                                            <Button Text="+" TextColor="{StaticResource Primary}" BackgroundColor="Transparent" FontAttributes="Bold" WidthRequest="36"/>
-                                        </HorizontalStackLayout>
-                                    </Border>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Border>
-
-                    <Border BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
-                        Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark=Transparent}" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="12">
-                        <Grid ColumnDefinitions="96, *" ColumnSpacing="16">
-                            <Border Grid.Column="0" StrokeShape="RoundRectangle 8" StrokeThickness="0" HeightRequest="96" WidthRequest="96">
-                                <Image Source="muffin.png" Aspect="AspectFill"/>
-                            </Border>
-                            <Grid Grid.Column="1" RowDefinitions="Auto, *, Auto">
-                                <Label Grid.Row="0" Text="Choco Muffin" FontSize="16" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}"/>
-
-                                <Border Grid.Row="1" BackgroundColor="#fef3c7" StrokeThickness="0" StrokeShape="RoundRectangle 4" HorizontalOptions="Start" VerticalOptions="Start" Margin="0,4,0,0" Padding="6,2">
-                                    <Label Text="Contains Nuts" TextColor="#854d0e" FontSize="10" FontAttributes="Bold"/>
-                                </Border>
-
-                                <Grid Grid.Row="2" ColumnDefinitions="*, Auto" VerticalOptions="End">
-                                    <Label Text="$2.50" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}" VerticalOptions="Center"/>
-                                    <Button Grid.Column="1" Text="Add" TextColor="{StaticResource Primary}" BackgroundColor="#1Aee8c2b" FontAttributes="Bold" CornerRadius="8" HeightRequest="32" Padding="16,0"/>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Border>
-
+                                                        <Grid Grid.Row="2" ColumnDefinitions="*, Auto" VerticalOptions="End">
+                                                            <Label Text="{Binding Price, StringFormat='${0:F2}'}" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}" VerticalOptions="Center"/>
+                                                            <Button Grid.Column="1" Text="Add" TextColor="{StaticResource Primary}" BackgroundColor="#1Aee8c2b" FontAttributes="Bold" CornerRadius="8" HeightRequest="32" Padding="16,0"/>
+                                                        </Grid>
+                                                    </Grid>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
                 </VerticalStackLayout>
+
             </VerticalStackLayout>
         </ScrollView>
 
-        <Border VerticalOptions="End" Stroke="Transparent" BackgroundColor="Transparent" Padding="16">
+        <!-- Sticky Category Bar (shown when scrolled past threshold) -->
+        <Border x:Name="StickyCategoryBar" 
+                VerticalOptions="Start" 
+                BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource BgDark}}"
+                Stroke="Transparent" StrokeThickness="0" Padding="0,8" 
+                IsVisible="False"
+                ZIndex="200">
+            <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never" Padding="20,0">
+                <HorizontalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding Categories}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:CategorieResponseModel">
+                            <Border StrokeShape="RoundRectangle 20" HeightRequest="40" Padding="16,0"
+                                    StrokeThickness="1"
+                                    BackgroundColor="{Binding IsSelected, Converter={StaticResource SelectedBgConverter}}"
+                                    Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark=Transparent}">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectCategoryCommand}"
+                                        CommandParameter="{Binding .}"/>
+                                </Border.GestureRecognizers>
+                                <Label Text="{Binding Name}" 
+                                       TextColor="{Binding IsSelected, Converter={StaticResource SelectedTextConverter}}"
+                                       HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold"/>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </HorizontalStackLayout>
+            </ScrollView>
+        </Border>
 
+        <!-- Cart Bar -->
+        <Border VerticalOptions="End" Stroke="Transparent" BackgroundColor="Transparent" Padding="16">
             <Border BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 12" HeightRequest="56" Padding="20,0">
                 <Grid ColumnDefinitions="Auto, *, Auto, Auto">
                     <HorizontalStackLayout Grid.Column="0" Spacing="8" VerticalOptions="Center">
@@ -199,7 +223,6 @@
 
                     <HorizontalStackLayout Grid.Column="2" Spacing="12" VerticalOptions="Center">
                         <Label Text="$5.50" TextColor="White" FontAttributes="Bold" FontSize="18" VerticalOptions="Center"/>
-
                     </HorizontalStackLayout>
                     <Path Data="{StaticResource IconArrow}" Grid.Column="3" Margin="16,0,0,0"
                       Fill="White"

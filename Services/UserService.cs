@@ -30,7 +30,7 @@ namespace BufeApp.Services
             if(loginResponse != null && !string.IsNullOrEmpty(loginResponse.AccessToken))
             {
                 BearerToken = loginResponse.AccessToken;
-                //SetUserData(); // Implement this method to fetch and set user data
+                SetUserData(); // Implement this method to fetch and set user data
                 await StorageService.SetSecureValue("BearerToken", BearerToken);
             }
             else
@@ -41,7 +41,7 @@ namespace BufeApp.Services
 
         public static async Task SetUserData()
         {
-            throw new NotImplementedException();
+            Name = "Majd a Milán beteszi";
         }
 
         public static async Task LogoutUser()

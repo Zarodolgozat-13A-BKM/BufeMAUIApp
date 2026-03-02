@@ -4,7 +4,7 @@
              x:Class="BufeApp.Pages.CartPage"
              Shell.NavBarIsVisible="False"
              Title="">
-    <VerticalStackLayout BackgroundColor="{AppThemeBinding Light=#E6f8f7, Dark={StaticResource BgDark}}">
+    <VerticalStackLayout BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource BgDark}}">
 
     </VerticalStackLayout>
 </ContentPage>

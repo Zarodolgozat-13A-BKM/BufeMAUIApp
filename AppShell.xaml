@@ -5,6 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:BufeApp"
     xmlns:pages="clr-namespace:BufeApp.Pages"
+    Shell.TabBarForegroundColor="{StaticResource Primary}"
+    Shell.TabBarTitleColor="{StaticResource Primary}"
     Shell.FlyoutBehavior="Disabled"
     Title="BufeApp">
 

@@ -134,14 +134,6 @@
 
                 </VerticalStackLayout>
 
-                <HorizontalStackLayout HorizontalOptions="Center" Spacing="4" Margin="0,30,0,0">
-                    <Label Text="Nincs még fiókod?" TextColor="#6B7280" FontSize="14"/>
-                    <Label Text="Regisztrálj most" 
-                       TextColor="{StaticResource Primary}" 
-                       FontAttributes="Bold" 
-                       FontSize="14"/>
-                </HorizontalStackLayout>
-
             </VerticalStackLayout>
         </ScrollView>
     </Grid>
