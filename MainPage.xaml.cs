@@ -175,8 +175,12 @@ namespace BufeApp
 
                 foreach (var category in categoriesResult)
                 {
+                    foreach (ItemModel i in category.Items)
+                    {
+                        i.PictureUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtvjOOAjwn2EHz5VzgbYbCIRT7phazqKAh2w&s";
+                    }
                     Categories.Add(category);
-                    
+
                     // Collect featured items from all categories
                     foreach (var item in category.Items.Where(i => i.IsFeatured))
                     {
