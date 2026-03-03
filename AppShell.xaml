@@ -8,6 +8,7 @@
     Shell.TabBarForegroundColor="{StaticResource Primary}"
     Shell.TabBarTitleColor="{StaticResource Primary}"
     Shell.FlyoutBehavior="Disabled"
+    Shell.ForegroundColor="{StaticResource Primary}"
     Title="BufeApp">
 
     <!-- Login page outside of TabBar -->
