@@ -122,11 +122,31 @@ namespace BufeApp
             int index = _viewModel.Categories.IndexOf(category);
             if (index < 0) return;
 
-            // Calculate approximate horizontal position (each button is roughly 100px wide with spacing)
-            // We'll use a more dynamic approach by calculating based on index
-            double buttonWidth = 100; // Approximate width including padding
-            double spacing = 12;
-            double targetX = index * (buttonWidth + spacing);
+            double targetX = 0;
+            double spacing = 12; // Should match the spacing in your XAML
+
+            // Try to get actual button widths from the UI
+            var scrollContent = CategoryBarScrollView.Content as Layout;
+            if (scrollContent != null && scrollContent.Children.Count > index)
+            {
+                for (int i = 0; i < index; i++)
+                {
+                    if (scrollContent.Children[i] is VisualElement button)
+                    {
+                        targetX += button.Width + spacing;
+                    }
+                }
+            }
+            else
+            {
+                // Fallback to estimation if UI not ready
+                for (int i = 0; i < index; i++)
+                {
+                    var cat = _viewModel.Categories[i];
+                    double estimatedWidth = (cat.Name.Length * 9) + 40;
+                    targetX += estimatedWidth + spacing;
+                }
+            }
 
             // Scroll both category bars to show selected at left
             await Task.WhenAll(
