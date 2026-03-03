@@ -23,14 +23,14 @@ namespace BufeApp.Services
             BearerToken = await StorageService.GetSecureValue("BearerToken");
         }
 
-        public static async Task LoginUser(string Email, string Password)
+        public static async Task LoginUser(string Username, string Password)
         {
-            var loginRequest = new { email = Email, password = Password };
+            var loginRequest = new { username = Username, password = Password };
             var loginResponse = await ApiService.PostAsync<object, LoginResponse>(ApiService.LoginEndpoint, loginRequest);
             if(loginResponse != null && !string.IsNullOrEmpty(loginResponse.AccessToken))
             {
                 BearerToken = loginResponse.AccessToken;
-                //SetUserData(); // Implement this method to fetch and set user data
+                SetUserData(); // Implement this method to fetch and set user data
                 await StorageService.SetSecureValue("BearerToken", BearerToken);
             }
             else
@@ -41,7 +41,7 @@ namespace BufeApp.Services
 
         public static async Task SetUserData()
         {
-            throw new NotImplementedException();
+            Name = "Majd a Milán beteszi";
         }
 
         public static async Task LogoutUser()
@@ -61,20 +61,20 @@ namespace BufeApp.Services
             }
         }
 
-        public static async Task RegisterUser(string Name, string Email, string Password, string PasswordConfirmation)
-        {
-            var registerRequest = new { name = Name, email = Email, password = Password, password_confirmation = PasswordConfirmation };
-            var registerResponse = await ApiService.PostAsync<object, RegisterResponse>(ApiService.RegisterEndpoint, registerRequest);
-            if (registerResponse != null && !string.IsNullOrEmpty(registerResponse.AccessToken))
-            {
-                BearerToken = registerResponse.AccessToken;
-                //SetUserData(); // Implement this method to fetch and set user data
-                await StorageService.SetSecureValue("BearerToken", BearerToken);
-            }
-            else
-            {
-                throw new Exception("Registration failed");
-            }
-        }
+        //public static async Task RegisterUser(string Name, string Email, string Password, string PasswordConfirmation)
+        //{
+        //    var registerRequest = new { name = Name, email = Email, password = Password, password_confirmation = PasswordConfirmation };
+        //    var registerResponse = await ApiService.PostAsync<object, RegisterResponse>(ApiService.RegisterEndpoint, registerRequest);
+        //    if (registerResponse != null && !string.IsNullOrEmpty(registerResponse.AccessToken))
+        //    {
+        //        BearerToken = registerResponse.AccessToken;
+        //        //SetUserData(); // Implement this method to fetch and set user data
+        //        await StorageService.SetSecureValue("BearerToken", BearerToken);
+        //    }
+        //    else
+        //    {
+        //        throw new Exception("Registration failed");
+        //    }
+        //}
     }
 }

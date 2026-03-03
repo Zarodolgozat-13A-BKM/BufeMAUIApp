@@ -5,18 +5,38 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:BufeApp"
     xmlns:pages="clr-namespace:BufeApp.Pages"
+    Shell.TabBarForegroundColor="{StaticResource Primary}"
+    Shell.TabBarTitleColor="{StaticResource Primary}"
     Shell.FlyoutBehavior="Disabled"
     Shell.ForegroundColor="{StaticResource Primary}"
     Title="BufeApp">
 
+    <!-- Login page outside of TabBar -->
     <ShellContent
         Title="Login"
         ContentTemplate="{DataTemplate pages:LoginPage}"
-        Route="LoginPage" />
+        Route="LoginPage"
+        Shell.TabBarIsVisible="False" />
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <!-- TabBar for main navigation -->
+    <TabBar Route="MainTabs">
+        <ShellContent
+            Title="Home"
+            Icon="home.svg"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Route="MainPage" />
+
+        <ShellContent
+            Title="Cart"
+            Icon="cart.svg"
+            ContentTemplate="{DataTemplate pages:CartPage}"
+            Route="CartPage" />
+
+        <ShellContent
+            Title="Loyalty"
+            Icon="star.svg"
+            ContentTemplate="{DataTemplate pages:LoyaltyPage}"
+            Route="LoyaltyPage" />
+    </TabBar>
 
 </Shell>

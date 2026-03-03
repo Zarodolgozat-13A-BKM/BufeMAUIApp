@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace BufeApp.Models
 {
-    public class LoginResponse
+    public class CategorieModel
     {
-        [JsonPropertyName("access_token")]
-        public string AccessToken { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
     }
 }

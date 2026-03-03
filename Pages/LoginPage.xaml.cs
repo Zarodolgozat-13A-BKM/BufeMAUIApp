@@ -14,13 +14,13 @@ public partial class LoginPage : ContentPage
 		((Button)sender).IsEnabled = false;
         try 
 		{
-            await UserService.LoginUser(Email_Entry.Text, Password_Entry.Text);
+            await UserService.LoginUser(Name_Entry.Text, Password_Entry.Text);
 			await DisplayAlert("Login Successful", $"You have been logged in.", "OK");
 			await Shell.Current.GoToAsync("//MainPage");
             ((Button)sender).IsEnabled = true;
             return;
         } 
-		catch 
+		catch
 		{
 			await DisplayAlert("Login Failed", "Invalid email or password.", "OK");
             ((Button)sender).IsEnabled = true;
