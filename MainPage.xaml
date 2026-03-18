@@ -120,10 +120,6 @@
                                     <VerticalStackLayout>
                                         <Grid HeightRequest="150">
                                             <Image Source="{Binding PictureUrl}" Aspect="AspectFill" />
-                                            <Border BackgroundColor="#E6FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 8" 
-                                                HorizontalOptions="Start" VerticalOptions="Start" Margin="12" Padding="8,4">
-                                                <Label Text="⭐ Featured" TextColor="{StaticResource Primary}" FontSize="12" FontAttributes="Bold"/>
-                                            </Border>
                                         </Grid>
                                         <VerticalStackLayout Padding="16" Spacing="8">
                                             <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}" LineBreakMode="TailTruncation" MaxLines="1"/>
@@ -164,9 +160,15 @@
                                             <Border BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
                                                 Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark=Transparent}" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="12">
                                                 <Grid ColumnDefinitions="96, *" ColumnSpacing="16">
-                                                    <Border Grid.Column="0" StrokeShape="RoundRectangle 8" StrokeThickness="0" HeightRequest="96" WidthRequest="96">
-                                                        <Image Source="{Binding PictureUrl}" Aspect="AspectFill"/>
-                                                    </Border>
+                                                    <Grid Grid.Column="0" HeightRequest="96" WidthRequest="96">
+                                                        <Border StrokeShape="RoundRectangle 8" StrokeThickness="0">
+                                                            <Image Source="{Binding PictureUrl}" Aspect="AspectFill"/>
+                                                        </Border>
+                                                        <Border IsVisible="{Binding IsFeatured}" BackgroundColor="#E6FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 8" 
+                                                            HorizontalOptions="Start" VerticalOptions="Start" Margin="4" Padding="6,2">
+                                                            <Label Text="⭐ Featured" TextColor="{StaticResource Primary}" FontSize="10" FontAttributes="Bold"/>
+                                                        </Border>
+                                                    </Grid>
                                                     <Grid Grid.Column="1" RowDefinitions="Auto, *, Auto">
                                                         <Label Grid.Row="0" Text="{Binding Name}" FontSize="16" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}" LineBreakMode="TailTruncation" MaxLines="1"/>
                                                         <Label Grid.Row="1" Text="{Binding Description}" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" LineBreakMode="TailTruncation" MaxLines="2" VerticalOptions="Start" Margin="0,4,0,0"/>
