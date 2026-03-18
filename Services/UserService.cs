@@ -41,7 +41,19 @@ namespace BufeApp.Services
 
         public static async Task SetUserData()
         {
-            Name = "Majd a Milán beteszi";
+            await ApiService.GetAsync<UserDataResponseModel>(ApiService.MeEndpoint, BearerToken).ContinueWith(task =>
+            {
+                if (task.IsCompletedSuccessfully)
+                {
+                    var userData = task.Result;
+                    Name = userData.full_name;
+                    Email = userData.email;
+                }
+                else
+                {
+                    throw new Exception("Failed to fetch user data");
+                }
+            });
         }
 
         public static async Task UserUnauthorised()

@@ -16,6 +16,7 @@ namespace BufeApp.Services
         public static string LoginEndpoint = "account/login";
         public static string LogoutEndpoint = "account/logout";
         public static string CategoriesEndpoint = "categories";
+        public static string MeEndpoint = "account/me";
 
         private static LoadingPopup _loadingPopup;
         private static int _loadingCounter = 0;

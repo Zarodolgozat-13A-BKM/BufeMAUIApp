@@ -43,15 +43,31 @@
                            FontAttributes="Bold"
                            HorizontalTextAlignment="Center" />
 
-                        <Label Text="Rendelj bármit a büféből hogy szünetbe ne kelljen kiállni a sort, vagy akár a teremben élvezhesd"
+                        <Label Text="Rendelj bármit a büféből hogy szünetbe ne kelljen kiállni a sort!"
                            TextColor="{AppThemeBinding Light=#897561, Dark=#9CA3AF}"
                            FontSize="16"
                            HorizontalTextAlignment="Center"
                            WidthRequest="280" />
+                        
                     </VerticalStackLayout>
                 </VerticalStackLayout>
+                
+                
 
                 <VerticalStackLayout Spacing="20">
+
+                    <Border x:Name="ErrorBox"
+                        IsVisible="False"
+                        BackgroundColor="{AppThemeBinding Light=#FEE2E2, Dark=#450A0A}"
+                        Stroke="{AppThemeBinding Light=#EF4444, Dark=#DC2626}"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 8"
+                        Padding="16,12">
+                        <Label x:Name="ErrorLabel"
+                               TextColor="{AppThemeBinding Light=#DC2626, Dark=#FCA5A5}"
+                               FontSize="14"
+                               HorizontalTextAlignment="Center"/>
+                    </Border>
 
                     <VerticalStackLayout Spacing="8">
                         <Label Text="Iskolai Felhasználónév" 
@@ -114,6 +130,8 @@
                             </Label>
                         </Grid>
                     </VerticalStackLayout>
+
+                    
 
                     <Button Text="Bejelentkezés"
                         BackgroundColor="{StaticResource Primary}"

@@ -12,17 +12,18 @@ public partial class LoginPage : ContentPage
     private async void LoginButton_Clicked(object sender, EventArgs e)
     {
 		((Button)sender).IsEnabled = false;
+        ErrorBox.IsVisible = false;
         try 
 		{
             await UserService.LoginUser(Name_Entry.Text, Password_Entry.Text);
-			await DisplayAlert("Login Successful", $"You have been logged in.", "OK");
 			await Shell.Current.GoToAsync("//MainPage");
             ((Button)sender).IsEnabled = true;
             return;
         } 
-		catch
+		catch (Exception ex)
 		{
-			await DisplayAlert("Login Failed", "Invalid email or password.", "OK");
+            ErrorLabel.Text = "Hibás bejelentkezési adatok vagy szerverhiba";
+            ErrorBox.IsVisible = true;
             ((Button)sender).IsEnabled = true;
             return;
         }
