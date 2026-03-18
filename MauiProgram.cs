@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
-using SkiaSharp.Views.Maui.Controls.Hosting;
+using CommunityToolkit.Maui;
+using Microsoft.Extensions.Logging;
+using Plugin.Maui.BottomSheet.Hosting;
 
 namespace BufeApp
 {
@@ -10,15 +11,18 @@ namespace BufeApp
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
-                .UseSkiaSharp()
+                .UseMauiCommunityToolkit()
+                .UseBottomSheet()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+            builder.Services.AddTransient<MainPage>();
+            builder.Services.AddTransient<MainViewModel>();
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoUnderline", (handler, view) =>
