@@ -108,7 +108,6 @@
                 <!-- Featured Items Header -->
                 <Grid ColumnDefinitions="*, Auto" Padding="20,12,20,12">
                     <Label Text="Featured Items" FontSize="22" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}"/>
-                    <Label Grid.Column="1" Text="See All" TextColor="{StaticResource Primary}" FontAttributes="Bold" VerticalOptions="Center"/>
                 </Grid>
 
                 <!-- Featured Items (Horizontal Scroll) -->
