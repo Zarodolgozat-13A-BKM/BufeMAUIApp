@@ -44,6 +44,15 @@ namespace BufeApp.Services
             Name = "Majd a Milán beteszi";
         }
 
+        public static async Task UserUnauthorised()
+        {
+            await StorageService.SetSecureValue("BearerToken", string.Empty);
+            BearerToken = null;
+            Email = null;
+            Name = null;
+            await Shell.Current.GoToAsync("//LoginPage");
+        }
+
         public static async Task LogoutUser()
         {
             //send post to logout endpoint with bearer token

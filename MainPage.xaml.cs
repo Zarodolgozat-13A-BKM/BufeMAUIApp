@@ -20,7 +20,19 @@ namespace BufeApp
             _viewModel = vm;
             _viewModel.ScrollToCategoryRequested += OnScrollToCategoryRequested;
             _viewModel.CategorySelectionChanged += OnCategorySelectionChanged;
+            _viewModel.OpenBottomSheetRequested += OnOpenBottomSheetRequested;
+            _viewModel.CloseBottomSheetRequested += OnCloseBottomSheetRequested;
             this.BindingContext = _viewModel;
+        }
+
+        private void OnOpenBottomSheetRequested(object? sender, EventArgs e)
+        {
+            ItemBottomSheet.IsOpen = true;
+        }
+
+        private void OnCloseBottomSheetRequested(object? sender, EventArgs e)
+        {
+            ItemBottomSheet.IsOpen = false;
         }
 
         protected override async void OnAppearing()
@@ -183,6 +195,8 @@ namespace BufeApp
     {
         public event EventHandler<CategorieResponseModel>? ScrollToCategoryRequested;
         public event EventHandler<CategorieResponseModel>? CategorySelectionChanged;
+        public event EventHandler? OpenBottomSheetRequested;
+        public event EventHandler? CloseBottomSheetRequested;
         
         public string Username => UserService.Name;
 
@@ -197,6 +211,15 @@ namespace BufeApp
 
         [ObservableProperty]
         private bool isBusy;
+
+        [ObservableProperty]
+        private ItemModel? selectedItem;
+
+        [ObservableProperty]
+        private int quantity = 1;
+
+        [ObservableProperty]
+        private decimal totalPrice;
 
         public MainViewModel()
         {
@@ -222,10 +245,6 @@ namespace BufeApp
 
                 foreach (var category in categoriesResult)
                 {
-                    foreach (ItemModel i in category.Items)
-                    {
-                        i.PictureUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtvjOOAjwn2EHz5VzgbYbCIRT7phazqKAh2w&s";
-                    }
                     Categories.Add(category);
 
                     // Collect featured items from all categories
@@ -265,6 +284,56 @@ namespace BufeApp
             
             // Notify to scroll the category bar horizontally
             CategorySelectionChanged?.Invoke(this, category);
+        }
+
+        partial void OnQuantityChanged(int value)
+        {
+            if (SelectedItem != null)
+            {
+                TotalPrice = SelectedItem.Price * value;
+            }
+        }
+
+        [RelayCommand]
+        private void SelectItem(ItemModel item)
+        {
+            SelectedItem = item;
+            Quantity = 1;
+            TotalPrice = item.Price;
+            OpenBottomSheetRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        [RelayCommand]
+        private void IncreaseQuantity()
+        {
+            if (Quantity < 99)
+            {
+                Quantity++;
+            }
+        }
+
+        [RelayCommand]
+        private void DecreaseQuantity()
+        {
+            if (Quantity > 1)
+            {
+                Quantity--;
+            }
+        }
+
+        [RelayCommand]
+        private async Task AddToCartAsync()
+        {
+            if (SelectedItem == null)
+                return;
+
+            // TODO: Implement actual cart logic
+            await Application.Current.MainPage.DisplayAlert(
+                "Added to Cart", 
+                $"{Quantity}x {SelectedItem.Name} added to cart!\nTotal: ${TotalPrice:F2}", 
+                "OK");
+
+            CloseBottomSheetRequested?.Invoke(this, EventArgs.Empty);
         }
 
         [RelayCommand]

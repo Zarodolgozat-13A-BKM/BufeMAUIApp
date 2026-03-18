@@ -9,7 +9,7 @@ namespace BufeApp.Services
 {
     public static class ApiService
     {
-        public static string BaseUrl = "http://bufeapi-markomilan.jcloud.jedlik.cloud/api/";
+        public static string BaseUrl = "https://bufeapi.jcloud.jedlik.cloud/api/";
         //endpoints
         public static string LoginEndpoint = "account/login";
         public static string LogoutEndpoint = "account/logout";
@@ -33,6 +33,7 @@ namespace BufeApp.Services
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", bearerToken);
             }
             var response = await client.GetAsync(endpoint);
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized) { UserService.UserUnauthorised(); }
             response.EnsureSuccessStatusCode();
             var jsonResponse = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<T>(jsonResponse, GetJsonOptions());
@@ -50,6 +51,7 @@ namespace BufeApp.Services
             var jsonData = JsonSerializer.Serialize(data);
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var response = await client.PostAsync(endpoint, content);
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized) { UserService.UserUnauthorised(); }
             response.EnsureSuccessStatusCode();
             var jsonResponse = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<TResponse>(jsonResponse, GetJsonOptions());

@@ -16,6 +16,8 @@ namespace BufeApp
 
         private async void InitializeNavigation()
         {
+
+            //await UserService.UserUnauthorised(); // For testing purposes only, remove in production
             // Check if user has access to internet, if not show alert and exit app
             var connectivity = Connectivity.Current;
             if (connectivity.NetworkAccess != NetworkAccess.Internet)
