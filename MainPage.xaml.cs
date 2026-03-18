@@ -203,6 +203,18 @@ namespace BufeApp
         [ObservableProperty]
         private ObservableCollection<CategorieResponseModel> categories;
 
+        // Store original data for filtering
+        private List<CategorieResponseModel> _allCategories = new();
+        private Dictionary<int, List<ItemModel>> _originalCategoryItems = new();
+
+        [ObservableProperty]
+        private string searchQuery = string.Empty;
+
+        partial void OnSearchQueryChanged(string value)
+        {
+            FilterCategories();
+        }
+
         [ObservableProperty]
         private CategorieResponseModel? selectedCategory;
 
@@ -240,11 +252,16 @@ namespace BufeApp
                     ApiService.CategoriesEndpoint, 
                     UserService.BearerToken);
 
+                _allCategories = categoriesResult;
+                _originalCategoryItems.Clear();
                 Categories.Clear();
                 FeaturedItems.Clear();
 
                 foreach (var category in categoriesResult)
                 {
+                    // Cache original items for filtering
+                    _originalCategoryItems[category.Id] = category.Items.ToList();
+                    
                     Categories.Add(category);
 
                     // Collect featured items from all categories
@@ -267,6 +284,51 @@ namespace BufeApp
             finally
             {
                 IsBusy = false;
+            }
+        }
+
+        private void FilterCategories()
+        {
+            if (_allCategories == null || !_allCategories.Any())
+                return;
+
+            if (string.IsNullOrWhiteSpace(SearchQuery))
+            {
+                // Restore all categories and items
+                Categories.Clear();
+                foreach (var category in _allCategories)
+                {
+                    if (_originalCategoryItems.TryGetValue(category.Id, out var originalItems))
+                    {
+                        category.Items = originalItems;
+                    }
+                    Categories.Add(category);
+                }
+                return;
+            }
+
+            var lowerQuery = SearchQuery.ToLowerInvariant();
+            Categories.Clear();
+
+            foreach (var category in _allCategories)
+            {
+                if (!_originalCategoryItems.TryGetValue(category.Id, out var originalItems))
+                    continue;
+
+                // Determine if category name matches
+                bool categoryMatches = category.Name.ToLowerInvariant().Contains(lowerQuery);
+
+                // Filter items
+                var matchingItems = originalItems.Where(i => 
+                    i.Name.ToLowerInvariant().Contains(lowerQuery) || 
+                    (i.Description != null && i.Description.ToLowerInvariant().Contains(lowerQuery))).ToList();
+
+                if (matchingItems.Any() || categoryMatches)
+                {
+                    // If category name matches, should we show all items or just matching? Let's show matching, or all if none matches
+                    category.Items = matchingItems.Any() ? matchingItems : originalItems;
+                    Categories.Add(category);
+                }
             }
         }
 

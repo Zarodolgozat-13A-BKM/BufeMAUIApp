@@ -73,6 +73,7 @@
                         <Entry Grid.Column="1" Placeholder="Craving a burger? Search menu..." 
                            PlaceholderColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}"
                            TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}"
+                           Text="{Binding SearchQuery}"
                            VerticalOptions="Center" BackgroundColor="Transparent" />
                     </Grid>
                 </Border>

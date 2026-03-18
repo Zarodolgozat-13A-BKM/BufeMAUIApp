@@ -9,6 +9,7 @@ namespace BufeApp.Models
     public class CategorieResponseModel : INotifyPropertyChanged
     {
         private bool _isSelected;
+        private List<ItemModel> _items = new List<ItemModel>();
 
         [JsonPropertyName("id")]
         public int Id { get; set; }
@@ -23,7 +24,18 @@ namespace BufeApp.Models
         public DateTime UpdatedAt { get; set; }
 
         [JsonPropertyName("items")]
-        public List<ItemModel> Items { get; set; } = new List<ItemModel>();
+        public List<ItemModel> Items
+        {
+            get => _items;
+            set
+            {
+                if (_items != value)
+                {
+                    _items = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         [JsonIgnore]
         public bool IsSelected
