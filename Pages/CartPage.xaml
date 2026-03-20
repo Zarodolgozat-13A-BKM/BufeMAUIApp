@@ -9,6 +9,7 @@
             <x:String x:Key="IconBack">M20,11H7.83L13.42,5.41L12,4L4,12L12,20L13.41,18.59L7.83,13H20V11Z</x:String>
             <x:String x:Key="IconStorefront">M22,7.52V10.5C22,11.23 21.65,11.89 21.11,12.31L21,12.42V20C21,21.1 20.1,22 19,22H5C3.89,22 3,21.1 3,20V12.42L2.89,12.31C2.35,11.89 2,11.23 2,10.5V7.52L3.93,5.6C4.42,5.1 5.09,4.8 5.82,4.8H18.18C18.91,4.8 19.58,5.1 20.07,5.6L22,7.52M20,10.5V7.8L18.45,6.23C18.37,6.15 18.28,6 18.18,6H5.82C5.72,6 5.63,6.15 5.55,6.23L4,7.8V10.5H20M5,20H19V12.5C18.73,12.5 18.47,12.41 18.26,12.26L18,12.06L17.74,12.26C17.53,12.41 17.27,12.5 17,12.5C16.73,12.5 16.47,12.41 16.26,12.26L16,12.06L15.74,12.26C15.53,12.41 15.27,12.5 15,12.5C14.73,12.5 14.47,12.41 14.26,12.26L14,12.06L13.74,12.26C13.53,12.41 13.27,12.5 13,12.5C12.73,12.5 12.47,12.41 12.26,12.26L12,12.06L11.74,12.26C11.53,12.41 11.27,12.5 11,12.5C10.73,12.5 10.47,12.41 10.26,12.26L10,12.06L9.74,12.26C9.53,12.41 9.27,12.5 9,12.5C8.73,12.5 8.47,12.41 8.26,12.26L8,12.06L7.74,12.26C7.53,12.41 7.27,12.5 7,12.5C6.73,12.5 6.47,12.41 6.26,12.26L6,12.06L5.74,12.26C5.53,12.41 5.27,12.5 5,12.5V20Z</x:String>
             <x:String x:Key="IconStar">M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z</x:String>
+            <x:String x:Key="IconDelete">M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19C6,20.1 6.9,21 8,21H16C17.1,21 18,20.1 18,19V7H6V19Z</x:String>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -75,6 +76,19 @@
                 <!-- Line -->
                 <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" Margin="16,8" />
 
+                <!-- Order Note -->
+                <VerticalStackLayout Padding="16,8,16,8" Spacing="8">
+                    <Label Text="Megjegyzés a rendeléshez" FontSize="16" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" />
+                    <Border BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+                            Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}"
+                            StrokeThickness="1" StrokeShape="RoundRectangle 12">
+                        <Editor Placeholder="Ide írhatod, ha valami egyedi kérésed van..." 
+                                TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}"
+                                PlaceholderColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark=#71717a}"
+                                HeightRequest="80" Margin="12,8" BackgroundColor="Transparent" />
+                    </Border>
+                </VerticalStackLayout>
+
                 <!-- Order Summary -->
                 <VerticalStackLayout Padding="16,16,16,8">
                     <Label Text="Rendelés összesítése" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" Margin="0,0,0,16"/>
@@ -82,39 +96,66 @@
                     <Border BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
                             Stroke="Transparent"
                             StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="16">
-                        <VerticalStackLayout Spacing="12">
+                        <VerticalStackLayout Spacing="16">
                             <!-- Items -->
-                            <Grid ColumnDefinitions="48,*,Auto">
-                                <Border StrokeThickness="0" StrokeShape="RoundRectangle 8" HeightRequest="48" WidthRequest="48" BackgroundColor="{StaticResource Gray200}">
+                            <Grid ColumnDefinitions="48,*,Auto,Auto" ColumnSpacing="12">
+                                <Border StrokeThickness="0" StrokeShape="RoundRectangle 8" HeightRequest="48" WidthRequest="48" BackgroundColor="{StaticResource Gray200}" VerticalOptions="Center">
                                     <Image Source="https://lh3.googleusercontent.com/aida-public/AB6AXuC2Fuf7R4tKyocOnxpigoSDDWGzT60H4zuh_45_steq-_o4lf2MEaSENC0rL-IqkxYB5Ncit-0R3XdCMLxj6ulroT-4BlgP6BHPA-e1GWLPCgO45tCPm8rSld5G1iAndrrekJYfyCLNouqEfIdKrhzoEUB1kNfM1ku3e2k1Jw8gvQGup05AVZr3zlxr5lF0s3jIgnu0bhkC4eJLnOwNdqSpdep65ngjYOz8fdn8tQWW3FJgSc0PNeDOQ3-hR30kodmXBszml9iNnDdh" Aspect="AspectFill" />
                                 </Border>
-                                <VerticalStackLayout Grid.Column="1" Margin="12,0,0,0" VerticalOptions="Center">
-                                    <Label Text="Klasszikus Burger" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="14" />
-                                    <Label Text="x1" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark=#71717a}" FontSize="12" />
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                    <Label Text="Klasszikus Burger" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="14" FontAttributes="Bold" />
+                                    <Label Text="2 400 Ft" TextColor="{StaticResource Primary}" FontSize="12" />
                                 </VerticalStackLayout>
-                                <Label Grid.Column="2" Text="2 400 Ft" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="14" VerticalOptions="Start" />
+                                <Border Grid.Column="2" Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="0" VerticalOptions="Center" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+                                    <HorizontalStackLayout Spacing="0" VerticalOptions="Center">
+                                        <Button Text="-" WidthRequest="32" HeightRequest="32" Padding="0" BackgroundColor="Transparent" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="16" />
+                                        <Label Text="1" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="20" HorizontalTextAlignment="Center" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="14" />
+                                        <Button Text="+" WidthRequest="32" HeightRequest="32" Padding="0" BackgroundColor="Transparent" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="16" />
+                                    </HorizontalStackLayout>
+                                </Border>
+                                <Grid Grid.Column="3" WidthRequest="32" HeightRequest="32" VerticalOptions="Center">
+                                    <Path Data="{StaticResource IconDelete}" Fill="{AppThemeBinding Light=#EF4444, Dark=#F87171}" Aspect="Uniform" HeightRequest="20" WidthRequest="20" HorizontalOptions="Center" VerticalOptions="Center" />
+                                </Grid>
                             </Grid>
                             
-                            <Grid ColumnDefinitions="48,*,Auto">
-                                <Border StrokeThickness="0" StrokeShape="RoundRectangle 8" HeightRequest="48" WidthRequest="48" BackgroundColor="{StaticResource Gray200}">
+                            <Grid ColumnDefinitions="48,*,Auto,Auto" ColumnSpacing="12">
+                                <Border StrokeThickness="0" StrokeShape="RoundRectangle 8" HeightRequest="48" WidthRequest="48" BackgroundColor="{StaticResource Gray200}" VerticalOptions="Center">
                                     <Image Source="https://lh3.googleusercontent.com/aida-public/AB6AXuDvYGXLz-qgr08wYyMMBtVc8Ivfbwjg9X50oVsLye4fGksUvU9gGTmgZwZ_HVeXNFviGRuJEmawUXuQCnLlZA5ZqpBUuDkmWV2fMybEKC1-a53Y-L5xPWGD38PRRhOEbCqa5MY2e8XfQA1iOK7sWgIrFBrjdxOa31-Vvi6KtR9z_DunlV8hrm0jZdQMCoq-IG5XI66rXFLrprfe77PjbfXpgXchm-JS_eQ2Ngktwe-DPseidDeqCf9TqtF8HJKufrdjUhMlDLnmd0sv" Aspect="AspectFill" />
                                 </Border>
-                                <VerticalStackLayout Grid.Column="1" Margin="12,0,0,0" VerticalOptions="Center">
-                                    <Label Text="Csokis Keksz" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="14"  />
-                                    <Label Text="x2" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark=#71717a}" FontSize="12" />
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                    <Label Text="Csokis Keksz" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="14" FontAttributes="Bold" />
+                                    <Label Text="1 200 Ft" TextColor="{StaticResource Primary}" FontSize="12" />
                                 </VerticalStackLayout>
-                                <Label Grid.Column="2" Text="1 200 Ft" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="14" VerticalOptions="Start" />
+                                <Border Grid.Column="2" Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="0" VerticalOptions="Center" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+                                    <HorizontalStackLayout Spacing="0" VerticalOptions="Center">
+                                        <Button Text="-" WidthRequest="32" HeightRequest="32" Padding="0" BackgroundColor="Transparent" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="16" />
+                                        <Label Text="2" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="20" HorizontalTextAlignment="Center" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="14" />
+                                        <Button Text="+" WidthRequest="32" HeightRequest="32" Padding="0" BackgroundColor="Transparent" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="16" />
+                                    </HorizontalStackLayout>
+                                </Border>
+                                <Grid Grid.Column="3" WidthRequest="32" HeightRequest="32" VerticalOptions="Center">
+                                    <Path Data="{StaticResource IconDelete}" Fill="{AppThemeBinding Light=#EF4444, Dark=#F87171}" Aspect="Uniform" HeightRequest="20" WidthRequest="20" HorizontalOptions="Center" VerticalOptions="Center" />
+                                </Grid>
                             </Grid>
                             
-                            <Grid ColumnDefinitions="48,*,Auto">
-                                <Border StrokeThickness="0" StrokeShape="RoundRectangle 8" HeightRequest="48" WidthRequest="48" BackgroundColor="{StaticResource Gray200}">
+                            <Grid ColumnDefinitions="48,*,Auto,Auto" ColumnSpacing="12">
+                                <Border StrokeThickness="0" StrokeShape="RoundRectangle 8" HeightRequest="48" WidthRequest="48" BackgroundColor="{StaticResource Gray200}" VerticalOptions="Center">
                                     <Image Source="https://lh3.googleusercontent.com/aida-public/AB6AXuCpPTF6rc8rFmnBD046xcyoaUI4mulQUDeF0JJqc2HNWQCXuMfL-kRCG4UzVBTcKbOe-LUwH5R2jayWzrVXuOqFPpK-RbxG0qGYom80R5rlMjgebHgM12w21z-N8fmKaI6Hb9YzqDz5RQ1gGzBV8UO2Ktkk2gBfE0kRegIHhvkneTr06S_NtaRmU6mSvZE4iHj3RCn8xmy1FyaqYMhJiwX4fveRrnk1Jf5sQTJy2ws805tHuBnHFBIlZak-rqGuiwxJCXyG8v2p3bKa" Aspect="AspectFill" />
                                 </Border>
-                                <VerticalStackLayout Grid.Column="1" Margin="12,0,0,0" VerticalOptions="Center">
-                                    <Label Text="Narancslé" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="14" />
-                                    <Label Text="x1" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark=#71717a}" FontSize="12" />
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                    <Label Text="Narancslé" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="14" FontAttributes="Bold" />
+                                    <Label Text="800 Ft" TextColor="{StaticResource Primary}" FontSize="12" />
                                 </VerticalStackLayout>
-                                <Label Grid.Column="2" Text="800 Ft" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="14" VerticalOptions="Start" />
+                                <Border Grid.Column="2" Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="0" VerticalOptions="Center" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+                                    <HorizontalStackLayout Spacing="0" VerticalOptions="Center">
+                                        <Button Text="-" WidthRequest="32" HeightRequest="32" Padding="0" BackgroundColor="Transparent" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="16" />
+                                        <Label Text="1" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="20" HorizontalTextAlignment="Center" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="14" />
+                                        <Button Text="+" WidthRequest="32" HeightRequest="32" Padding="0" BackgroundColor="Transparent" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="16" />
+                                    </HorizontalStackLayout>
+                                </Border>
+                                <Grid Grid.Column="3" WidthRequest="32" HeightRequest="32" VerticalOptions="Center">
+                                    <Path Data="{StaticResource IconDelete}" Fill="{AppThemeBinding Light=#EF4444, Dark=#F87171}" Aspect="Uniform" HeightRequest="20" WidthRequest="20" HorizontalOptions="Center" VerticalOptions="Center" />
+                                </Grid>
                             </Grid>
 
                             <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" Margin="0,4" />

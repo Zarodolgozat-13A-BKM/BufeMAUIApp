@@ -30,7 +30,7 @@ namespace BufeApp.Services
             if(loginResponse != null && !string.IsNullOrEmpty(loginResponse.AccessToken))
             {
                 BearerToken = loginResponse.AccessToken;
-                SetUserData(); // Implement this method to fetch and set user data
+                await SetUserData(); // Implement this method to fetch and set user data
                 await StorageService.SetSecureValue("BearerToken", BearerToken);
             }
             else

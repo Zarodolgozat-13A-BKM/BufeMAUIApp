@@ -229,13 +229,13 @@
                 <Grid ColumnDefinitions="Auto, *, Auto, Auto">
                     <HorizontalStackLayout Grid.Column="0" Spacing="8" VerticalOptions="Center">
                         <Border BackgroundColor="#33FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 8" Padding="8,4">
-                            <Label Text="2" TextColor="White" FontAttributes="Bold" FontSize="14"/>
+                            <Label Text="{Binding CartItems.Count}" TextColor="White" FontAttributes="Bold" FontSize="14"/>
                         </Border>
                         <Label Text="Items in cart" TextColor="White" VerticalOptions="Center" FontSize="14" Opacity="0.9"/>
                     </HorizontalStackLayout>
 
                     <HorizontalStackLayout Grid.Column="2" Spacing="12" VerticalOptions="Center">
-                        <Label Text="0 Ft" TextColor="White" FontAttributes="Bold" FontSize="18" VerticalOptions="Center"/>
+                        <Label Text="{Binding CartTotal, StringFormat='{0} Ft'}" TextColor="White" FontAttributes="Bold" FontSize="18" VerticalOptions="Center"/>
                     </HorizontalStackLayout>
                     <Path Data="{StaticResource IconArrow}" Grid.Column="3" Margin="16,0,0,0"
                       Fill="White"
