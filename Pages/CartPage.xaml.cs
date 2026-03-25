@@ -9,12 +9,30 @@ public partial class CartPage : ContentPage
 	private bool _isTimePickerExpanded;
 	private bool _breaksLoaded;
 
+	private bool _isBuffetOpen = true;
+	public bool IsBuffetOpen
+	{
+		get => _isBuffetOpen;
+		set
+		{
+			if (_isBuffetOpen != value)
+			{
+				_isBuffetOpen = value;
+				OnPropertyChanged();
+				OnPropertyChanged(nameof(IsBuffetClosed));
+			}
+		}
+	}
+	public bool IsBuffetClosed => !IsBuffetOpen;
+
 	public decimal TotalPrice => CartService.TotalPrice;
 
 	public bool IsCartEmpty => !CartService.Items.Any();
 	public bool IsCartNotEmpty => CartService.Items.Any();
 
-	public ObservableCollection<Break> Breaks { get; set; } = new();
+	private List<Break> _allBreaks = new();
+
+    public ObservableCollection<Break> Breaks { get; set; } = new();
 
 	public CartPage()
 	{
@@ -38,13 +56,34 @@ public partial class CartPage : ContentPage
 			var response = await ApiService.GetAsync<BreakResponseModel>(ApiService.BreaksEndpoint, UserService.BearerToken);
 			if (response?.breaks != null)
 			{
-				foreach (var b in response.breaks)
+				_allBreaks = response.breaks.ToList();
+            }
+		}
+        FilterValidBreaks();
+    }
+
+	private void FilterValidBreaks()
+	{
+		var now = DateTime.Now.TimeOfDay;
+		Breaks.Clear();
+
+		foreach (var b in _allBreaks)
+		{
+			if (TimeSpan.TryParse(b.start, out var startTime))
+			{
+				if (startTime > now)
 				{
 					Breaks.Add(b);
 				}
-				_breaksLoaded = true;
+			}
+			else
+			{
+				Breaks.Add(b);
 			}
 		}
+		_breaksLoaded = true;
+
+		IsBuffetOpen = Breaks.Count > 0;
 	}
 
 	private async void OnTimePickerTapped(object sender, EventArgs e)

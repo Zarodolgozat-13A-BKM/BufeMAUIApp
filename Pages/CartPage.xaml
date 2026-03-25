@@ -12,12 +12,49 @@
             <x:String x:Key="IconStorefront">M22,7.52V10.5C22,11.23 21.65,11.89 21.11,12.31L21,12.42V20C21,21.1 20.1,22 19,22H5C3.89,22 3,21.1 3,20V12.42L2.89,12.31C2.35,11.89 2,11.23 2,10.5V7.52L3.93,5.6C4.42,5.1 5.09,4.8 5.82,4.8H18.18C18.91,4.8 19.58,5.1 20.07,5.6L22,7.52M20,10.5V7.8L18.45,6.23C18.37,6.15 18.28,6 18.18,6H5.82C5.72,6 5.63,6.15 5.55,6.23L4,7.8V10.5H20M5,20H19V12.5C18.73,12.5 18.47,12.41 18.26,12.26L18,12.06L17.74,12.26C17.53,12.41 17.27,12.5 17,12.5C16.73,12.5 16.47,12.41 16.26,12.26L16,12.06L15.74,12.26C15.53,12.41 15.27,12.5 15,12.5C14.73,12.5 14.47,12.41 14.26,12.26L14,12.06L13.74,12.26C13.53,12.41 13.27,12.5 13,12.5C12.73,12.5 12.47,12.41 12.26,12.26L12,12.06L11.74,12.26C11.53,12.41 11.27,12.5 11,12.5C10.73,12.5 10.47,12.41 10.26,12.26L10,12.06L9.74,12.26C9.53,12.41 9.27,12.5 9,12.5C8.73,12.5 8.47,12.41 8.26,12.26L8,12.06L7.74,12.26C7.53,12.41 7.27,12.5 7,12.5C6.73,12.5 6.47,12.41 6.26,12.26L6,12.06L5.74,12.26C5.53,12.41 5.27,12.5 5,12.5V20Z</x:String>
             <x:String x:Key="IconStar">M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z</x:String>
             <x:String x:Key="IconDelete">M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19C6,20.1 6.9,21 8,21H16C17.1,21 18,20.1 18,19V7H6V19Z</x:String>
+            <x:String x:Key="IconAlert">M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M11,16.5H13V18.5H11V16.5M11,5H13V14.5H11V5Z</x:String>
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource BgDark}}" Padding="0,16">
+    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource BgDark}}" Padding="0,16,0,0">
+
+        <!-- Closed Message -->
+        <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Padding="32" 
+                             IsVisible="{Binding IsBuffetClosed}" Spacing="24">
+            <Grid HeightRequest="120" HorizontalOptions="Center">
+                <Border Stroke="{StaticResource Primary}" StrokeThickness="2" Opacity="0.2"
+        HeightRequest="110" WidthRequest="110"
+        StrokeShape="RoundRectangle 55"
+        HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                <Border BackgroundColor="#1AEE8C2B" StrokeThickness="0"
+        HeightRequest="96" WidthRequest="96"
+        StrokeShape="RoundRectangle 48"
+        HorizontalOptions="Center" VerticalOptions="Center">
+                    <Path Data="{StaticResource IconAlert}" 
+            Fill="{StaticResource Primary}"
+            Aspect="Uniform"
+            HeightRequest="52" WidthRequest="52"
+            HorizontalOptions="Center" VerticalOptions="Center"/>
+                </Border>
+            </Grid>
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Kérjük, nézz vissza később!"
+       TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+       FontSize="32"
+       FontAttributes="Bold"
+       HorizontalTextAlignment="Center" />
+
+                <Label Text="Sajnáljuk, a büfé jelenleg zárva tart, vagy mára már nincs több átvételi időpont."
+       TextColor="{AppThemeBinding Light=#897561, Dark=#9CA3AF}"
+       FontSize="16"
+       HorizontalTextAlignment="Center"
+       WidthRequest="320" />
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+
         <!-- Main Scroll -->
-        <ScrollView Margin="0,0,0,80" VerticalScrollBarVisibility="Never">
+        <ScrollView VerticalScrollBarVisibility="Never" IsVisible="{Binding IsBuffetOpen}">
             <VerticalStackLayout Spacing="0">
 
                 <!-- Picker -->
@@ -78,12 +115,12 @@
                 <VerticalStackLayout Padding="16,8,16,8" Spacing="16">
                     <Label Text="Megjegyzés a rendeléshez" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" />
                     <Border BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
-                            Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}"
-                            StrokeThickness="1" StrokeShape="RoundRectangle 12">
+Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}"
+StrokeThickness="1" StrokeShape="RoundRectangle 12">
                         <Editor Placeholder="Ide írhatod, ha valami egyedi kérésed van..." 
-                                TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}"
-                                PlaceholderColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark=#71717a}"
-                                HeightRequest="80" Margin="12,8" BackgroundColor="Transparent" />
+    TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}"
+    PlaceholderColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark=#71717a}"
+    HeightRequest="80" Margin="12,8" BackgroundColor="Transparent" />
                     </Border>
                 </VerticalStackLayout>
 
@@ -142,37 +179,42 @@
                     </Border>
                 </VerticalStackLayout>
 
-                <!-- Loyalty Points info -->
-                <Border Margin="16,8,16,24" BackgroundColor="{AppThemeBinding Light=#FEFCE8, Dark=#33451A03}"
-                        Stroke="{AppThemeBinding Light=#FEF08A, Dark=#66451A03}" StrokeThickness="1"
-                        StrokeShape="RoundRectangle 20" Padding="16,8" HorizontalOptions="Center"
-                        IsVisible="{Binding IsCartNotEmpty}">
-                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
-                        <Path Data="{StaticResource IconStar}" Fill="{AppThemeBinding Light=#F59E0B, Dark=#FBBF24}" Aspect="Uniform" HeightRequest="18" WidthRequest="18" />
-                        <Label Text="+12 PONTOT KAPSZ!" TextColor="{AppThemeBinding Light=#B45309, Dark=#FBBF24}" FontSize="12" FontAttributes="Bold" CharacterSpacing="1" VerticalOptions="Center"/>
-                    </HorizontalStackLayout>
-                </Border>
+                
 
-            </VerticalStackLayout>
-        </ScrollView>
-        
-        
-
-        <!-- Bottom Button Bar -->
-        <Button Text="Rendelés"
-            IsVisible="{Binding IsCartNotEmpty}"
+                <!-- Bottom Button Bar -->
+                <VerticalStackLayout Spacing="12" Margin="16,16,16,16" Padding="0" IsVisible="{Binding IsCartNotEmpty}">
+                    <Button Text="Fizetés Kártyával"
             BackgroundColor="{StaticResource Primary}"
             TextColor="White"
             FontAttributes="Bold"
             FontSize="16"
             CornerRadius="12"
-            HeightRequest="56"
-            VerticalOptions="End"
-            Margin="20">
-            <Button.Shadow>
-                <Shadow Brush="{StaticResource Primary}" Opacity="0.25" Radius="10" Offset="0,4"/>
-            </Button.Shadow>
-        </Button>
+            HeightRequest="56">
+                        <Button.Shadow>
+                            <Shadow Brush="{StaticResource Primary}" Opacity="0.25" Radius="10" Offset="0,4"/>
+                        </Button.Shadow>
+                    </Button>
+
+                    <Button Text="Fizetés Készpénzzel"
+            BackgroundColor="Transparent"
+            BorderColor="{StaticResource Primary}"
+            BorderWidth="2"
+            TextColor="{StaticResource Primary}"
+            FontAttributes="Bold"
+            FontSize="16"
+            CornerRadius="12"
+            HeightRequest="56">
+                    </Button>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+            
+        </ScrollView>
+        
+        
+
+        
+        
 
     </Grid>
 </ContentPage>
