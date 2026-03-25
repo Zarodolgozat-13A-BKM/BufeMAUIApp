@@ -1,3 +1,5 @@
+using BufeApp.Pages;
+using BufeApp.Services;
 using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Plugin.Maui.BottomSheet.Hosting;
@@ -19,6 +21,9 @@ namespace BufeApp
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
             builder.Services.AddTransient<MainPage>();
+            builder.Services.AddTransient<CartPage>();
+
+            // ViewModels
             builder.Services.AddTransient<MainViewModel>();
 
 #if DEBUG

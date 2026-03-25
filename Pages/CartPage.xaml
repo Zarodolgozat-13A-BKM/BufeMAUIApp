@@ -1,10 +1,220 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:BufeApp.Models"
+             xmlns:services="clr-namespace:BufeApp.Services"
              x:Class="BufeApp.Pages.CartPage"
              Shell.NavBarIsVisible="False"
              Title="">
-    <VerticalStackLayout BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource BgDark}}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <x:String x:Key="IconBack">M20,11H7.83L13.42,5.41L12,4L4,12L12,20L13.41,18.59L7.83,13H20V11Z</x:String>
+            <x:String x:Key="IconStorefront">M22,7.52V10.5C22,11.23 21.65,11.89 21.11,12.31L21,12.42V20C21,21.1 20.1,22 19,22H5C3.89,22 3,21.1 3,20V12.42L2.89,12.31C2.35,11.89 2,11.23 2,10.5V7.52L3.93,5.6C4.42,5.1 5.09,4.8 5.82,4.8H18.18C18.91,4.8 19.58,5.1 20.07,5.6L22,7.52M20,10.5V7.8L18.45,6.23C18.37,6.15 18.28,6 18.18,6H5.82C5.72,6 5.63,6.15 5.55,6.23L4,7.8V10.5H20M5,20H19V12.5C18.73,12.5 18.47,12.41 18.26,12.26L18,12.06L17.74,12.26C17.53,12.41 17.27,12.5 17,12.5C16.73,12.5 16.47,12.41 16.26,12.26L16,12.06L15.74,12.26C15.53,12.41 15.27,12.5 15,12.5C14.73,12.5 14.47,12.41 14.26,12.26L14,12.06L13.74,12.26C13.53,12.41 13.27,12.5 13,12.5C12.73,12.5 12.47,12.41 12.26,12.26L12,12.06L11.74,12.26C11.53,12.41 11.27,12.5 11,12.5C10.73,12.5 10.47,12.41 10.26,12.26L10,12.06L9.74,12.26C9.53,12.41 9.27,12.5 9,12.5C8.73,12.5 8.47,12.41 8.26,12.26L8,12.06L7.74,12.26C7.53,12.41 7.27,12.5 7,12.5C6.73,12.5 6.47,12.41 6.26,12.26L6,12.06L5.74,12.26C5.53,12.41 5.27,12.5 5,12.5V20Z</x:String>
+            <x:String x:Key="IconStar">M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z</x:String>
+            <x:String x:Key="IconDelete">M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19C6,20.1 6.9,21 8,21H16C17.1,21 18,20.1 18,19V7H6V19Z</x:String>
+            <x:String x:Key="IconAlert">M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M11,16.5H13V18.5H11V16.5M11,5H13V14.5H11V5Z</x:String>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
-    </VerticalStackLayout>
+    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource BgDark}}" Padding="0,16,0,0">
+
+        <!-- Closed Message -->
+        <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Padding="32" 
+                             IsVisible="{Binding IsBuffetClosed}" Spacing="24">
+            <Grid HeightRequest="120" HorizontalOptions="Center">
+                <Border Stroke="{StaticResource Primary}" StrokeThickness="2" Opacity="0.2"
+        HeightRequest="110" WidthRequest="110"
+        StrokeShape="RoundRectangle 55"
+        HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                <Border BackgroundColor="#1AEE8C2B" StrokeThickness="0"
+        HeightRequest="96" WidthRequest="96"
+        StrokeShape="RoundRectangle 48"
+        HorizontalOptions="Center" VerticalOptions="Center">
+                    <Path Data="{StaticResource IconAlert}" 
+            Fill="{StaticResource Primary}"
+            Aspect="Uniform"
+            HeightRequest="52" WidthRequest="52"
+            HorizontalOptions="Center" VerticalOptions="Center"/>
+                </Border>
+            </Grid>
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Kérjük, nézz vissza később!"
+       TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+       FontSize="32"
+       FontAttributes="Bold"
+       HorizontalTextAlignment="Center" />
+
+                <Label Text="Sajnáljuk, a büfé jelenleg zárva tart, vagy mára már nincs több átvételi időpont."
+       TextColor="{AppThemeBinding Light=#897561, Dark=#9CA3AF}"
+       FontSize="16"
+       HorizontalTextAlignment="Center"
+       WidthRequest="320" />
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+
+        <!-- Main Scroll -->
+        <ScrollView VerticalScrollBarVisibility="Never" IsVisible="{Binding IsBuffetOpen}">
+            <VerticalStackLayout Spacing="0">
+
+                <!-- Picker -->
+                <VerticalStackLayout Padding="16,12" Spacing="0">
+                    <Label Text="Mikorra legyen kész? " FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" Margin="0,0,0,16"/>
+                    <Border BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+                            Stroke="Transparent"
+                            StrokeThickness="1" StrokeShape="RoundRectangle 12">
+                        <VerticalStackLayout>
+                            <!-- Header -->
+                            <Grid ColumnDefinitions="*,Auto" HeightRequest="56" Padding="16,0">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnTimePickerTapped" />
+                                </Grid.GestureRecognizers>
+                                <Label x:Name="SelectedTimeLabel" Text="Válassz időpontot..." 
+                                       TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" 
+                                       VerticalOptions="Center" FontSize="14" />
+                                <Path x:Name="ChevronIcon" Grid.Column="1" 
+                                      Data="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" 
+                                      Fill="{StaticResource Primary}" 
+                                      VerticalOptions="Center" HorizontalOptions="Center" 
+                                      HeightRequest="24" WidthRequest="24" Aspect="Uniform" />
+                            </Grid>
+
+                            <!-- Options Container -->
+                            <VerticalStackLayout x:Name="TimeOptionsContainer" IsVisible="False" Opacity="0" Padding="0,0,0,8">
+                                <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" Margin="16,0,16,8" />
+
+                                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Breaks}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="models:Break">
+                                            <Label Text="{Binding start, StringFormat='{}Átvétel {0}-tól'}" Padding="16,12" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="14">
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="OnTimeOptionSelected" />
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Info box -->
+                <Border Margin="16,8,16,16" BackgroundColor="{AppThemeBinding Light=#1Aee8c2b, Dark=#1Aee8c2b}"
+                        Stroke="{AppThemeBinding Light=#33ee8c2b, Dark=#33ee8c2b}" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="12">
+                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                        <Path Data="{StaticResource IconStorefront}" Fill="{StaticResource Primary}" Aspect="Uniform" HeightRequest="20" WidthRequest="20" />
+                        <Label Text="Átvétel az iskolai büfében." TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=#e5e7eb}" FontSize="14" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                </Border>
+
+                <!-- Line -->
+                <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" Margin="16,8" />
+
+                <!-- Order Note -->
+                <VerticalStackLayout Padding="16,8,16,8" Spacing="16">
+                    <Label Text="Megjegyzés a rendeléshez" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" />
+                    <Border BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}"
+StrokeThickness="1" StrokeShape="RoundRectangle 12">
+                        <Editor Placeholder="Ide írhatod, ha valami egyedi kérésed van..." 
+    TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}"
+    PlaceholderColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark=#71717a}"
+    HeightRequest="80" Margin="12,8" BackgroundColor="Transparent" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Order Summary -->
+                <VerticalStackLayout Padding="16,16,16,8">
+                    <Label Text="Rendelés összesítése" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" Margin="0,0,0,16"/>
+
+                    <Border BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+                            Stroke="Transparent"
+                            StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="16">
+                        <VerticalStackLayout Spacing="16">
+
+                            <!-- Empty Cart Message -->
+                            <VerticalStackLayout IsVisible="{Binding IsCartEmpty}" VerticalOptions="Center" HorizontalOptions="Center" Spacing="16">
+                                <Label Text="Még üres a kosarad, tegyél hozzá valamit" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+
+                            <!-- Items Collection -->
+                            <CollectionView ItemsSource="{Binding Source={x:Static services:CartService.Items}}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="models:CartItemModel">
+                                        <Grid ColumnDefinitions="48,*,Auto,Auto" ColumnSpacing="12" Margin="0,0,0,16">
+                                            <Border StrokeThickness="0" StrokeShape="RoundRectangle 8" HeightRequest="48" WidthRequest="48" BackgroundColor="{StaticResource Gray200}" VerticalOptions="Center">
+                                                <Image Source="{Binding Item.PictureUrl}" Aspect="AspectFill" />
+                                            </Border>
+                                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                                <Label Text="{Binding Item.Name}" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="14" FontAttributes="Bold" />
+                                                <Label Text="{Binding Item.Price, StringFormat='{0} Ft'}" TextColor="{StaticResource Primary}" FontSize="12" />
+                                            </VerticalStackLayout>
+                                            <Border Grid.Column="2" Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="0" VerticalOptions="Center" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+                                                <HorizontalStackLayout Spacing="0" VerticalOptions="Center">
+                                                    <Button Text="-" WidthRequest="32" HeightRequest="32" Padding="0" BackgroundColor="Transparent" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="16" Clicked="OnDecreaseQuantity" BindingContext="{Binding .}" />
+                                                    <Label Text="{Binding Quantity}" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="20" HorizontalTextAlignment="Center" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="14" />
+                                                    <Button Text="+" WidthRequest="32" HeightRequest="32" Padding="0" BackgroundColor="Transparent" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="16" Clicked="OnIncreaseQuantity" BindingContext="{Binding .}" />
+                                                </HorizontalStackLayout>
+                                            </Border>
+                                            <Grid Grid.Column="3" WidthRequest="32" HeightRequest="32" VerticalOptions="Center" BindingContext="{Binding .}">
+                                                <Grid.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="OnDeleteItem" CommandParameter="{Binding .}" />
+                                                </Grid.GestureRecognizers>
+                                                <Path Data="{StaticResource IconDelete}" Fill="{AppThemeBinding Light=#EF4444, Dark=#F87171}" Aspect="Uniform" HeightRequest="20" WidthRequest="20" HorizontalOptions="Center" VerticalOptions="Center" />
+                                            </Grid>
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                            <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" Margin="0,4" />
+
+                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto, Auto" RowSpacing="6">
+                                <Label Grid.Row="1" Grid.Column="0" Text="Összesen" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="16" FontAttributes="Bold" VerticalOptions="End" />
+                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding TotalPrice, StringFormat='{0} Ft'}" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" FontSize="20" FontAttributes="Bold" />
+                            </Grid>
+
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
+                
+
+                <!-- Bottom Button Bar -->
+                <VerticalStackLayout Spacing="12" Margin="16,16,16,16" Padding="0" IsVisible="{Binding IsCartNotEmpty}">
+                    <Button Text="Fizetés Kártyával"
+            BackgroundColor="{StaticResource Primary}"
+            TextColor="White"
+            FontAttributes="Bold"
+            FontSize="16"
+            CornerRadius="12"
+            HeightRequest="56">
+                        <Button.Shadow>
+                            <Shadow Brush="{StaticResource Primary}" Opacity="0.25" Radius="10" Offset="0,4"/>
+                        </Button.Shadow>
+                    </Button>
+
+                    <Button Text="Fizetés Készpénzzel"
+            BackgroundColor="Transparent"
+            BorderColor="{StaticResource Primary}"
+            BorderWidth="2"
+            TextColor="{StaticResource Primary}"
+            FontAttributes="Bold"
+            FontSize="16"
+            CornerRadius="12"
+            HeightRequest="56">
+                    </Button>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+            
+        </ScrollView>
+        
+        
+
+        
+        
+
+    </Grid>
 </ContentPage>

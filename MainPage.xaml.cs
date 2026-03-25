@@ -200,6 +200,9 @@ namespace BufeApp
         
         public string Username => UserService.Name;
 
+        public ObservableCollection<CartItemModel> CartItems => CartService.Items;
+        public decimal CartTotal => CartService.TotalPrice;
+
         [ObservableProperty]
         private ObservableCollection<CategorieResponseModel> categories;
 
@@ -235,6 +238,9 @@ namespace BufeApp
 
         public MainViewModel()
         {
+            CartService.CartChanged += (s, e) => {
+                OnPropertyChanged(nameof(CartTotal));
+            };
             Categories = new ObservableCollection<CategorieResponseModel>();
             FeaturedItems = new ObservableCollection<ItemModel>();
         }
@@ -355,7 +361,7 @@ namespace BufeApp
                 TotalPrice = SelectedItem.Price * value;
             }
         }
-
+        
         [RelayCommand]
         private void SelectItem(ItemModel item)
         {
@@ -389,11 +395,7 @@ namespace BufeApp
             if (SelectedItem == null)
                 return;
 
-            // TODO: Implement actual cart logic
-            await Application.Current.MainPage.DisplayAlert(
-                "Added to Cart", 
-                $"{Quantity}x {SelectedItem.Name} added to cart!\nTotal: ${TotalPrice:F2}", 
-                "OK");
+            CartService.AddItem(SelectedItem, Quantity);
 
             CloseBottomSheetRequested?.Invoke(this, EventArgs.Empty);
         }
