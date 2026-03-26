@@ -41,19 +41,16 @@ namespace BufeApp.Services
 
         public static async Task SetUserData()
         {
-            await ApiService.GetAsync<UserDataResponseModel>(ApiService.MeEndpoint, BearerToken).ContinueWith(task =>
+            var userData = await ApiService.GetAsync<UserDataResponseModel>(ApiService.MeEndpoint, BearerToken);
+            if (userData != null)
             {
-                if (task.IsCompletedSuccessfully)
-                {
-                    var userData = task.Result;
-                    Name = userData.full_name;
-                    Email = userData.email;
-                }
-                else
-                {
-                    throw new Exception("Failed to fetch user data");
-                }
-            });
+                Name = userData.full_name;
+                Email = userData.email;
+            }
+            else
+            {
+                await UserUnauthorised();
+            }
         }
 
         public static async Task UserUnauthorised()
@@ -62,6 +59,7 @@ namespace BufeApp.Services
             BearerToken = null;
             Email = null;
             Name = null;
+            Application.Current.MainPage.DisplayAlert("Hiba", "Hiba történt, kérlek jelentkezz be újra!", "Ok");
             await Shell.Current.GoToAsync("//LoginPage");
         }
 
