@@ -1,5 +1,6 @@
 ﻿using BufeApp.Models;
 using BufeApp.Services;
+using BufeApp.Pages;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -13,6 +14,7 @@ namespace BufeApp
         private double _categoryBarThreshold = 0;
         private bool _isScrollingProgrammatically = false;
         private Dictionary<int, double> _categorySectionPositions = new();
+        private bool _isInitialized = false;
 
         public MainPage(MainViewModel vm)
         {
@@ -38,8 +40,13 @@ namespace BufeApp
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            await _viewModel.InitAsync();
-            
+
+            if (!_isInitialized)
+            {
+                await _viewModel.InitAsync();
+                _isInitialized = true;
+            }
+
             // Calculate positions after layout is complete
             Dispatcher.Dispatch(() =>
             {
@@ -198,7 +205,6 @@ namespace BufeApp
         public event EventHandler? OpenBottomSheetRequested;
         public event EventHandler? CloseBottomSheetRequested;
         
-        public string Username => UserService.Name;
 
         public ObservableCollection<CartItemModel> CartItems => CartService.Items;
         public decimal CartTotal => CartService.TotalPrice;
@@ -217,6 +223,9 @@ namespace BufeApp
         {
             FilterCategories();
         }
+
+        [ObservableProperty]
+        private string username;
 
         [ObservableProperty]
         private CategorieResponseModel? selectedCategory;
@@ -249,6 +258,8 @@ namespace BufeApp
         {
             if (IsBusy)
                 return;
+
+            Username = UserService.Name;
 
             try
             {
@@ -410,18 +421,19 @@ namespace BufeApp
         }
 
         [RelayCommand]
-        private async Task LogoutAsync()
+        private async Task GoToProfileAsync()
         {
-            try
-            {
-                await UserService.LogoutUser();
-                await Application.Current.MainPage.DisplayAlert("Success", "Logged out successfully", "OK");
-                await Shell.Current.GoToAsync("//LoginPage");
-            }
-            catch (Exception ex)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
-            }
+            await Shell.Current.GoToAsync(nameof(ProfilePage));
+            //try
+            //{
+            //    await UserService.LogoutUser();
+            //    await Application.Current.MainPage.DisplayAlert("Success", "Logged out successfully", "OK");
+            //    await Shell.Current.GoToAsync("//LoginPage");
+            //}
+            //catch (Exception ex)
+            //{
+            //    await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
+            //}
         }
     }
 }
