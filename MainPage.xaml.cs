@@ -41,6 +41,8 @@ namespace BufeApp
         {
             base.OnAppearing();
 
+            _viewModel.Username = UserService.Name;
+
             if (!_isInitialized)
             {
                 await _viewModel.InitAsync();
@@ -260,6 +262,7 @@ namespace BufeApp
                 return;
 
             Username = UserService.Name;
+            OnPropertyChanged(nameof(Username));
 
             try
             {
@@ -424,16 +427,12 @@ namespace BufeApp
         private async Task GoToProfileAsync()
         {
             await Shell.Current.GoToAsync(nameof(ProfilePage));
-            //try
-            //{
-            //    await UserService.LogoutUser();
-            //    await Application.Current.MainPage.DisplayAlert("Success", "Logged out successfully", "OK");
-            //    await Shell.Current.GoToAsync("//LoginPage");
-            //}
-            //catch (Exception ex)
-            //{
-            //    await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
-            //}
+        }
+
+        [RelayCommand]
+        private async Task GoToCartAsync()
+        {
+            await Shell.Current.GoToAsync($"///{nameof(CartPage)}");
         }
     }
 }

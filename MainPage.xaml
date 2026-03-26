@@ -66,7 +66,7 @@
 </Grid>
 
                         <VerticalStackLayout VerticalOptions="Center">
-                            <Label Text="Good Morning," FontSize="12" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" FontAttributes="Bold"/>
+                            <Label Text="Szia," FontSize="12" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" FontAttributes="Bold"/>
                             <Label Text="{Binding Username}" FontSize="18" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}" FontAttributes="Bold"/>
                         </VerticalStackLayout>
                     </HorizontalStackLayout>
@@ -234,6 +234,9 @@
 
         <!-- Cart Bar -->
         <Border VerticalOptions="End" Stroke="Transparent" BackgroundColor="Transparent" Padding="16">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding GoToCartCommand}" />
+            </Border.GestureRecognizers>
             <Border BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 12" HeightRequest="56" Padding="20,0">
                 <Grid ColumnDefinitions="Auto, *, Auto, Auto">
                     <HorizontalStackLayout Grid.Column="0" Spacing="8" VerticalOptions="Center">
