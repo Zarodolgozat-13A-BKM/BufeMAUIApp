@@ -64,14 +64,15 @@ public partial class CartPage : ContentPage
 
 	private void FilterValidBreaks()
 	{
-		var now = DateTime.Now.TimeOfDay;
+        bool isDev = true;
+        var now = DateTime.Now.TimeOfDay;
 		Breaks.Clear();
 
 		foreach (var b in _allBreaks)
 		{
 			if (TimeSpan.TryParse(b.start, out var startTime))
 			{
-				if (startTime > now)
+				if (startTime > now || isDev)
 				{
 					Breaks.Add(b);
 				}
@@ -82,6 +83,8 @@ public partial class CartPage : ContentPage
 			}
 		}
 		_breaksLoaded = true;
+
+		
 
 		IsBuffetOpen = Breaks.Count > 0;
 	}
