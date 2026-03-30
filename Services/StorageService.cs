@@ -17,10 +17,5 @@ namespace BufeApp.Services
         {
             return await SecureStorage.Default.GetAsync(ValueName); 
         }
-
-        public static string GetValue(string ValueName)
-        {
-            return Preferences.Default.Get(ValueName, string.Empty);
-        }
     }
 }

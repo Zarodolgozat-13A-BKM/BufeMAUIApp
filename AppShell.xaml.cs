@@ -10,6 +10,7 @@ namespace BufeApp
             
             // Register routes for navigation
             Routing.RegisterRoute(nameof(Pages.PasswordResetPage), typeof(Pages.PasswordResetPage));
+            Routing.RegisterRoute(nameof(Pages.ProfilePage), typeof(Pages.ProfilePage));
 
             InitializeNavigation();
         }

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BufeApp.Pages.ProfilePage"
+             Shell.NavBarIsVisible="True"
+             Shell.TabBarIsVisible="False"
+             Title="">
+
+    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource BgDark}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Main Content -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="16" Spacing="24" MaximumWidthRequest="600" HorizontalOptions="Center">
+                
+                <!-- User Profile Bento Header -->
+                <Border Stroke="Transparent" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}" Padding="24">
+                    <Border.Shadow>
+                        <Shadow Brush="{StaticResource Gray100}" Offset="0,1" Opacity="0.1" Radius="2" />
+                    </Border.Shadow>
+                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <Grid HeightRequest="120" HorizontalOptions="Center">
+                            <Border Stroke="{StaticResource Primary}" StrokeThickness="2" Opacity="0.2"
+        HeightRequest="110" WidthRequest="110"
+        StrokeShape="RoundRectangle 55"
+        HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                            <Border BackgroundColor="#1AEE8C2B" StrokeThickness="0"
+        HeightRequest="96" WidthRequest="96"
+        StrokeShape="RoundRectangle 48"
+        HorizontalOptions="Center" VerticalOptions="Center">
+                                <Label Text="person" FontFamily="MaterialIcons" TextColor="{StaticResource Primary}" FontSize="52" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                        </Grid>
+                        <Label Text="{Binding Username}" FontSize="20" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}" HorizontalTextAlignment="Center" />
+                        <Label Text="{Binding Email, StringFormat='{}{0}.eu'}" FontSize="14" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Previous Orders Section -->
+                <VerticalStackLayout Spacing="16">
+                    <Grid>
+                        <Label Text="Korábbi rendelések" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}" VerticalOptions="Center" />
+                    </Grid>
+
+                    <Border Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}"
+                            StrokeThickness="2"
+                            StrokeShape="RoundRectangle 16"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource Gray950}}"
+                            Padding="12">
+                        <ScrollView HeightRequest="320">
+                            <VerticalStackLayout Spacing="16" Padding="4,4,4,12">
+                                <!-- Order Card 1 -->
+                                <Border Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}" Padding="20">
+                                    <VerticalStackLayout Spacing="16">
+                                    <Grid>
+                                        <HorizontalStackLayout Spacing="12">
+                                            <Border BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource Gray900}}" StrokeThickness="0" StrokeShape="RoundRectangle 8" Padding="8">
+                                                <Label Text="receipt_long" FontFamily="MaterialIcons" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" FontSize="20" />
+                                            </Border>
+                                            <VerticalStackLayout VerticalOptions="Center">
+                                                <Label Text="#2492-A" FontSize="14" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}" />
+                                                <Label Text="Ma, 10:24" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" />
+                                            </VerticalStackLayout>
+                                        </HorizontalStackLayout>
+                                            <Border HorizontalOptions="End" VerticalOptions="Start" BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="8,4">
+                                                <Label Text="SIKERES" FontSize="10" FontAttributes="Bold" TextColor="{StaticResource White}" />
+                                            </Border>
+                                        </Grid>
+                                    <Border BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource Gray950}}" Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="12">
+                                        <Label Text="Szalámis Szendvics + Üdítő + Kakaós Csiga" FontSize="14" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}" />
+                                    </Border>
+                                    <Grid Margin="0,8,0,0">
+                                        <Label Text="2 450 Ft" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}" VerticalOptions="Center" />
+                                        <Border BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="16,8" HorizontalOptions="End" VerticalOptions="Center">
+                                            <Border.Shadow>
+                                                <Shadow Brush="{StaticResource Primary}" Offset="0,1" Opacity="0.5" Radius="2" />
+                                            </Border.Shadow>
+                                            <HorizontalStackLayout Spacing="8">
+                                                <Label Text="reorder" FontFamily="MaterialIcons" TextColor="{StaticResource White}" FontSize="16" VerticalOptions="Center" />
+                                                <Label Text="Újrarendelés" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource White}" VerticalOptions="Center" />
+                                            </HorizontalStackLayout>
+                                        </Border>
+                                    </Grid>
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <!-- Order Card 2 -->
+                                <Border Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}" Padding="20">
+                                    <VerticalStackLayout Spacing="16">
+                                    <Grid>
+                                        <HorizontalStackLayout Spacing="12">
+                                            <Border BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource Gray900}}" StrokeThickness="0" StrokeShape="RoundRectangle 8" Padding="8">
+                                                <Label Text="receipt_long" FontFamily="MaterialIcons" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" FontSize="20" />
+                                            </Border>
+                                            <VerticalStackLayout VerticalOptions="Center">
+                                                <Label Text="#2488-C" FontSize="14" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}" />
+                                                <Label Text="Tegnap, 08:15" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" />
+                                            </VerticalStackLayout>
+                                        </HorizontalStackLayout>
+                                        <Border HorizontalOptions="End" VerticalOptions="Start" BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="8,4">
+                                            <Label Text="SIKERES" FontSize="10" FontAttributes="Bold" TextColor="{StaticResource White}" />
+                                        </Border>
+                                    </Grid>
+                                    <Border BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource Gray950}}" Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="12">
+                                        <Label Text="Melegszendvics (Extra Sajt) + Almafröccs" FontSize="14" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}" />
+                                    </Border>
+                                    <Grid Margin="0,8,0,0">
+                                        <Label Text="1 890 Ft" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}" VerticalOptions="Center" />
+                                        <Border BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="16,8" HorizontalOptions="End" VerticalOptions="Center">
+                                            <Border.Shadow>
+                                                <Shadow Brush="{StaticResource Primary}" Offset="0,1" Opacity="0.5" Radius="2" />
+                                            </Border.Shadow>
+                                            <HorizontalStackLayout Spacing="8">
+                                                <Label Text="reorder" FontFamily="MaterialIcons" TextColor="{StaticResource White}" FontSize="16" VerticalOptions="Center" />
+                                                <Label Text="Újrarendelés" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource White}" VerticalOptions="Center" />
+                                            </HorizontalStackLayout>
+                                        </Border>
+                                    </Grid>
+                                </VerticalStackLayout>
+                            </Border>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Appearance & System -->
+                <Border Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}" Padding="16">
+                    <Border.Shadow>
+                        <Shadow Brush="{StaticResource Gray100}" Offset="0,1" Opacity="0.1" Radius="2" />
+                    </Border.Shadow>
+                    <VerticalStackLayout>
+                        <Label Text="MEGJELENÉS" FontSize="12" FontAttributes="Bold" CharacterSpacing="1" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" Margin="8,0,0,16" />
+                        <Border BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource Gray900}}" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="4">
+                            <Grid ColumnDefinitions="*, *, *">
+                                <Border x:Name="LightModeBorder" Grid.Column="0" BackgroundColor="Transparent" StrokeThickness="0" StrokeShape="RoundRectangle 8" Padding="0,8">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnThemeTapped" CommandParameter="Light"/>
+                                    </Border.GestureRecognizers>
+                                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
+                                        <Label x:Name="LightModeIcon" Text="light_mode" FontFamily="MaterialIcons" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" FontSize="18" VerticalOptions="Center" />
+                                        <Label x:Name="LightModeLabel" Text="Világos" FontSize="14" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+                                <Border x:Name="DarkModeBorder" Grid.Column="1" BackgroundColor="Transparent" StrokeThickness="0" StrokeShape="RoundRectangle 8" Padding="0,8">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnThemeTapped" CommandParameter="Dark"/>
+                                    </Border.GestureRecognizers>
+                                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
+                                        <Label x:Name="DarkModeIcon" Text="dark_mode" FontFamily="MaterialIcons" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" FontSize="18" VerticalOptions="Center" />
+                                        <Label x:Name="DarkModeLabel" Text="Sötét" FontSize="14" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+                                <Border x:Name="SystemModeBorder" Grid.Column="2" BackgroundColor="Transparent" StrokeThickness="0" StrokeShape="RoundRectangle 8" Padding="0,8">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnThemeTapped" CommandParameter="Unspecified"/>
+                                    </Border.GestureRecognizers>
+                                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
+                                        <Label x:Name="SystemModeIcon" Text="settings_brightness" FontFamily="MaterialIcons" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" FontSize="18" VerticalOptions="Center" />
+                                        <Label x:Name="SystemModeLabel" Text="Rendszer" FontSize="14" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" Margin="-16,16" />
+
+                        <VerticalStackLayout Spacing="4">
+                            <VerticalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Logout_Tapped"/>
+                            </VerticalStackLayout.GestureRecognizers>
+
+                            <Grid Padding="12">
+                                <HorizontalStackLayout Spacing="12">
+                                    <Label Text="logout" FontFamily="MaterialIcons" TextColor="#ba1a1a" FontSize="20" VerticalOptions="Center" />
+                                    <Label Text="Kijelentkezés" FontSize="14" FontAttributes="Bold" TextColor="#ba1a1a" VerticalOptions="Center" />
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

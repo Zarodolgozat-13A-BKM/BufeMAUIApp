@@ -15,6 +15,7 @@
             <x:String x:Key="IconAdd">M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z</x:String>
             <x:String x:Key="IconEco">M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z</x:String>
             <x:String x:Key="IconMinus">M19,13H5V11H19V13Z</x:String>
+            <x:String x:Key="IconUser">M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z</x:String>
             <x:String x:Key="IconClose">M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z</x:String>
             <x:String x:Key="IconClock">M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M16.2,16.2L11,13V7H12.5V12.2L17,14.9L16.2,16.2Z</x:String>
 
@@ -44,20 +45,28 @@
                 <Grid ColumnDefinitions="Auto, *" Padding="20,16,20,10">
                     <HorizontalStackLayout Spacing="12">
                         <HorizontalStackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding LogoutCommand}" />
+                            <TapGestureRecognizer Command="{Binding GoToProfileCommand}" />
                         </HorizontalStackLayout.GestureRecognizers>
-                        <Grid HeightRequest="44" WidthRequest="44">
-                            <Border Stroke="{AppThemeBinding Light=White, Dark={StaticResource BorderDark}}" StrokeThickness="2"
-                                StrokeShape="RoundRectangle 22" HeightRequest="40" WidthRequest="40" VerticalOptions="Start" HorizontalOptions="Start">
-                                <Image Source="profile.png" Aspect="AspectFill" />
-                            </Border>
-                            <Border BackgroundColor="#22c55e" Stroke="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource BgDark}}" 
-                                StrokeThickness="2" StrokeShape="RoundRectangle 6"
-                                HeightRequest="12" WidthRequest="12" HorizontalOptions="End" VerticalOptions="End" TranslationX="-4" TranslationY="-4"/>
-                        </Grid>
+                        <Grid HeightRequest="50" HorizontalOptions="Center">
+    <Border Stroke="{StaticResource Primary}" StrokeThickness="2" Opacity="0.2"
+        HeightRequest="44" WidthRequest="44"
+        StrokeShape="RoundRectangle 55"
+        HorizontalOptions="Center" VerticalOptions="Center"/>
+
+    <Border BackgroundColor="#1AEE8C2B" StrokeThickness="0"
+        HeightRequest="36" WidthRequest="36"
+        StrokeShape="RoundRectangle 32"
+        HorizontalOptions="Center" VerticalOptions="Center">
+                                <Path Data="{StaticResource IconUser}" 
+            Fill="{StaticResource Primary}"
+            Aspect="Uniform"
+            HeightRequest="16" WidthRequest="16"
+            HorizontalOptions="Center" VerticalOptions="Center"/>
+    </Border>
+</Grid>
 
                         <VerticalStackLayout VerticalOptions="Center">
-                            <Label Text="Good Morning," FontSize="12" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" FontAttributes="Bold"/>
+                            <Label Text="Szia," FontSize="12" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" FontAttributes="Bold"/>
                             <Label Text="{Binding Username}" FontSize="18" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource TextMainDark}}" FontAttributes="Bold"/>
                         </VerticalStackLayout>
                     </HorizontalStackLayout>
@@ -225,6 +234,9 @@
 
         <!-- Cart Bar -->
         <Border VerticalOptions="End" Stroke="Transparent" BackgroundColor="Transparent" Padding="16">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding GoToCartCommand}" />
+            </Border.GestureRecognizers>
             <Border BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 12" HeightRequest="56" Padding="20,0">
                 <Grid ColumnDefinitions="Auto, *, Auto, Auto">
                     <HorizontalStackLayout Grid.Column="0" Spacing="8" VerticalOptions="Center">
