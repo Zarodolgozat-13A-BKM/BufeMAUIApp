@@ -5,17 +5,8 @@
              Title="PaymentWebViewPage">
     <Grid RowDefinitions="Auto,*" BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource BgDark}}">
 
-        <ActivityIndicator x:Name="Loader"
-                           Grid.Row="0"
-                           IsRunning="True"
-                           IsVisible="True"
-                           Color="{StaticResource Primary}"
-                           Margin="0,32,0,0"
-                           HorizontalOptions="Center"/>
-
         <WebView x:Name="StripeWebView"
                  Grid.Row="1"
-                 Navigating="OnNavigating"
-                 Navigated="OnNavigated"/>
+                 Navigating="OnNavigating"/>
     </Grid>
 </ContentPage>

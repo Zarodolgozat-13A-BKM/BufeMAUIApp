@@ -7,7 +7,11 @@ namespace BufeApp.Models
         [JsonPropertyName("delivery_date")]
         public string DeliveryDate { get; set; }
 
+        [JsonPropertyName("cash")]
+        public bool Cash { get; set; }
+
         [JsonPropertyName("comment")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string Comment { get; set; }
 
         [JsonPropertyName("items")]

@@ -51,14 +51,15 @@ public partial class CartPage : ContentPage
 	{
 		base.OnAppearing();
 
-		if (!_breaksLoaded)
+		if (_breaksLoaded) return;
+        _breaksLoaded = true;
+
+		var response = await ApiService.GetAsync<BreakResponseModel>(ApiService.BreaksEndpoint, UserService.BearerToken);
+		if (response?.breaks != null)
 		{
-			var response = await ApiService.GetAsync<BreakResponseModel>(ApiService.BreaksEndpoint, UserService.BearerToken);
-			if (response?.breaks != null)
-			{
-				_allBreaks = response.breaks.ToList();
-            }
-		}
+			_allBreaks = response.breaks.ToList();
+        }
+		
         FilterValidBreaks();
     }
 
@@ -82,7 +83,6 @@ public partial class CartPage : ContentPage
 				Breaks.Add(b);
 			}
 		}
-		_breaksLoaded = true;
 
 		
 
@@ -159,5 +159,35 @@ public partial class CartPage : ContentPage
         }
     }
 
-    
+    private async void PayWithCard_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            var token = UserService.BearerToken;
+
+            var keyResponse = await ApiService.GetAsync<StripeKeyResponse>(
+                "payment/stripe-key", token);
+
+			string comment = string.IsNullOrWhiteSpace(Comment_Entry.Text) ? null : Comment_Entry.Text;
+
+            string selTime = SelectedTimeLabel.Text.Split(" ")[1].Split("-")[0];
+			TimeSpan time = TimeSpan.Parse(selTime);
+			DateTime DeliveryTime = DateTime.UtcNow.Date.Add(time);
+
+            var request = CartService.CreateOrderRequest(
+				comment: comment,
+				deliveryDateText: DeliveryTime.ToString("yyyy-MM-ddTHH:mm:ss"), 
+				isCash: false);
+
+            var checkout = await ApiService.PostAsync<OrderRequestModel, CheckoutResponse>(
+                "payment/checkout", request, token);
+
+            await Application.Current.MainPage.Navigation.PushModalAsync(
+                new PaymentWebViewPage(checkout, keyResponse.PublishableKey));
+        }
+        catch (Exception ex)
+        {
+            await Application.Current.MainPage.DisplayAlert("Hiba", ex.Message, "OK");
+        }
+    }
 }

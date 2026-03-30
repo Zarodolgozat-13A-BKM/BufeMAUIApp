@@ -31,7 +31,7 @@ namespace BufeApp.Models
         public string DeliveryDate { get; set; }
 
         [JsonPropertyName("total_price")]
-        public string TotalPrice { get; set; }
+        public int TotalPrice { get; set; }
 
         [JsonPropertyName("comment")]
         public string Comment { get; set; }
@@ -49,15 +49,15 @@ namespace BufeApp.Models
         public string ItemName { get; set; }
 
         [JsonPropertyName("quantity")]
-        public string Quantity { get; set; }
+        public int Quantity { get; set; }
 
         [JsonPropertyName("price")]
-        public string Price { get; set; }
+        public int Price { get; set; }
     }
 
     public class StripeKeyResponse
     {
-        [JsonPropertyName("publishable_key")]
+        [JsonPropertyName("key")]
         public string PublishableKey { get; set; }
     }
 }

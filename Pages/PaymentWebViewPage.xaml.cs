@@ -18,6 +18,16 @@ public partial class PaymentWebViewPage : ContentPage
     {
         base.OnAppearing();
 
+#if ANDROID
+    var androidWebView = (StripeWebView.Handler?.PlatformView as Android.Webkit.WebView);
+    if (androidWebView != null)
+    {
+        androidWebView.Settings.JavaScriptEnabled = true;
+        androidWebView.Settings.DomStorageEnabled = true;
+        androidWebView.SetWebChromeClient(new Platforms.Android.StripeWebChromeClient());
+    }
+#endif
+
         using var stream = await FileSystem.OpenAppPackageFileAsync("stripe_checkout.html");
         using var reader = new StreamReader(stream);
         var html = reader.ReadToEnd();
@@ -26,7 +36,7 @@ public partial class PaymentWebViewPage : ContentPage
                                 window.__STRIPE_PARAMS__ = {{
                                     clientSecret:   '{EscapeJs(_checkout.ClientSecret)}',
                                     publishableKey: '{EscapeJs(_publishableKey)}',
-                                    amount:         '{EscapeJs(_checkout.Order.TotalPrice)}'
+                                    amount:         '{EscapeJs(_checkout.Order.TotalPrice.ToString())}'
                                 }};
                             </script>";
 
@@ -43,16 +53,13 @@ public partial class PaymentWebViewPage : ContentPage
         }
     }
 
-    private void OnNavigated(object sender, WebNavigatedEventArgs e)
-    {
-        Loader.IsVisible = false;
-        Loader.IsRunning = false;
-    }
-
     private async void HandleSuccess()
     {
         await Navigation.PopModalAsync();
-        await Shell.Current.GoToAsync($"../{nameof(OrderStatusPage)}?OrderId={_checkout.Order.Id}");
+        await Task.Delay(300);
+
+        await Shell.Current.GoToAsync($"//MainPage");
+        await Shell.Current.GoToAsync($"{nameof(OrderStatusPage)}?OrderId={_checkout.Order.Id}");
     }
 
     protected override bool OnBackButtonPressed() => true;

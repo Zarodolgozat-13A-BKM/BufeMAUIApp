@@ -120,7 +120,7 @@ StrokeThickness="1" StrokeShape="RoundRectangle 12">
                         <Editor Placeholder="Ide írhatod, ha valami egyedi kérésed van..." 
     TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}"
     PlaceholderColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark=#71717a}"
-    HeightRequest="80" Margin="12,8" BackgroundColor="Transparent" />
+    HeightRequest="80" Margin="12,8" BackgroundColor="Transparent" x:Name="Comment_Entry" />
                     </Border>
                 </VerticalStackLayout>
 
@@ -183,7 +183,7 @@ StrokeThickness="1" StrokeShape="RoundRectangle 12">
 
                 <!-- Bottom Button Bar -->
                 <VerticalStackLayout Spacing="12" Margin="16,16,16,16" Padding="0" IsVisible="{Binding IsCartNotEmpty}">
-                    <Button Text="Fizetés Kártyával"
+                    <Button Text="Fizetés Kártyával" Clicked="PayWithCard_Clicked"
             BackgroundColor="{StaticResource Primary}"
             TextColor="White"
             FontAttributes="Bold"
