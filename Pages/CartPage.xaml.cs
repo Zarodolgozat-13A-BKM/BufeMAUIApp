@@ -1,4 +1,4 @@
-using BufeApp.Models;
+﻿using BufeApp.Models;
 using BufeApp.Services;
 using System.Collections.ObjectModel;
 
@@ -198,7 +198,8 @@ public partial class CartPage : ContentPage
         }
         catch (Exception ex)
         {
-            await Application.Current.MainPage.DisplayAlert("Hiba", ex.Message, "OK");
+            if(ex.Message.Contains("TimeSpan")) await Application.Current.MainPage.DisplayAlert("Hiba", "Kérlek válassz időpontot!", "OK");
+            else await Application.Current.MainPage.DisplayAlert("Hiba", ex.Message, "OK");
         }
     }
 
@@ -228,7 +229,8 @@ public partial class CartPage : ContentPage
         }
         catch (Exception ex)
         {
-            await Application.Current.MainPage.DisplayAlert("Hiba", ex.Message, "OK");
+            if (ex.Message.Contains("TimeSpan")) await Application.Current.MainPage.DisplayAlert("Hiba", "Kérlek válassz időpontot!", "OK");
+            else await Application.Current.MainPage.DisplayAlert("Hiba", ex.Message, "OK");
         }
     }
 }
