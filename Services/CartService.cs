@@ -50,7 +50,7 @@ namespace BufeApp.Services
             CartChanged?.Invoke(null, EventArgs.Empty);
         }
 
-        public static OrderRequestModel CreateOrderRequest(string comment, string deliveryDateText)
+        public static OrderRequestModel CreateOrderRequest(string comment, string deliveryDateText, bool isCash)
         {
             // Parse delivery_date? The prompt says: "delivery_date": "2019-08-24T14:15:22Z"
             // Let's use it as a string directly, or parse a time inside. Assuming text text for simplicity.
@@ -63,7 +63,8 @@ namespace BufeApp.Services
                 {
                     ItemId = i.Item.Id,
                     Quantity = i.Quantity
-                }).ToList()
+                }).ToList(),
+                Cash = isCash
             };
             return request;
         }

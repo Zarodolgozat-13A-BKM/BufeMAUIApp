@@ -1,4 +1,4 @@
-using BufeApp.Models;
+﻿using BufeApp.Models;
 using BufeApp.Services;
 using System.Collections.ObjectModel;
 
@@ -51,27 +51,29 @@ public partial class CartPage : ContentPage
 	{
 		base.OnAppearing();
 
-		if (!_breaksLoaded)
+		if (_breaksLoaded) return;
+        _breaksLoaded = true;
+
+		var response = await ApiService.GetAsync<BreakResponseModel>(ApiService.BreaksEndpoint, UserService.BearerToken);
+		if (response?.breaks != null)
 		{
-			var response = await ApiService.GetAsync<BreakResponseModel>(ApiService.BreaksEndpoint, UserService.BearerToken);
-			if (response?.breaks != null)
-			{
-				_allBreaks = response.breaks.ToList();
-            }
-		}
+			_allBreaks = response.breaks.ToList();
+        }
+		
         FilterValidBreaks();
     }
 
 	private void FilterValidBreaks()
 	{
-		var now = DateTime.Now.TimeOfDay;
+        bool isDev = true;
+        var now = DateTime.Now.TimeOfDay;
 		Breaks.Clear();
 
 		foreach (var b in _allBreaks)
 		{
 			if (TimeSpan.TryParse(b.start, out var startTime))
 			{
-				if (startTime > now)
+				if (startTime > now || isDev)
 				{
 					Breaks.Add(b);
 				}
@@ -81,7 +83,19 @@ public partial class CartPage : ContentPage
 				Breaks.Add(b);
 			}
 		}
-		_breaksLoaded = true;
+		if (isDev)
+		{
+            Break devBreak = new Break();
+			devBreak.start = "8:00";
+            if (TimeSpan.TryParse(devBreak.start, out var startTime))
+            {
+				Breaks.Add(devBreak);
+            }
+        }
+		
+
+
+		
 
 		IsBuffetOpen = Breaks.Count > 0;
 	}
@@ -156,5 +170,67 @@ public partial class CartPage : ContentPage
         }
     }
 
-    
+    private async void PayWithCard_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            var token = UserService.BearerToken;
+
+            var keyResponse = await ApiService.GetAsync<StripeKeyResponse>(
+                "payment/stripe-key", token);
+
+			string comment = string.IsNullOrWhiteSpace(Comment_Entry.Text) ? null : Comment_Entry.Text;
+
+            string selTime = SelectedTimeLabel.Text.Split(" ")[1].Split("-")[0];
+			TimeSpan time = TimeSpan.Parse(selTime);
+			DateTime DeliveryTime = DateTime.UtcNow.Date.Add(time);
+
+            var request = CartService.CreateOrderRequest(
+				comment: comment,
+				deliveryDateText: DeliveryTime.ToString("yyyy-MM-ddTHH:mm:ss"), 
+				isCash: false);
+
+            var checkout = await ApiService.PostAsync<OrderRequestModel, CheckoutResponse>(
+                "payment/checkout", request, token);
+
+            await Application.Current.MainPage.Navigation.PushModalAsync(
+                new PaymentWebViewPage(checkout, keyResponse.PublishableKey));
+        }
+        catch (Exception ex)
+        {
+            if(ex.Message.Contains("TimeSpan")) await Application.Current.MainPage.DisplayAlert("Hiba", "Kérlek válassz időpontot!", "OK");
+            else await Application.Current.MainPage.DisplayAlert("Hiba", ex.Message, "OK");
+        }
+    }
+
+    private async void PayWithCash_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            var token = UserService.BearerToken;
+
+            string comment = string.IsNullOrWhiteSpace(Comment_Entry.Text) ? null : Comment_Entry.Text;
+
+            string selTime = SelectedTimeLabel.Text.Split(" ")[1].Split("-")[0];
+            TimeSpan time = TimeSpan.Parse(selTime);
+            DateTime DeliveryTime = DateTime.UtcNow.Date.Add(time);
+
+            var request = CartService.CreateOrderRequest(
+                comment: comment,
+                deliveryDateText: DeliveryTime.ToString("yyyy-MM-ddTHH:mm:ss"),
+                isCash: true);
+
+            var checkout = await ApiService.PostAsync<OrderRequestModel, CheckoutResponse>(
+                "payment/checkout", request, token);
+
+            await Shell.Current.GoToAsync($"//MainPage");
+            await Shell.Current.GoToAsync($"{nameof(OrderStatusPage)}?OrderId={checkout.Order.Id}");
+            CartService.ClearCart();
+        }
+        catch (Exception ex)
+        {
+            if (ex.Message.Contains("TimeSpan")) await Application.Current.MainPage.DisplayAlert("Hiba", "Kérlek válassz időpontot!", "OK");
+            else await Application.Current.MainPage.DisplayAlert("Hiba", ex.Message, "OK");
+        }
+    }
 }

@@ -23,6 +23,8 @@ namespace BufeApp
                 });
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<CartPage>();
+            builder.Services.AddTransient<OrderStatusViewModel>();
+            builder.Services.AddTransient<OrderStatusPage>();
 
             // ViewModels
             builder.Services.AddTransient<MainViewModel>();

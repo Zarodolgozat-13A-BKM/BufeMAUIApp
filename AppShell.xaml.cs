@@ -1,4 +1,5 @@
 ﻿using BufeApp.Services;
+using BufeApp.Pages;
 
 namespace BufeApp
 {
@@ -9,8 +10,9 @@ namespace BufeApp
             InitializeComponent();
             
             // Register routes for navigation
-            Routing.RegisterRoute(nameof(Pages.PasswordResetPage), typeof(Pages.PasswordResetPage));
-            Routing.RegisterRoute(nameof(Pages.ProfilePage), typeof(Pages.ProfilePage));
+            Routing.RegisterRoute(nameof(PasswordResetPage), typeof(PasswordResetPage));
+            Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
+            Routing.RegisterRoute(nameof(OrderStatusPage), typeof(OrderStatusPage));
 
             InitializeNavigation();
         }
