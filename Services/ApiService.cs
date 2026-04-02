@@ -18,6 +18,9 @@ namespace BufeApp.Services
         public static string CategoriesEndpoint = "categories";
         public static string MeEndpoint = "account/me";
         public static string BreaksEndpoint = "orders/breaks";
+        public static string OrdersEndpoint = "orders";
+        public static string StripeKeyEndpoint = "payment/stripe-key";
+        public static string CheckoutEndpoint = "payment/checkout";
 
         private static LoadingPopup _loadingPopup;
         private static int _loadingCounter = 0;

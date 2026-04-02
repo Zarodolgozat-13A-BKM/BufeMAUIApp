@@ -177,7 +177,7 @@ public partial class CartPage : ContentPage
             var token = UserService.BearerToken;
 
             var keyResponse = await ApiService.GetAsync<StripeKeyResponse>(
-                "payment/stripe-key", token);
+                ApiService.StripeKeyEndpoint, token);
 
 			string comment = string.IsNullOrWhiteSpace(Comment_Entry.Text) ? null : Comment_Entry.Text;
 
@@ -191,7 +191,7 @@ public partial class CartPage : ContentPage
 				isCash: false);
 
             var checkout = await ApiService.PostAsync<OrderRequestModel, CheckoutResponse>(
-                "payment/checkout", request, token);
+                ApiService.CheckoutEndpoint, request, token);
 
             await Application.Current.MainPage.Navigation.PushModalAsync(
                 new PaymentWebViewPage(checkout, keyResponse.PublishableKey));
@@ -221,7 +221,7 @@ public partial class CartPage : ContentPage
                 isCash: true);
 
             var checkout = await ApiService.PostAsync<OrderRequestModel, CheckoutResponse>(
-                "payment/checkout", request, token);
+                ApiService.CheckoutEndpoint, request, token);
 
             await Shell.Current.GoToAsync($"//MainPage");
             await Shell.Current.GoToAsync($"{nameof(OrderStatusPage)}?OrderId={checkout.Order.Id}");
