@@ -32,11 +32,14 @@ public partial class PaymentWebViewPage : ContentPage
         using var reader = new StreamReader(stream);
         var html = reader.ReadToEnd();
 
+        var isDark = Application.Current.RequestedTheme == AppTheme.Dark;
+
         var injection = $@"<script>
                                 window.__STRIPE_PARAMS__ = {{
                                     clientSecret:   '{EscapeJs(_checkout.ClientSecret)}',
                                     publishableKey: '{EscapeJs(_publishableKey)}',
-                                    amount:         '{EscapeJs(_checkout.Order.TotalPrice.ToString())}'
+                                    amount:         '{EscapeJs(_checkout.Order.TotalPrice.ToString())}',
+                                    theme:          '{(isDark ? "dark" : "light")}'
                                 }};
                             </script>";
 
@@ -50,6 +53,11 @@ public partial class PaymentWebViewPage : ContentPage
         {
             e.Cancel = true;
             HandleSuccess();
+        }
+        else if (e.Url.StartsWith("bufeapp://payment-cancel"))
+        {
+            e.Cancel = true;
+            Navigation.PopModalAsync();
         }
     }
 

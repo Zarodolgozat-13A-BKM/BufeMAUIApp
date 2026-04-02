@@ -83,6 +83,17 @@ public partial class CartPage : ContentPage
 				Breaks.Add(b);
 			}
 		}
+		if (isDev)
+		{
+            Break devBreak = new Break();
+			devBreak.start = "8:00";
+            if (TimeSpan.TryParse(devBreak.start, out var startTime))
+            {
+				Breaks.Add(devBreak);
+            }
+        }
+		
+
 
 		
 
