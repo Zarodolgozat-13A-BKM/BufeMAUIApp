@@ -1,4 +1,5 @@
 using BufeApp.Models;
+using BufeApp.Services;
 
 namespace BufeApp.Pages;
 
@@ -63,6 +64,7 @@ public partial class PaymentWebViewPage : ContentPage
 
     private async void HandleSuccess()
     {
+        CartService.ClearCart();
         await Navigation.PopModalAsync();
         await Task.Delay(300);
 

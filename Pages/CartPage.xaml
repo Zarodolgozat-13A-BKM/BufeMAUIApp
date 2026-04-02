@@ -195,7 +195,7 @@ StrokeThickness="1" StrokeShape="RoundRectangle 12">
                         </Button.Shadow>
                     </Button>
 
-                    <Button Text="Fizetés Készpénzzel"
+                    <Button Text="Fizetés Készpénzzel" Clicked="PayWithCash_Clicked"
             BackgroundColor="Transparent"
             BorderColor="{StaticResource Primary}"
             BorderWidth="2"

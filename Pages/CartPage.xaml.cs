@@ -201,4 +201,34 @@ public partial class CartPage : ContentPage
             await Application.Current.MainPage.DisplayAlert("Hiba", ex.Message, "OK");
         }
     }
+
+    private async void PayWithCash_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            var token = UserService.BearerToken;
+
+            string comment = string.IsNullOrWhiteSpace(Comment_Entry.Text) ? null : Comment_Entry.Text;
+
+            string selTime = SelectedTimeLabel.Text.Split(" ")[1].Split("-")[0];
+            TimeSpan time = TimeSpan.Parse(selTime);
+            DateTime DeliveryTime = DateTime.UtcNow.Date.Add(time);
+
+            var request = CartService.CreateOrderRequest(
+                comment: comment,
+                deliveryDateText: DeliveryTime.ToString("yyyy-MM-ddTHH:mm:ss"),
+                isCash: true);
+
+            var checkout = await ApiService.PostAsync<OrderRequestModel, CheckoutResponse>(
+                "payment/checkout", request, token);
+
+            await Shell.Current.GoToAsync($"//MainPage");
+            await Shell.Current.GoToAsync($"{nameof(OrderStatusPage)}?OrderId={checkout.Order.Id}");
+            CartService.ClearCart();
+        }
+        catch (Exception ex)
+        {
+            await Application.Current.MainPage.DisplayAlert("Hiba", ex.Message, "OK");
+        }
+    }
 }
