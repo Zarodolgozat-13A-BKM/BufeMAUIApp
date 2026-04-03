@@ -1,4 +1,5 @@
-using BufeApp.Services;
+﻿using BufeApp.Services;
+using BufeApp.Models;
 using Microsoft.Maui.Storage;
 
 namespace BufeApp.Pages;
@@ -7,6 +8,21 @@ public partial class ProfilePage : ContentPage
 {
     public string Username => UserService.Name;
     public string Email => UserService.Email;
+
+    public List<OrderModel> Orders => UserService.Orders.OrderByDescending(x => x.OrderIdentifierNumber).ToList();
+    public bool HasNoOrders => UserService.Orders.Count == 0;
+
+    public Command<OrderModel> ReorderCommand => new Command<OrderModel>(async (order) =>
+    {
+        // Pre-fill cart with this order's items and navigate
+        // plug in your CartService here when ready
+        await DisplayAlert("Újrarendelés", $"#{order.OrderIdentifierNumber} újrarendelése hamarosan elérhető.", "OK");
+    });
+
+    public Command<OrderModel> ViewStatusCommand => new Command<OrderModel>(async (order) =>
+    {
+        await Shell.Current.GoToAsync($"{nameof(OrderStatusPage)}?OrderId={order.Id}");
+    });
 
     public ProfilePage()
 	{
@@ -28,6 +44,10 @@ public partial class ProfilePage : ContentPage
         
         OnPropertyChanged(nameof(Username));
         OnPropertyChanged(nameof(Email));
+
+        await UserService.LoadOrdersAsync();
+        OnPropertyChanged(nameof(Orders));
+        OnPropertyChanged(nameof(HasNoOrders));
     }
 
     private void OnThemeTapped(object sender, TappedEventArgs e)

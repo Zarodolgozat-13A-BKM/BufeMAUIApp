@@ -28,10 +28,10 @@ namespace BufeApp.Models
         public List<OrderItemModel> Items { get; set; }
 
         [JsonPropertyName("total_price")]
-        public string TotalPrice { get; set; }
+        public int TotalPrice { get; set; }
 
         [JsonPropertyName("default_completion_time")]
-        public string DefaultCompletionTime { get; set; }
+        public int DefaultCompletionTime { get; set; }
 
         [JsonPropertyName("comment")]
         public string Comment { get; set; }
@@ -39,9 +39,27 @@ namespace BufeApp.Models
         [JsonPropertyName("payment_intent_id")]
         public string PaymentIntentId { get; set; }
 
+        public string StatusLabel => Status?.ToUpper() switch
+        {
+            "PENDING" => "FÜGGŐBEN",
+            "PAID" => "FIZETVE",
+            "PREPARING" => "KÉSZÜL",
+            "READY" => "ÁTVEHETŐ",
+            "COMPLETED" => "SIKERES",
+            "CANCELLED" => "LEMONDVA",
+            _ => Status?.ToUpper() ?? "—"
+        };
+
+        public string ItemsSummary => Items == null || Items.Count == 0
+            ? "Nincs tétel"
+            : string.Join(" + ", Items.Select(i => $"{i.Quantity} x {i.ItemName}"));
+
         public string FormattedDate => DateTime.TryParse(DeliveryDate, out var dt)
             ? dt.ToString("yyyy. MM. dd.")
             : DeliveryDate;
+
+        public bool IsCompleted => Status is "completed" or "cancelled";
+        public bool IsInProgress => !IsCompleted;
     }
 
     public class OrderItemModel
@@ -53,15 +71,15 @@ namespace BufeApp.Models
         public string ItemName { get; set; }
 
         [JsonPropertyName("item_price")]
-        public string ItemPrice { get; set; }
+        public int ItemPrice { get; set; }
 
         [JsonPropertyName("picture_url")]
         public string PictureUrl { get; set; }
 
         [JsonPropertyName("quantity")]
-        public string Quantity { get; set; }
+        public int Quantity { get; set; }
 
         [JsonPropertyName("price")]
-        public string Price { get; set; }
+        public int Price { get; set; }
     }
 }

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:BufeApp.Models"
+             xmlns:pages="clr-namespace:BufeApp.Pages"
              x:Class="BufeApp.Pages.ProfilePage"
              Shell.NavBarIsVisible="True"
              Shell.TabBarIsVisible="False"
@@ -14,7 +16,7 @@
         <!-- Main Content -->
         <ScrollView Grid.Row="0">
             <VerticalStackLayout Padding="16" Spacing="24" MaximumWidthRequest="600" HorizontalOptions="Center">
-                
+
                 <!-- User Profile Bento Header -->
                 <Border Stroke="Transparent" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}" Padding="24">
                     <Border.Shadow>
@@ -23,14 +25,14 @@
                     <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
                         <Grid HeightRequest="120" HorizontalOptions="Center">
                             <Border Stroke="{StaticResource Primary}" StrokeThickness="2" Opacity="0.2"
-        HeightRequest="110" WidthRequest="110"
-        StrokeShape="RoundRectangle 55"
-        HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    HeightRequest="110" WidthRequest="110"
+                                    StrokeShape="RoundRectangle 55"
+                                    HorizontalOptions="Center" VerticalOptions="Center"/>
 
                             <Border BackgroundColor="#1AEE8C2B" StrokeThickness="0"
-        HeightRequest="96" WidthRequest="96"
-        StrokeShape="RoundRectangle 48"
-        HorizontalOptions="Center" VerticalOptions="Center">
+                                    HeightRequest="96" WidthRequest="96"
+                                    StrokeShape="RoundRectangle 48"
+                                    HorizontalOptions="Center" VerticalOptions="Center">
                                 <Label Text="person" FontFamily="MaterialIcons" TextColor="{StaticResource Primary}" FontSize="52" HorizontalOptions="Center" VerticalOptions="Center" />
                             </Border>
                         </Grid>
@@ -52,77 +54,139 @@
                             Padding="12">
                         <ScrollView HeightRequest="320">
                             <VerticalStackLayout Spacing="16" Padding="4,4,4,12">
-                                <!-- Order Card 1 -->
-                                <Border Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}" Padding="20">
-                                    <VerticalStackLayout Spacing="16">
-                                    <Grid>
-                                        <HorizontalStackLayout Spacing="12">
-                                            <Border BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource Gray900}}" StrokeThickness="0" StrokeShape="RoundRectangle 8" Padding="8">
-                                                <Label Text="receipt_long" FontFamily="MaterialIcons" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" FontSize="20" />
-                                            </Border>
-                                            <VerticalStackLayout VerticalOptions="Center">
-                                                <Label Text="#2492-A" FontSize="14" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}" />
-                                                <Label Text="Ma, 10:24" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" />
-                                            </VerticalStackLayout>
-                                        </HorizontalStackLayout>
-                                            <Border HorizontalOptions="End" VerticalOptions="Start" BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="8,4">
-                                                <Label Text="SIKERES" FontSize="10" FontAttributes="Bold" TextColor="{StaticResource White}" />
-                                            </Border>
-                                        </Grid>
-                                    <Border BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource Gray950}}" Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="12">
-                                        <Label Text="Szalámis Szendvics + Üdítő + Kakaós Csiga" FontSize="14" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}" />
-                                    </Border>
-                                    <Grid Margin="0,8,0,0">
-                                        <Label Text="2 450 Ft" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}" VerticalOptions="Center" />
-                                        <Border BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="16,8" HorizontalOptions="End" VerticalOptions="Center">
-                                            <Border.Shadow>
-                                                <Shadow Brush="{StaticResource Primary}" Offset="0,1" Opacity="0.5" Radius="2" />
-                                            </Border.Shadow>
-                                            <HorizontalStackLayout Spacing="8">
-                                                <Label Text="reorder" FontFamily="MaterialIcons" TextColor="{StaticResource White}" FontSize="16" VerticalOptions="Center" />
-                                                <Label Text="Újrarendelés" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource White}" VerticalOptions="Center" />
-                                            </HorizontalStackLayout>
-                                        </Border>
-                                    </Grid>
-                                </VerticalStackLayout>
-                            </Border>
 
-                            <!-- Order Card 2 -->
-                                <Border Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}" Padding="20">
-                                    <VerticalStackLayout Spacing="16">
-                                    <Grid>
-                                        <HorizontalStackLayout Spacing="12">
-                                            <Border BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource Gray900}}" StrokeThickness="0" StrokeShape="RoundRectangle 8" Padding="8">
-                                                <Label Text="receipt_long" FontFamily="MaterialIcons" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" FontSize="20" />
+                                <!-- Empty state -->
+                                <Label Text="Még nincs leadott rendelés."
+                                       FontSize="14"
+                                       HorizontalOptions="Center"
+                                       Margin="0,16,0,0"
+                                       IsVisible="{Binding HasNoOrders}"
+                                       TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}"/>
+
+                                <CollectionView ItemsSource="{Binding Orders}"
+                                                SelectionMode="None">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="models:OrderModel">
+                                            <Border Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}"
+                                                    StrokeThickness="1"
+                                                    StrokeShape="RoundRectangle 12"
+                                                    BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+                                                    Padding="20"
+                                                    Margin="0,0,0,16">
+                                                <VerticalStackLayout Spacing="16">
+
+                                                    <!-- Header row: icon + order number/date + status badge -->
+                                                    <Grid>
+                                                        <HorizontalStackLayout Spacing="12">
+                                                            <Border BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource Gray900}}"
+                                                                    StrokeThickness="0"
+                                                                    StrokeShape="RoundRectangle 8"
+                                                                    Padding="8">
+                                                                <Label Text="receipt_long"
+                                                                       FontFamily="MaterialIcons"
+                                                                       TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}"
+                                                                       FontSize="20"/>
+                                                            </Border>
+                                                            <VerticalStackLayout VerticalOptions="Center">
+                                                                <Label FontSize="14"
+                                                                       FontAttributes="Bold"
+                                                                       TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}">
+                                                                    <Label.FormattedText>
+                                                                        <FormattedString>
+                                                                            <Span Text="#"/>
+                                                                            <Span Text="{Binding OrderIdentifierNumber}"/>
+                                                                        </FormattedString>
+                                                                    </Label.FormattedText>
+                                                                </Label>
+                                                                <Label Text="{Binding FormattedDate}"
+                                                                       FontSize="12"
+                                                                       TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}"/>
+                                                            </VerticalStackLayout>
+                                                        </HorizontalStackLayout>
+
+                                                        <Border HorizontalOptions="End"
+                                                                VerticalOptions="Start"
+                                                                Stroke="{StaticResource Primary}"
+                                                                BackgroundColor="Transparent"
+                                                                StrokeThickness="1"
+                                                                StrokeShape="RoundRectangle 12"
+                                                                Padding="8,4">
+                                                            <Label Text="{Binding StatusLabel}"
+                                                                   FontSize="10"
+                                                                   FontAttributes="Bold"
+                                                                   TextColor="{StaticResource Primary}"/>
+                                                        </Border>
+                                                    </Grid>
+
+                                                    <!-- Items summary -->
+                                                    <Border BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource Gray950}}"
+                                                            Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}"
+                                                            StrokeThickness="1"
+                                                            StrokeShape="RoundRectangle 8"
+                                                            Padding="12">
+                                                        <Label Text="{Binding ItemsSummary}"
+                                                               FontSize="14"
+                                                               TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}"/>
+                                                    </Border>
+
+                                                    <!-- Total + reorder button -->
+                                                    <!-- Total + action button -->
+                                                    <Grid Margin="0,8,0,0">
+                                                        <Label Text="{Binding TotalPrice, StringFormat='{0} Ft'}"
+                                                               FontSize="18"
+                                                               FontAttributes="Bold"
+                                                               TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}"
+                                                               VerticalOptions="Center"/>
+
+                                                        <!-- Reorder — only for completed/cancelled -->
+                                                        <Border BackgroundColor="{StaticResource Primary}"
+                                                                StrokeThickness="0"
+                                                                StrokeShape="RoundRectangle 12"
+                                                                Padding="16,8"
+                                                                HorizontalOptions="End"
+                                                                VerticalOptions="Center"
+                                                                IsVisible="{Binding IsCompleted}">
+                                                            <Border.Shadow>
+                                                                <Shadow Brush="{StaticResource Primary}" Offset="0,1" Opacity="0.5" Radius="2"/>
+                                                            </Border.Shadow>
+                                                            <Border.GestureRecognizers>
+                                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type pages:ProfilePage}}, Path=ReorderCommand}"
+                                                                                      CommandParameter="{Binding .}"/>
+                                                            </Border.GestureRecognizers>
+                                                            <HorizontalStackLayout Spacing="8">
+                                                                <Label Text="reorder" FontFamily="MaterialIcons" TextColor="{StaticResource White}" FontSize="18" VerticalOptions="Center" />
+                                                                <Label Text="Újrarendelés" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource White}" VerticalOptions="Center" />
+                                                            </HorizontalStackLayout>
+                                                        </Border>
+
+                                                        <!-- Order status — only for in-progress -->
+                                                        <Border BackgroundColor="{StaticResource Primary}"
+                                                                StrokeThickness="0"
+                                                                StrokeShape="RoundRectangle 12"
+                                                                Padding="16,8"
+                                                                HorizontalOptions="End"
+                                                                VerticalOptions="Center"
+                                                                IsVisible="{Binding IsInProgress}">
+
+                                                            <Border.GestureRecognizers>
+                                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type pages:ProfilePage}}, Path=ViewStatusCommand}"
+                                                                                      CommandParameter="{Binding .}"/>
+                                                            </Border.GestureRecognizers>
+                                                            <HorizontalStackLayout Spacing="8">
+                                                                <Label Text="timeline" FontFamily="MaterialIcons" TextColor="{StaticResource White}" FontSize="18" VerticalOptions="Center" />
+                                                                <Label Text="Állapot" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource White}" VerticalOptions="Center" />
+                                                            </HorizontalStackLayout>
+                                                        </Border>
+                                                    </Grid>
+
+                                                </VerticalStackLayout>
                                             </Border>
-                                            <VerticalStackLayout VerticalOptions="Center">
-                                                <Label Text="#2488-C" FontSize="14" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}" />
-                                                <Label Text="Tegnap, 08:15" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}" />
-                                            </VerticalStackLayout>
-                                        </HorizontalStackLayout>
-                                        <Border HorizontalOptions="End" VerticalOptions="Start" BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="8,4">
-                                            <Label Text="SIKERES" FontSize="10" FontAttributes="Bold" TextColor="{StaticResource White}" />
-                                        </Border>
-                                    </Grid>
-                                    <Border BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource Gray950}}" Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="12">
-                                        <Label Text="Melegszendvics (Extra Sajt) + Almafröccs" FontSize="14" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}" />
-                                    </Border>
-                                    <Grid Margin="0,8,0,0">
-                                        <Label Text="1 890 Ft" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}" VerticalOptions="Center" />
-                                        <Border BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="16,8" HorizontalOptions="End" VerticalOptions="Center">
-                                            <Border.Shadow>
-                                                <Shadow Brush="{StaticResource Primary}" Offset="0,1" Opacity="0.5" Radius="2" />
-                                            </Border.Shadow>
-                                            <HorizontalStackLayout Spacing="8">
-                                                <Label Text="reorder" FontFamily="MaterialIcons" TextColor="{StaticResource White}" FontSize="16" VerticalOptions="Center" />
-                                                <Label Text="Újrarendelés" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource White}" VerticalOptions="Center" />
-                                            </HorizontalStackLayout>
-                                        </Border>
-                                    </Grid>
-                                </VerticalStackLayout>
-                            </Border>
-                        </VerticalStackLayout>
-                    </ScrollView>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+
+                            </VerticalStackLayout>
+                        </ScrollView>
                     </Border>
                 </VerticalStackLayout>
 
