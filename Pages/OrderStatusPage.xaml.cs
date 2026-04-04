@@ -15,16 +15,16 @@ public partial class OrderStatusPage : ContentPage
     }
 }
 
-[QueryProperty(nameof(Order), "Order")]
+[QueryProperty("OrderId", "OrderId")]
 public partial class OrderStatusViewModel : ObservableObject
 {
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(OrderTitle))]
-    private OrderDto _order;
+    private int orderId;
 
-    public string OrderTitle => Order is null
+    public string OrderTitle => OrderId == 0
         ? string.Empty
-        : $"#{Order.OrderIdentifierNumber} rendelés";
+        : $"#{OrderId} rendelés";
 
     // WebSocket logic goes here later
 }

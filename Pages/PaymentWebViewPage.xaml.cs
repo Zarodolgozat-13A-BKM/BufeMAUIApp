@@ -69,7 +69,7 @@ public partial class PaymentWebViewPage : ContentPage
         await Task.Delay(300);
 
         await Shell.Current.GoToAsync($"//MainPage");
-        await Shell.Current.GoToAsync($"{nameof(OrderStatusPage)}?OrderId={_checkout.Order.Id}");
+        await Shell.Current.GoToAsync($"{nameof(OrderStatusPage)}?OrderId={_checkout.Order.OrderIdentifierNumber}");
     }
 
     protected override bool OnBackButtonPressed() => true;

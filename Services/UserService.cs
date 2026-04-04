@@ -13,6 +13,8 @@ namespace BufeApp.Services
         public static string Email { get; set; }
         public static string Name { get; set; }
 
+        public static List<OrderModel> Orders { get; set; } = new();
+
         public static bool IsUserLoggedIn()
         {
             return !string.IsNullOrEmpty(BearerToken);
@@ -46,6 +48,7 @@ namespace BufeApp.Services
             {
                 Name = userData.full_name;
                 Email = userData.email;
+                await LoadOrdersAsync();
             }
             else
             {
@@ -95,5 +98,11 @@ namespace BufeApp.Services
         //        throw new Exception("Registration failed");
         //    }
         //}
+
+        public static async Task LoadOrdersAsync()
+        {
+            var result = await ApiService.GetAsync<List<OrderModel>>(ApiService.OrdersEndpoint, BearerToken);
+            Orders = result ?? new List<OrderModel>();
+        }
     }
 }

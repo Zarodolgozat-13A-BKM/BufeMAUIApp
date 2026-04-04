@@ -92,10 +92,6 @@ public partial class CartPage : ContentPage
 				Breaks.Add(devBreak);
             }
         }
-		
-
-
-		
 
 		IsBuffetOpen = Breaks.Count > 0;
 	}
@@ -138,7 +134,7 @@ public partial class CartPage : ContentPage
 
     private void OnIncreaseQuantity(object sender, EventArgs e)
     {
-        if (sender is Button button && button.BindingContext is Models.CartItemModel cartItem)
+        if (sender is Button button && button.BindingContext is CartItemModel cartItem)
         {
             if (cartItem.Quantity < 99)
             {
@@ -149,7 +145,7 @@ public partial class CartPage : ContentPage
 
     private void OnDecreaseQuantity(object sender, EventArgs e)
     {
-        if (sender is Button button && button.BindingContext is Models.CartItemModel cartItem)
+        if (sender is Button button && button.BindingContext is CartItemModel cartItem)
         {
             if (cartItem.Quantity > 1)
             {
@@ -157,7 +153,7 @@ public partial class CartPage : ContentPage
             }
             else
             {
-                Services.CartService.RemoveItem(cartItem);
+                CartService.RemoveItem(cartItem);
             }
         }
     }
@@ -166,7 +162,7 @@ public partial class CartPage : ContentPage
     {
         if (sender is View view && view.BindingContext is Models.CartItemModel cartItem)
         {
-            Services.CartService.RemoveItem(cartItem);
+            CartService.RemoveItem(cartItem);
         }
     }
 
@@ -177,7 +173,7 @@ public partial class CartPage : ContentPage
             var token = UserService.BearerToken;
 
             var keyResponse = await ApiService.GetAsync<StripeKeyResponse>(
-                "payment/stripe-key", token);
+                ApiService.StripeKeyEndpoint, token);
 
 			string comment = string.IsNullOrWhiteSpace(Comment_Entry.Text) ? null : Comment_Entry.Text;
 
@@ -191,7 +187,7 @@ public partial class CartPage : ContentPage
 				isCash: false);
 
             var checkout = await ApiService.PostAsync<OrderRequestModel, CheckoutResponse>(
-                "payment/checkout", request, token);
+                ApiService.CheckoutEndpoint, request, token);
 
             await Application.Current.MainPage.Navigation.PushModalAsync(
                 new PaymentWebViewPage(checkout, keyResponse.PublishableKey));
@@ -221,7 +217,7 @@ public partial class CartPage : ContentPage
                 isCash: true);
 
             var checkout = await ApiService.PostAsync<OrderRequestModel, CheckoutResponse>(
-                "payment/checkout", request, token);
+                ApiService.CheckoutEndpoint, request, token);
 
             await Shell.Current.GoToAsync($"//MainPage");
             await Shell.Current.GoToAsync($"{nameof(OrderStatusPage)}?OrderId={checkout.Order.Id}");

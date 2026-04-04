@@ -1,4 +1,5 @@
-using BufeApp.Services;
+﻿using BufeApp.Services;
+using BufeApp.Models;
 using Microsoft.Maui.Storage;
 
 namespace BufeApp.Pages;
@@ -8,13 +9,26 @@ public partial class ProfilePage : ContentPage
     public string Username => UserService.Name;
     public string Email => UserService.Email;
 
+    public List<OrderModel> Orders => UserService.Orders.OrderByDescending(x => x.OrderIdentifierNumber).ToList();
+    public bool HasNoOrders => UserService.Orders.Count == 0;
+
+    public Command<OrderModel> ReorderCommand => new Command<OrderModel>(async (order) =>
+    {
+        CartService.ReorderFromOrder(order);
+        await Shell.Current.GoToAsync("//CartPage");
+    });
+
+    public Command<OrderModel> ViewStatusCommand => new Command<OrderModel>(async (order) =>
+    {
+        await Shell.Current.GoToAsync($"{nameof(OrderStatusPage)}?OrderId={order.OrderIdentifierNumber}");
+    });
+
     public ProfilePage()
 	{
 		InitializeComponent();
 
         this.BindingContext = this;
         
-        // Load saved theme or determine current runtime theme
         var savedTheme = Preferences.Default.Get("AppTheme", (int)Application.Current.UserAppTheme);
         AppTheme currentTheme = (AppTheme)savedTheme;
         
@@ -28,6 +42,10 @@ public partial class ProfilePage : ContentPage
         
         OnPropertyChanged(nameof(Username));
         OnPropertyChanged(nameof(Email));
+
+        await UserService.LoadOrdersAsync();
+        OnPropertyChanged(nameof(Orders));
+        OnPropertyChanged(nameof(HasNoOrders));
     }
 
     private void OnThemeTapped(object sender, TappedEventArgs e)
