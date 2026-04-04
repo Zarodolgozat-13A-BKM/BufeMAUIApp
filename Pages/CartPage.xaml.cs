@@ -92,10 +92,6 @@ public partial class CartPage : ContentPage
 				Breaks.Add(devBreak);
             }
         }
-		
-
-
-		
 
 		IsBuffetOpen = Breaks.Count > 0;
 	}
@@ -138,7 +134,7 @@ public partial class CartPage : ContentPage
 
     private void OnIncreaseQuantity(object sender, EventArgs e)
     {
-        if (sender is Button button && button.BindingContext is Models.CartItemModel cartItem)
+        if (sender is Button button && button.BindingContext is CartItemModel cartItem)
         {
             if (cartItem.Quantity < 99)
             {
@@ -149,7 +145,7 @@ public partial class CartPage : ContentPage
 
     private void OnDecreaseQuantity(object sender, EventArgs e)
     {
-        if (sender is Button button && button.BindingContext is Models.CartItemModel cartItem)
+        if (sender is Button button && button.BindingContext is CartItemModel cartItem)
         {
             if (cartItem.Quantity > 1)
             {
@@ -157,7 +153,7 @@ public partial class CartPage : ContentPage
             }
             else
             {
-                Services.CartService.RemoveItem(cartItem);
+                CartService.RemoveItem(cartItem);
             }
         }
     }
@@ -166,7 +162,7 @@ public partial class CartPage : ContentPage
     {
         if (sender is View view && view.BindingContext is Models.CartItemModel cartItem)
         {
-            Services.CartService.RemoveItem(cartItem);
+            CartService.RemoveItem(cartItem);
         }
     }
 

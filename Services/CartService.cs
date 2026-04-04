@@ -52,12 +52,10 @@ namespace BufeApp.Services
 
         public static OrderRequestModel CreateOrderRequest(string comment, string deliveryDateText, bool isCash)
         {
-            // Parse delivery_date? The prompt says: "delivery_date": "2019-08-24T14:15:22Z"
-            // Let's use it as a string directly, or parse a time inside. Assuming text text for simplicity.
             
             var request = new OrderRequestModel
             {
-                DeliveryDate = deliveryDateText, // "2019-08-24T14:15:22Z"
+                DeliveryDate = deliveryDateText,
                 Comment = comment,
                 Items = Items.Select(i => new OrderItemRequestModel
                 {
@@ -69,19 +67,30 @@ namespace BufeApp.Services
             return request;
         }
 
-        public static void ReorderFromOrder(OrderModel order)
+        public static async void ReorderFromOrder(OrderModel order)
         {
             ClearCart();
             foreach (var item in order.Items)
             {
-                var itemModel = new ItemModel
+                int orderedItemId = item.ItemId;
+                bool IsActive = true;
+                ItemResponseModel tmp = await ApiService.GetAsync<ItemResponseModel>($"{ApiService.ItemEndpoint}/{orderedItemId}", UserService.BearerToken);
+                if (tmp.Item.IsActiveInt == 0) IsActive = false;
+                if (!IsActive)
                 {
-                    Id = item.ItemId,
-                    Name = item.ItemName,
-                    Price = item.ItemPrice,
-                    PictureUrl = item.PictureUrl
-                };
-                AddItem(itemModel, item.Quantity);
+                    await Application.Current.MainPage.DisplayAlert("Áru nem elérhető", "Sajnos az alábbi termék jelenleg nem elérhető: " + item.ItemName, "OK");
+                }
+                else
+                {
+                    var itemModel = new ItemModel
+                    {
+                        Id = item.ItemId,
+                        Name = item.ItemName,
+                        Price = item.ItemPrice,
+                        PictureUrl = item.PictureUrl
+                    };
+                    AddItem(itemModel, item.Quantity);
+                }
             }
         }
     }

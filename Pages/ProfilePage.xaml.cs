@@ -29,7 +29,6 @@ public partial class ProfilePage : ContentPage
 
         this.BindingContext = this;
         
-        // Load saved theme or determine current runtime theme
         var savedTheme = Preferences.Default.Get("AppTheme", (int)Application.Current.UserAppTheme);
         AppTheme currentTheme = (AppTheme)savedTheme;
         

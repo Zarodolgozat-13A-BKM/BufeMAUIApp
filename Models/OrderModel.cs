@@ -49,7 +49,7 @@ namespace BufeApp.Models
             ? dt.ToString("yyyy. MM. dd.")
             : DeliveryDate;
 
-        public bool IsCompleted => StatusLabel is "ÁTADVA" or "LEMONDVA";
+        public bool IsCompleted => StatusLabel is "ÁTADVA" or "TÖRÖLVE";
         public bool IsInProgress => !IsCompleted;
     }
 

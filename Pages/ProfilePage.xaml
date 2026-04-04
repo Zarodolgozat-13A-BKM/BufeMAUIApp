@@ -17,7 +17,7 @@
         <ScrollView Grid.Row="0">
             <VerticalStackLayout Padding="16" Spacing="24" MaximumWidthRequest="600" HorizontalOptions="Center">
 
-                <!-- User Profile Bento Header -->
+                <!-- User Profile Header -->
                 <Border Stroke="Transparent" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}" Padding="24">
                     <Border.Shadow>
                         <Shadow Brush="{StaticResource Gray100}" Offset="0,1" Opacity="0.1" Radius="2" />
@@ -75,7 +75,7 @@
                                                     Margin="0,0,0,16">
                                                 <VerticalStackLayout Spacing="16">
 
-                                                    <!-- Header row: icon + order number/date + status badge -->
+                                                    <!-- Header row -->
                                                     <Grid>
                                                         <HorizontalStackLayout Spacing="12">
                                                             <Border BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource Gray900}}"
@@ -138,7 +138,7 @@
                                                                TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}"
                                                                VerticalOptions="Center"/>
 
-                                                        <!-- Reorder — only for completed/cancelled -->
+                                                        <!-- Reorder — only for completed/deleted -->
                                                         <Border BackgroundColor="{StaticResource Primary}"
                                                                 StrokeThickness="0"
                                                                 StrokeShape="RoundRectangle 12"
