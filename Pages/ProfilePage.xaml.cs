@@ -21,7 +21,7 @@ public partial class ProfilePage : ContentPage
 
     public Command<OrderModel> ViewStatusCommand => new Command<OrderModel>(async (order) =>
     {
-        await Shell.Current.GoToAsync($"{nameof(OrderStatusPage)}?OrderId={order.Id}");
+        await Shell.Current.GoToAsync($"{nameof(OrderStatusPage)}?OrderId={order.OrderIdentifierNumber}");
     });
 
     public ProfilePage()

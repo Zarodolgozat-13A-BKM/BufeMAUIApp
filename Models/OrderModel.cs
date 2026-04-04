@@ -39,16 +39,7 @@ namespace BufeApp.Models
         [JsonPropertyName("payment_intent_id")]
         public string PaymentIntentId { get; set; }
 
-        public string StatusLabel => Status?.ToUpper() switch
-        {
-            "PENDING" => "FÜGGŐBEN",
-            "PAID" => "FIZETVE",
-            "PREPARING" => "KÉSZÜL",
-            "READY" => "ÁTVEHETŐ",
-            "COMPLETED" => "SIKERES",
-            "CANCELLED" => "LEMONDVA",
-            _ => Status?.ToUpper() ?? "—"
-        };
+        public string StatusLabel => Status?.ToUpper();
 
         public string ItemsSummary => Items == null || Items.Count == 0
             ? "Nincs tétel"
@@ -58,7 +49,7 @@ namespace BufeApp.Models
             ? dt.ToString("yyyy. MM. dd.")
             : DeliveryDate;
 
-        public bool IsCompleted => Status is "completed" or "cancelled";
+        public bool IsCompleted => StatusLabel is "ÁTADVA" or "LEMONDVA";
         public bool IsInProgress => !IsCompleted;
     }
 
