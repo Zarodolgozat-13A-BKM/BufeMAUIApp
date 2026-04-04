@@ -14,9 +14,8 @@ public partial class ProfilePage : ContentPage
 
     public Command<OrderModel> ReorderCommand => new Command<OrderModel>(async (order) =>
     {
-        // Pre-fill cart with this order's items and navigate
-        // plug in your CartService here when ready
-        await DisplayAlert("Újrarendelés", $"#{order.OrderIdentifierNumber} újrarendelése hamarosan elérhető.", "OK");
+        CartService.ReorderFromOrder(order);
+        await Shell.Current.GoToAsync("//CartPage");
     });
 
     public Command<OrderModel> ViewStatusCommand => new Command<OrderModel>(async (order) =>
