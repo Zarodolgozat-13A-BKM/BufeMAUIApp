@@ -30,12 +30,12 @@
                                 HeightRequest="80" WidthRequest="80"
                                 StrokeShape="RoundRectangle 40"
                                 HorizontalOptions="Center" VerticalOptions="Center">
-                            <!-- Checkmark path -->
-                            <Path Data="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"
-                                  Fill="{StaticResource Primary}"
-                                  Aspect="Uniform"
-                                  HeightRequest="36" WidthRequest="36"
-                                  HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <!-- Checkmark icon -->
+                            <Label Text="check"
+                                   FontFamily="MaterialIcons"
+                                   TextColor="{StaticResource Primary}"
+                                   FontSize="48"
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
                         </Border>
                     </Grid>
 
@@ -45,7 +45,7 @@
                            HorizontalOptions="Center"
                            HorizontalTextAlignment="Center"/>
 
-                    <Label Text="A konyha megkapta a rendelésedet."
+                    <Label Text="A büfé megkapta a rendelésedet."
                            FontSize="14"
                            TextColor="{AppThemeBinding Light=#897561, Dark=#9CA3AF}"
                            HorizontalOptions="Center"
@@ -84,11 +84,11 @@
                                     StrokeThickness="0"
                                     StrokeShape="RoundRectangle 18">
                                 <!-- Payment icon -->
-                                <Path Data="M20,4H4C2.89,4 2,4.89 2,6V18C2,19.11 2.89,20 4,20H20C21.11,20 22,19.11 22,18V6C22,4.89 21.11,4 20,4M20,18H4V12H20V18M20,8H4V6H20V8Z"
-                                      Fill="{Binding Step1IconColor}"
-                                      Aspect="Uniform"
-                                      HeightRequest="18" WidthRequest="18"
-                                      HorizontalOptions="Center" VerticalOptions="Center"/>
+                                <Label Text="payment"
+                                       FontFamily="MaterialIcons"
+                                       TextColor="{Binding Step1IconColor}"
+                                       FontSize="16"
+                                       HorizontalOptions="Center" VerticalOptions="Center"/>
                             </Border>
 
                             <!-- Step 2: Fizetve -->
@@ -99,11 +99,11 @@
                                     StrokeThickness="0"
                                     StrokeShape="RoundRectangle 18">
                                 <!-- Check circle icon -->
-                                <Path Data="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M11,16.5L18,9.5L16.59,8.09L11,13.67L7.91,10.59L6.5,12L11,16.5Z"
-                                      Fill="{Binding Step2IconColor}"
-                                      Aspect="Uniform"
-                                      HeightRequest="18" WidthRequest="18"
-                                      HorizontalOptions="Center" VerticalOptions="Center"/>
+                                <Label Text="check_circle"
+                                       FontFamily="MaterialIcons"
+                                       TextColor="{Binding Step2IconColor}"
+                                       FontSize="16"
+                                       HorizontalOptions="Center" VerticalOptions="Center"/>
                             </Border>
 
                             <!-- Step 3: Készítjük -->
@@ -114,11 +114,11 @@
                                     StrokeThickness="0"
                                     StrokeShape="RoundRectangle 18">
                                 <!-- Restaurant icon -->
-                                <Path Data="M18.06,22.99H11.03C10.11,23.0 9.3,22.41 9.07,21.52L6.54,11.78C5.9,11.91 5.44,12.5 5.44,13.16V19.22C5.44,19.77 5.0,20.22 4.44,20.22H3C2.44,20.22 2,19.77 2,19.22V13.16A4.53,4.53 0 0,1 6.47,8.63L11.65,7.58C12.16,7.47 12.68,7.58 13.1,7.87L17.36,10.67C17.77,10.95 18.06,11.39 18.16,11.89L19.6,20.92C19.69,21.47 19.57,22.04 19.25,22.5C19.0,22.83 18.54,23.01 18.06,22.99M21.03,1.54H19.09C18.24,1.54 17.55,2.23 17.55,3.08V10.5L18.55,10.5L20.5,3.83L21.03,3.83V1.54Z"
-                                      Fill="{Binding Step3IconColor}"
-                                      Aspect="Uniform"
-                                      HeightRequest="18" WidthRequest="18"
-                                      HorizontalOptions="Center" VerticalOptions="Center"/>
+                                <Label Text="restaurant"
+                                       FontFamily="MaterialIcons"
+                                       TextColor="{Binding Step3IconColor}"
+                                       FontSize="16"
+                                       HorizontalOptions="Center" VerticalOptions="Center"/>
                             </Border>
 
                             <!-- Step 4: Átvehető -->
@@ -129,11 +129,11 @@
                                     StrokeThickness="0"
                                     StrokeShape="RoundRectangle 18">
                                 <!-- Shopping bag icon -->
-                                <Path Data="M19,6H17C17,3.24 14.76,1 12,1C9.24,1 7,3.24 7,6H5C3.9,6 3,6.9 3,8V20C3,21.1 3.9,22 5,22H19C20.1,22 21,21.1 21,20V8C21,6.9 20.1,6 19,6M12,3C13.66,3 15,4.34 15,6H9C9,4.34 10.34,3 12,3M19,20H5V8H19V20M12,17C10.34,17 9,15.66 9,14C9,12.34 10.34,11 12,11C13.66,11 15,12.34 15,14C15,15.66 13.66,17 12,17Z"
-                                      Fill="{Binding Step4IconColor}"
-                                      Aspect="Uniform"
-                                      HeightRequest="18" WidthRequest="18"
-                                      HorizontalOptions="Center" VerticalOptions="Center"/>
+                                <Label Text="shopping_bag"
+                                       FontFamily="MaterialIcons"
+                                       TextColor="{Binding Step4IconColor}"
+                                       FontSize="16"
+                                       HorizontalOptions="Center" VerticalOptions="Center"/>
                             </Border>
                         </Grid>
 
@@ -171,18 +171,11 @@
                                 <Ellipse WidthRequest="8" HeightRequest="8"
                                          VerticalOptions="Center"
                                          Fill="{Binding WsStatusColor}"/>
-                                <Label Text="WebSocket"
+                                <Label Text="{Binding WsStatusText}"
                                        FontSize="11" FontAttributes="Bold"
                                        TextColor="{Binding WsStatusColor}"
                                        VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <Label Text="{Binding WsStatusText}"
-                                   FontSize="10"
-                                   TextColor="{AppThemeBinding Light=#897561, Dark=#9CA3AF}"
-                                   HorizontalOptions="Center"
-                                   HorizontalTextAlignment="Center"
-                                   LineBreakMode="WordWrap"
-                                   MaxLines="12"/>
                         </VerticalStackLayout>
 
                     </Grid>
@@ -197,11 +190,11 @@
                         Padding="12">
                     <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
                         <!-- Clock icon -->
-                        <Path Data="M12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2M16.24,16.24L11,13V7H12.5V12.2L17,14.9L16.24,16.24Z"
-                              Fill="{StaticResource Primary}"
-                              Aspect="Uniform"
-                              HeightRequest="22" WidthRequest="22"
-                              VerticalOptions="Center"/>
+                        <Label Text="schedule"
+                               FontFamily="MaterialIcons"
+                               TextColor="{StaticResource Primary}"
+                               FontSize="16"
+                               VerticalOptions="Center"/>
                         <VerticalStackLayout Spacing="2" VerticalOptions="Center">
                             <Label Text="SZÁLLÍTÁS NAPJA"
                                    FontSize="10" FontAttributes="Bold"
