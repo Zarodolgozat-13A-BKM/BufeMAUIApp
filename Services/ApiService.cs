@@ -22,6 +22,7 @@ namespace BufeApp.Services
         public static string StripeKeyEndpoint = "payment/stripe-key";
         public static string CheckoutEndpoint = "payment/checkout";
         public static string ItemEndpoint = "items";
+        public static string ReverbKeyEndpoint = "account/reverb-app-secret-and-key";
 
         private static LoadingPopup _loadingPopup;
         private static int _loadingCounter = 0;

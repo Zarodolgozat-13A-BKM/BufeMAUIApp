@@ -1,16 +1,283 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:BufeApp.Pages"
              x:Class="BufeApp.Pages.OrderStatusPage"
-             Title="OrderStatusPage">
-    <VerticalStackLayout Padding="24" Spacing="12" VerticalOptions="Center">
-        <Label Text="✅" FontSize="64" HorizontalOptions="Center"/>
-        <Label Text="{Binding OrderTitle}"
-               FontSize="22" FontAttributes="Bold"
-               HorizontalOptions="Center"/>
-        <Label Text="Rendelésed leadva! Hamarosan értesítünk."
-               FontSize="15" TextColor="#666"
-               HorizontalOptions="Center"
-               HorizontalTextAlignment="Center"/>
-    </VerticalStackLayout>
+             x:DataType="pages:OrderStatusViewModel"
+             Title=""
+             BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource BgDark}}">
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="True" IsEnabled="True"/>
+    </Shell.BackButtonBehavior>
+
+    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource BgDark}}"
+          RowDefinitions="*,Auto">
+
+        <!-- Scrollable Content -->
+        <ScrollView Grid.Row="0" VerticalScrollBarVisibility="Never">
+            <VerticalStackLayout Spacing="0">
+
+                <!-- ═══ SUCCESS HEADER ═══ -->
+                <VerticalStackLayout Padding="16,24,16,16" Spacing="8" HorizontalOptions="Center">
+
+                    <Grid HeightRequest="96" WidthRequest="96" HorizontalOptions="Center">
+                        <Border Stroke="{StaticResource Primary}" StrokeThickness="2" Opacity="0.2"
+                                HeightRequest="96" WidthRequest="96"
+                                StrokeShape="RoundRectangle 48"
+                                HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <Border BackgroundColor="#1Aee8c2b" StrokeThickness="0"
+                                HeightRequest="80" WidthRequest="80"
+                                StrokeShape="RoundRectangle 40"
+                                HorizontalOptions="Center" VerticalOptions="Center">
+                            <Label Text="check"
+                                   FontFamily="MaterialIcons"
+                                   TextColor="{StaticResource Primary}"
+                                   FontSize="48"
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Border>
+                    </Grid>
+
+                    <Label Text="Sikeres rendelés!"
+                           FontSize="26" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"/>
+
+                    <Label Text="A büfé megkapta a rendelésedet."
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Light=#897561, Dark=#9CA3AF}"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"/>
+
+                    <Label Text="{Binding OrderTitle}"
+                           FontSize="13" FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}"
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+
+                <!-- ═══ 4-STEP STEPPER ═══ -->
+                <Border Margin="16,0,16,16"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+                        Stroke="Transparent"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="16,20,16,16">
+                    <Grid RowDefinitions="Auto,Auto,Auto">
+
+                        <!-- Step circles -->
+                        <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*">
+
+                            <!-- Background connector line -->
+                            <BoxView Grid.ColumnSpan="4"
+                                     HeightRequest="2"
+                                     VerticalOptions="Center"
+                                     Margin="26,0"
+                                     Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}"/>
+
+                            <!-- Step 1: Fizetésre vár -->
+                            <Border Grid.Column="0"
+                                    WidthRequest="36" HeightRequest="36"
+                                    HorizontalOptions="Center"
+                                    BackgroundColor="{Binding Steps[0].Background}"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 18">
+                                <Label Text="payment"
+                                       FontFamily="MaterialIcons"
+                                       TextColor="{Binding Steps[0].IconColor}"
+                                       FontSize="16"
+                                       HorizontalOptions="Center" VerticalOptions="Center"/>
+                            </Border>
+
+                            <!-- Step 2: Fizetve -->
+                            <Border Grid.Column="1"
+                                    WidthRequest="36" HeightRequest="36"
+                                    HorizontalOptions="Center"
+                                    BackgroundColor="{Binding Steps[1].Background}"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 18">
+                                <Label Text="check_circle"
+                                       FontFamily="MaterialIcons"
+                                       TextColor="{Binding Steps[1].IconColor}"
+                                       FontSize="16"
+                                       HorizontalOptions="Center" VerticalOptions="Center"/>
+                            </Border>
+
+                            <!-- Step 3: Készítjük -->
+                            <Border Grid.Column="2"
+                                    WidthRequest="36" HeightRequest="36"
+                                    HorizontalOptions="Center"
+                                    BackgroundColor="{Binding Steps[2].Background}"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 18">
+                                <Label Text="restaurant"
+                                       FontFamily="MaterialIcons"
+                                       TextColor="{Binding Steps[2].IconColor}"
+                                       FontSize="16"
+                                       HorizontalOptions="Center" VerticalOptions="Center"/>
+                            </Border>
+
+                            <!-- Step 4: Átvehető -->
+                            <Border Grid.Column="3"
+                                    WidthRequest="36" HeightRequest="36"
+                                    HorizontalOptions="Center"
+                                    BackgroundColor="{Binding Steps[3].Background}"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 18">
+                                <Label Text="shopping_bag"
+                                       FontFamily="MaterialIcons"
+                                       TextColor="{Binding Steps[3].IconColor}"
+                                       FontSize="16"
+                                       HorizontalOptions="Center" VerticalOptions="Center"/>
+                            </Border>
+                        </Grid>
+
+                        <!-- Step labels -->
+                        <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*" Margin="0,10,0,0">
+                            <Label Grid.Column="0"
+                                   Text="Fizetésre&#x0a;vár"
+                                   FontSize="10" FontAttributes="Bold"
+                                   TextColor="{Binding Steps[0].LabelColor}"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center"/>
+                            <Label Grid.Column="1"
+                                   Text="Fizetve"
+                                   FontSize="10" FontAttributes="Bold"
+                                   TextColor="{Binding Steps[1].LabelColor}"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center"/>
+                            <Label Grid.Column="2"
+                                   Text="Készítjük"
+                                   FontSize="10" FontAttributes="Bold"
+                                   TextColor="{Binding Steps[2].LabelColor}"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center"/>
+                            <Label Grid.Column="3"
+                                   Text="Átvehető"
+                                   FontSize="10" FontAttributes="Bold"
+                                   TextColor="{Binding Steps[3].LabelColor}"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center"/>
+                        </Grid>
+
+                        <!-- WS status indicator -->
+                        <VerticalStackLayout Grid.Row="2" Margin="0,14,0,0" Spacing="4">
+                            <HorizontalStackLayout HorizontalOptions="Center" Spacing="6">
+                                <Ellipse WidthRequest="8" HeightRequest="8"
+                                         VerticalOptions="Center"
+                                         Fill="{Binding WsStatusColor}"/>
+                                <Label Text="{Binding WsStatusText}"
+                                       FontSize="11" FontAttributes="Bold"
+                                       TextColor="{Binding WsStatusColor}"
+                                       VerticalOptions="Center"/>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+
+                    </Grid>
+                </Border>
+
+                <!-- ═══ DELIVERY DATE ═══ -->
+                <Border Margin="16,0,16,16"
+                        BackgroundColor="#1Aee8c2b"
+                        Stroke="#33ee8c2b"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="12">
+                    <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                        <Label Text="schedule"
+                               FontFamily="MaterialIcons"
+                               TextColor="{StaticResource Primary}"
+                               FontSize="16"
+                               VerticalOptions="Center"/>
+                        <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                            <Label Text="SZÁLLÍTÁS NAPJA"
+                                   FontSize="10" FontAttributes="Bold"
+                                   CharacterSpacing="1.2"
+                                   TextColor="{StaticResource Primary}"/>
+                            <Label Text="{Binding DeliveryDateLabel}"
+                                   FontSize="16" FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}"/>
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                </Border>
+
+                <!-- ═══ ORDER SUMMARY ═══ -->
+                <VerticalStackLayout Padding="16,0,16,8">
+                    <Label Text="Rendelés összesítése"
+                           FontSize="18" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}"
+                           Margin="0,0,0,16"/>
+
+                    <Border BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+                            Stroke="Transparent"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 12"
+                            Padding="16">
+                        <VerticalStackLayout Spacing="0">
+
+                            <CollectionView ItemsSource="{Binding OrderItems}" SelectionMode="None">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="pages:OrderItemDisplayModel">
+                                        <Grid ColumnDefinitions="Auto,*,Auto"
+                                              ColumnSpacing="12"
+                                              Margin="0,0,0,16">
+                                            <Label Grid.Column="0"
+                                                   Text="{Binding QuantityLabel}"
+                                                   FontSize="14" FontAttributes="Bold"
+                                                   TextColor="{StaticResource Primary}"
+                                                   VerticalOptions="Center"/>
+                                            <Label Grid.Column="1"
+                                                   Text="{Binding Name}"
+                                                   FontSize="14"
+                                                   TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}"
+                                                   VerticalOptions="Center"/>
+                                            <Label Grid.Column="2"
+                                                   Text="{Binding PriceLabel}"
+                                                   FontSize="14" FontAttributes="Bold"
+                                                   TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}"
+                                                   VerticalOptions="Center"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                            <BoxView HeightRequest="1"
+                                     Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}"
+                                     Margin="0,4"/>
+
+                            <Grid ColumnDefinitions="*,Auto" Margin="0,12,0,0">
+                                <Label Grid.Column="0" Text="Összesen"
+                                       FontSize="16" FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}"
+                                       VerticalOptions="End"/>
+                                <Label Grid.Column="1"
+                                       Text="{Binding TotalLabel}"
+                                       FontSize="20" FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}"/>
+                            </Grid>
+
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- ═══ BOTTOM BUTTON ═══ -->
+        <VerticalStackLayout Grid.Row="1" Spacing="0" Margin="16,16,16,16">
+            <Button Text="Vissza a főoldalra"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    CornerRadius="12"
+                    HeightRequest="56"
+                    Command="{Binding GoHomeCommand}">
+                <Button.Shadow>
+                    <Shadow Brush="{StaticResource Primary}" Opacity="0.25" Radius="10" Offset="0,4"/>
+                </Button.Shadow>
+            </Button>
+        </VerticalStackLayout>
+
+    </Grid>
 </ContentPage>

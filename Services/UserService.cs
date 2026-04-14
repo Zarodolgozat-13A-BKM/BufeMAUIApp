@@ -12,6 +12,7 @@ namespace BufeApp.Services
         public static string BearerToken { get; set; }
         public static string Email { get; set; }
         public static string Name { get; set; }
+        public static string ReverbKey { get; set; }
 
         public static List<OrderModel> Orders { get; set; } = new();
 
@@ -44,10 +45,12 @@ namespace BufeApp.Services
         public static async Task SetUserData()
         {
             var userData = await ApiService.GetAsync<UserDataResponseModel>(ApiService.MeEndpoint, BearerToken);
+            ReverbKeyModel reverbKey = await ApiService.GetAsync<ReverbKeyModel>(ApiService.ReverbKeyEndpoint, BearerToken);
             if (userData != null)
             {
                 Name = userData.full_name;
                 Email = userData.email;
+                ReverbKey = reverbKey.key;
                 await LoadOrdersAsync();
             }
             else
@@ -62,7 +65,7 @@ namespace BufeApp.Services
             BearerToken = null;
             Email = null;
             Name = null;
-            Application.Current.MainPage.DisplayAlert("Hiba", "Hiba történt, kérlek jelentkezz be újra!", "Ok");
+            await Application.Current.MainPage.DisplayAlert("Hiba", "Hiba történt, kérlek jelentkezz be újra!", "Ok");
             await Shell.Current.GoToAsync("//LoginPage");
         }
 
@@ -82,22 +85,6 @@ namespace BufeApp.Services
                 throw new Exception("Logout failed");
             }
         }
-
-        //public static async Task RegisterUser(string Name, string Email, string Password, string PasswordConfirmation)
-        //{
-        //    var registerRequest = new { name = Name, email = Email, password = Password, password_confirmation = PasswordConfirmation };
-        //    var registerResponse = await ApiService.PostAsync<object, RegisterResponse>(ApiService.RegisterEndpoint, registerRequest);
-        //    if (registerResponse != null && !string.IsNullOrEmpty(registerResponse.AccessToken))
-        //    {
-        //        BearerToken = registerResponse.AccessToken;
-        //        //SetUserData(); // Implement this method to fetch and set user data
-        //        await StorageService.SetSecureValue("BearerToken", BearerToken);
-        //    }
-        //    else
-        //    {
-        //        throw new Exception("Registration failed");
-        //    }
-        //}
 
         public static async Task LoadOrdersAsync()
         {

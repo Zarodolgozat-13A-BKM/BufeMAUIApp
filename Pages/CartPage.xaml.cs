@@ -189,6 +189,8 @@ public partial class CartPage : ContentPage
             var checkout = await ApiService.PostAsync<OrderRequestModel, CheckoutResponse>(
                 ApiService.CheckoutEndpoint, request, token);
 
+            AddOrderToUserService(checkout.Order);
+
             await Application.Current.MainPage.Navigation.PushModalAsync(
                 new PaymentWebViewPage(checkout, keyResponse.PublishableKey));
         }
@@ -219,8 +221,10 @@ public partial class CartPage : ContentPage
             var checkout = await ApiService.PostAsync<OrderRequestModel, CheckoutResponse>(
                 ApiService.CheckoutEndpoint, request, token);
 
+            AddOrderToUserService(checkout.Order);
+
             await Shell.Current.GoToAsync($"//MainPage");
-            await Shell.Current.GoToAsync($"{nameof(OrderStatusPage)}?OrderId={checkout.Order.Id}");
+            await Shell.Current.GoToAsync($"{nameof(OrderStatusPage)}?OrderId={checkout.Order.OrderIdentifierNumber}");
             CartService.ClearCart();
         }
         catch (Exception ex)
@@ -228,5 +232,28 @@ public partial class CartPage : ContentPage
             if (ex.Message.Contains("TimeSpan")) await Application.Current.MainPage.DisplayAlert("Hiba", "Kérlek válassz időpontot!", "OK");
             else await Application.Current.MainPage.DisplayAlert("Hiba", ex.Message, "OK");
         }
+    }
+
+    private void AddOrderToUserService(OrderDto order)
+    {
+        List<OrderItemModel> items = order.Items.Select(i => new OrderItemModel
+        {
+            ItemId = i.ItemId,
+            ItemName = i.ItemName,
+            Quantity = i.Quantity,
+            Price = i.Price
+        }).ToList();
+        OrderModel orderModel = new OrderModel
+        {
+            Id = order.Id,
+            OrderIdentifierNumber = order.OrderIdentifierNumber,
+            Status = order.Status,
+            DeliveryDate = order.DeliveryDate,
+            TotalPrice = order.TotalPrice,
+            Comment = order.Comment,
+            Items = items
+        };
+
+        UserService.Orders.Add(orderModel);
     }
 }
