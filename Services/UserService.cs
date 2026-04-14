@@ -45,11 +45,12 @@ namespace BufeApp.Services
         public static async Task SetUserData()
         {
             var userData = await ApiService.GetAsync<UserDataResponseModel>(ApiService.MeEndpoint, BearerToken);
+            ReverbKeyModel reverbKey = await ApiService.GetAsync<ReverbKeyModel>(ApiService.ReverbKeyEndpoint, BearerToken);
             if (userData != null)
             {
                 Name = userData.full_name;
                 Email = userData.email;
-                ReverbKey = (await ApiService.GetAsync<dynamic>(ApiService.ReverbKeyEndpoint, BearerToken)).key;
+                ReverbKey = reverbKey.key;
                 await LoadOrdersAsync();
             }
             else
