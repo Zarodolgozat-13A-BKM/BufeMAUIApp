@@ -7,11 +7,6 @@ using System.Text.Json;
 
 namespace BufeApp.Pages;
 
-// ============================================================
-//  Code-behind
-//  Starts tracking when the page opens,
-//  stops when the user navigates away.
-// ============================================================
 public partial class OrderStatusPage : ContentPage
 {
     private readonly OrderStatusViewModel _vm;
@@ -36,9 +31,6 @@ public partial class OrderStatusPage : ContentPage
     }
 }
 
-// ============================================================
-//  A single item row in the order summary list
-// ============================================================
 public class OrderItemDisplayModel
 {
     public string QuantityLabel { get; init; } = string.Empty;
@@ -46,23 +38,14 @@ public class OrderItemDisplayModel
     public string PriceLabel { get; init; } = string.Empty;
 }
 
-// ============================================================
-//  ViewModel
-//
-//  Receives the order's identifier number as a navigation
-//  parameter (e.g. GoToAsync("OrderStatusPage?OrderId=56"))
-//  and uses PusherService to track its status in real time.
-// ============================================================
 [QueryProperty("OrderIdentifierNumber", "OrderId")]
 public partial class OrderStatusViewModel : ObservableObject
 {
-    // ── Hungarian status strings as stored in the database ──
     private const string StatusWaitingForPayment = "fizetésre vár";
     private const string StatusPaid = "fizetve";
     private const string StatusBeingPrepared = "készítjük";
     private const string StatusReadyForPickup = "átvehető";
 
-    // ── The order we are tracking ────────────────────────────
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(OrderTitle))]
     private int orderIdentifierNumber;
@@ -71,12 +54,10 @@ public partial class OrderStatusViewModel : ObservableObject
         ? string.Empty
         : $"#{orderIdentifierNumber} rendelés";
 
-    // ── Displayed order details ──────────────────────────────
     [ObservableProperty] private string deliveryDateLabel = "–";
     [ObservableProperty] private string totalLabel = "–";
     public ObservableCollection<OrderItemDisplayModel> OrderItems { get; } = new();
 
-    // ── The 4 stepper steps (each has a background, icon and label colour) ──
     [ObservableProperty] private Color step1Background = Colors.Transparent;
     [ObservableProperty] private Color step1IconColor = Colors.Gray;
     [ObservableProperty] private Color step1LabelColor = Colors.Gray;
@@ -93,17 +74,11 @@ public partial class OrderStatusViewModel : ObservableObject
     [ObservableProperty] private Color step4IconColor = Colors.Gray;
     [ObservableProperty] private Color step4LabelColor = Colors.Gray;
 
-    // ── Connection status dot shown below the stepper ───────
     [ObservableProperty] private Color wsStatusColor = Colors.Gray;
     [ObservableProperty] private string wsStatusText = "Csatlakozás…";
 
-    // ── PusherService instance for this page session ─────────
     private PusherService? _pusher;
 
-    // ============================================================
-    //  Called by the page when it becomes visible.
-    //  Shows cached data immediately, then opens the connection.
-    // ============================================================
     public async Task StartTrackingAsync()
     {
         ShowCachedOrderData();
@@ -123,9 +98,6 @@ public partial class OrderStatusViewModel : ObservableObject
             onEventReceived: OnOrderStateChangedAsync);
     }
 
-    // ============================================================
-    //  Called by the page when the user navigates away.
-    // ============================================================
     public async Task StopTrackingAsync()
     {
         if (_pusher is not null)
@@ -136,11 +108,6 @@ public partial class OrderStatusViewModel : ObservableObject
         }
     }
 
-    // ============================================================
-    //  Fills the page immediately with whatever is already in the
-    //  local cache (UserService.Orders), so there is no blank flash
-    //  while the WebSocket is still connecting.
-    // ============================================================
     private void ShowCachedOrderData()
     {
         var cachedOrder = UserService.Orders
@@ -152,23 +119,15 @@ public partial class OrderStatusViewModel : ObservableObject
         UpdateStepper(cachedOrder.Status);
     }
 
-    // ============================================================
-    //  Called by PusherService whenever an "order.state.changed"
-    //  event arrives on our channel.
-    //
-    //  The event payload only contains the order_id — we then
-    //  fetch the full updated order from the REST API.
-    //  This matches how the web app handles the same event.
-    // ============================================================
     private async Task OnOrderStateChangedAsync(string eventDataJson)
     {
+
         using var doc = JsonDocument.Parse(eventDataJson);
 
         if (!doc.RootElement.TryGetProperty("order_id", out var orderIdEl))
             return;
 
         var orderId = orderIdEl.GetInt32();
-        System.Diagnostics.Debug.WriteLine($"[OrderStatus] order.state.changed for order_id={orderId}");
 
         // Fetch the latest version of all our orders from the API
         var freshOrders = await ApiService.GetAsync<List<OrderModel>>(
@@ -189,9 +148,6 @@ public partial class OrderStatusViewModel : ObservableObject
         });
     }
 
-    // ============================================================
-    //  Called by PusherService when the connection comes up or drops.
-    // ============================================================
     private void OnConnectionStateChanged(bool isConnected)
     {
         MainThread.BeginInvokeOnMainThread(() =>
@@ -201,9 +157,6 @@ public partial class OrderStatusViewModel : ObservableObject
         });
     }
 
-    // ============================================================
-    //  Fills in the delivery date, item list and total price.
-    // ============================================================
     private void UpdateOrderDetails(OrderModel order)
     {
         DeliveryDateLabel = order.FormattedDate ?? "–";
@@ -221,11 +174,6 @@ public partial class OrderStatusViewModel : ObservableObject
         }
     }
 
-    // ============================================================
-    //  Colours the 4 stepper steps based on the current status.
-    //  All steps up to and including the current one are highlighted
-    //  in the primary colour; future steps remain grey.
-    // ============================================================
     private void UpdateStepper(string? status)
     {
         var primaryColor = GetAppResource<Color>("Primary");
@@ -261,9 +209,6 @@ public partial class OrderStatusViewModel : ObservableObject
         }
     }
 
-    // ============================================================
-    //  Looks up a colour or other resource from App.xaml.
-    // ============================================================
     private static T GetAppResource<T>(string key)
     {
         if (Application.Current!.Resources.TryGetValue(key, out var value) && value is T typed)
@@ -271,9 +216,6 @@ public partial class OrderStatusViewModel : ObservableObject
         return default!;
     }
 
-    // ============================================================
-    //  Navigates back to the main page.
-    // ============================================================
     [RelayCommand]
     private async Task GoHome()
     {

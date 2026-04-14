@@ -21,10 +21,7 @@ public class PusherService
     public event Action<bool>? ConnectionStateChanged;
 
     // Subscribes to a private channel and starts listening for events.
-    public async Task SubscribeAsync(
-        string channelName,
-        string eventName,
-        Func<string, Task> onEventReceived)
+    public async Task SubscribeAsync(string channelName, string eventName, Func<string, Task> onEventReceived)
     {
         _cancellation = new CancellationTokenSource();
         await ConnectAndListenAsync(channelName, eventName, onEventReceived, _cancellation.Token);
@@ -46,11 +43,7 @@ public class PusherService
     }
 
     //  Internal connection loop with auto-reconnect.
-    private async Task ConnectAndListenAsync(
-        string channelName,
-        string eventName,
-        Func<string, Task> onEventReceived,
-        CancellationToken cancellationToken)
+    private async Task ConnectAndListenAsync(string channelName, string eventName, Func<string, Task> onEventReceived, CancellationToken cancellationToken)
     {
         var connectionUri = new Uri($"wss://{WebSocketHost}/app/{AppKey}?protocol=7&client=maui&version=1.0");
 
@@ -109,10 +102,7 @@ public class PusherService
     }
 
     //  Calls the auth endpoint
-    private async Task<string> AuthorizeChannelAsync(
-        string socketId,
-        string channelName,
-        CancellationToken cancellationToken)
+    private async Task<string> AuthorizeChannelAsync(string socketId, string channelName, CancellationToken cancellationToken)
     {
         using var http = new HttpClient();
         http.DefaultRequestHeaders.Authorization =
@@ -134,10 +124,7 @@ public class PusherService
     }
 
     //  Sends the "pusher:subscribe" message to join the channel.
-    private async Task SubscribeToChannelAsync(
-        string channelName,
-        string authToken,
-        CancellationToken cancellationToken)
+    private async Task SubscribeToChannelAsync(string channelName, string authToken, CancellationToken cancellationToken)
     {
         var message = JsonSerializer.Serialize(new
         {
@@ -153,11 +140,7 @@ public class PusherService
     }
 
     //  Handles ping/pong keepaalives and forwards matching events to the caller.
-    private async Task ListenForEventsAsync(
-        string channelName,
-        string targetEvent,
-        Func<string, Task> onEventReceived,
-        CancellationToken cancellationToken)
+    private async Task ListenForEventsAsync(string channelName, string targetEvent, Func<string, Task> onEventReceived, CancellationToken cancellationToken)
     {
         while (_socket!.State == WebSocketState.Open && !cancellationToken.IsCancellationRequested)
         {
