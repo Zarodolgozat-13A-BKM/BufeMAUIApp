@@ -7,7 +7,6 @@ namespace BufeApp.Services;
 public class PusherService
 {
     // ── Server connection settings ───────────────────────────
-    private const string AppKey = "lkmdfbj4dsd2tyfuprvn";
     private const string WebSocketHost = "bufeapi-ws.jcloud.jedlik.cloud";
     private const string AuthEndpoint = "https://bufeapi.jcloud.jedlik.cloud/broadcasting/auth";
 
@@ -19,6 +18,7 @@ public class PusherService
 
     /// Fires whenever the connection state changes (connected / reconnecting).
     public event Action<bool>? ConnectionStateChanged;
+
 
     // Subscribes to a private channel and starts listening for events.
     public async Task SubscribeAsync(string channelName, string eventName, Func<string, Task> onEventReceived)
@@ -45,7 +45,7 @@ public class PusherService
     //  Internal connection loop with auto-reconnect.
     private async Task ConnectAndListenAsync(string channelName, string eventName, Func<string, Task> onEventReceived, CancellationToken cancellationToken)
     {
-        var connectionUri = new Uri($"wss://{WebSocketHost}/app/{AppKey}?protocol=7&client=maui&version=1.0");
+        var connectionUri = new Uri($"wss://{WebSocketHost}/app/{UserService.ReverbKey}?protocol=7&client=maui&version=1.0");
 
         while (!cancellationToken.IsCancellationRequested)
         {
