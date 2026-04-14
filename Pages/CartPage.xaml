@@ -6,15 +6,6 @@
              x:Class="BufeApp.Pages.CartPage"
              Shell.NavBarIsVisible="False"
              Title="">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <x:String x:Key="IconBack">M20,11H7.83L13.42,5.41L12,4L4,12L12,20L13.41,18.59L7.83,13H20V11Z</x:String>
-            <x:String x:Key="IconStorefront">M22,7.52V10.5C22,11.23 21.65,11.89 21.11,12.31L21,12.42V20C21,21.1 20.1,22 19,22H5C3.89,22 3,21.1 3,20V12.42L2.89,12.31C2.35,11.89 2,11.23 2,10.5V7.52L3.93,5.6C4.42,5.1 5.09,4.8 5.82,4.8H18.18C18.91,4.8 19.58,5.1 20.07,5.6L22,7.52M20,10.5V7.8L18.45,6.23C18.37,6.15 18.28,6 18.18,6H5.82C5.72,6 5.63,6.15 5.55,6.23L4,7.8V10.5H20M5,20H19V12.5C18.73,12.5 18.47,12.41 18.26,12.26L18,12.06L17.74,12.26C17.53,12.41 17.27,12.5 17,12.5C16.73,12.5 16.47,12.41 16.26,12.26L16,12.06L15.74,12.26C15.53,12.41 15.27,12.5 15,12.5C14.73,12.5 14.47,12.41 14.26,12.26L14,12.06L13.74,12.26C13.53,12.41 13.27,12.5 13,12.5C12.73,12.5 12.47,12.41 12.26,12.26L12,12.06L11.74,12.26C11.53,12.41 11.27,12.5 11,12.5C10.73,12.5 10.47,12.41 10.26,12.26L10,12.06L9.74,12.26C9.53,12.41 9.27,12.5 9,12.5C8.73,12.5 8.47,12.41 8.26,12.26L8,12.06L7.74,12.26C7.53,12.41 7.27,12.5 7,12.5C6.73,12.5 6.47,12.41 6.26,12.26L6,12.06L5.74,12.26C5.53,12.41 5.27,12.5 5,12.5V20Z</x:String>
-            <x:String x:Key="IconStar">M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z</x:String>
-            <x:String x:Key="IconDelete">M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19C6,20.1 6.9,21 8,21H16C17.1,21 18,20.1 18,19V7H6V19Z</x:String>
-            <x:String x:Key="IconAlert">M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M11,16.5H13V18.5H11V16.5M11,5H13V14.5H11V5Z</x:String>
-        </ResourceDictionary>
-    </ContentPage.Resources>
 
     <Grid BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource BgDark}}" Padding="0,16,0,0">
 
@@ -31,11 +22,7 @@
         HeightRequest="96" WidthRequest="96"
         StrokeShape="RoundRectangle 48"
         HorizontalOptions="Center" VerticalOptions="Center">
-                    <Path Data="{StaticResource IconAlert}" 
-            Fill="{StaticResource Primary}"
-            Aspect="Uniform"
-            HeightRequest="52" WidthRequest="52"
-            HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <Label Text="warning" FontFamily="MaterialIcons" TextColor="{StaticResource Primary}" FontSize="52" HorizontalOptions="Center" VerticalOptions="Center"/>
                 </Border>
             </Grid>
             <VerticalStackLayout Spacing="8">
@@ -72,11 +59,11 @@
                                 <Label x:Name="SelectedTimeLabel" Text="Válassz időpontot..." 
                                        TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=White}" 
                                        VerticalOptions="Center" FontSize="14" />
-                                <Path x:Name="ChevronIcon" Grid.Column="1" 
-                                      Data="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" 
-                                      Fill="{StaticResource Primary}" 
-                                      VerticalOptions="Center" HorizontalOptions="Center" 
-                                      HeightRequest="24" WidthRequest="24" Aspect="Uniform" />
+                                <Label x:Name="ChevronIcon" Grid.Column="1" 
+                                       Text="expand_more" FontFamily="MaterialIcons"
+                                       TextColor="{StaticResource Primary}" 
+                                       VerticalOptions="Center" HorizontalOptions="Center" 
+                                       FontSize="24" />
                             </Grid>
 
                             <!-- Options Container -->
@@ -103,7 +90,7 @@
                 <Border Margin="16,8,16,16" BackgroundColor="{AppThemeBinding Light=#1Aee8c2b, Dark=#1Aee8c2b}"
                         Stroke="{AppThemeBinding Light=#33ee8c2b, Dark=#33ee8c2b}" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="12">
                     <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
-                        <Path Data="{StaticResource IconStorefront}" Fill="{StaticResource Primary}" Aspect="Uniform" HeightRequest="20" WidthRequest="20" />
+                        <Label Text="storefront" FontFamily="MaterialIcons" TextColor="{StaticResource Primary}" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" />
                         <Label Text="Átvétel az iskolai büfében." TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark=#e5e7eb}" FontSize="14" VerticalOptions="Center"/>
                     </HorizontalStackLayout>
                 </Border>
@@ -161,7 +148,7 @@ StrokeThickness="1" StrokeShape="RoundRectangle 12">
                                                 <Grid.GestureRecognizers>
                                                     <TapGestureRecognizer Tapped="OnDeleteItem" CommandParameter="{Binding .}" />
                                                 </Grid.GestureRecognizers>
-                                                <Path Data="{StaticResource IconDelete}" Fill="{AppThemeBinding Light=#EF4444, Dark=#F87171}" Aspect="Uniform" HeightRequest="20" WidthRequest="20" HorizontalOptions="Center" VerticalOptions="Center" />
+                                                <Label Text="delete" FontFamily="MaterialIcons" TextColor="{AppThemeBinding Light=#EF4444, Dark=#F87171}" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" />
                                             </Grid>
                                         </Grid>
                                     </DataTemplate>
