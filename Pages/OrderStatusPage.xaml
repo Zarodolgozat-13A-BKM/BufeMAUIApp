@@ -30,7 +30,6 @@
                                 HeightRequest="80" WidthRequest="80"
                                 StrokeShape="RoundRectangle 40"
                                 HorizontalOptions="Center" VerticalOptions="Center">
-                            <!-- Checkmark icon -->
                             <Label Text="check"
                                    FontFamily="MaterialIcons"
                                    TextColor="{StaticResource Primary}"
@@ -80,13 +79,12 @@
                             <Border Grid.Column="0"
                                     WidthRequest="36" HeightRequest="36"
                                     HorizontalOptions="Center"
-                                    BackgroundColor="{Binding Step1Background}"
+                                    BackgroundColor="{Binding Steps[0].Background}"
                                     StrokeThickness="0"
                                     StrokeShape="RoundRectangle 18">
-                                <!-- Payment icon -->
                                 <Label Text="payment"
                                        FontFamily="MaterialIcons"
-                                       TextColor="{Binding Step1IconColor}"
+                                       TextColor="{Binding Steps[0].IconColor}"
                                        FontSize="16"
                                        HorizontalOptions="Center" VerticalOptions="Center"/>
                             </Border>
@@ -95,13 +93,12 @@
                             <Border Grid.Column="1"
                                     WidthRequest="36" HeightRequest="36"
                                     HorizontalOptions="Center"
-                                    BackgroundColor="{Binding Step2Background}"
+                                    BackgroundColor="{Binding Steps[1].Background}"
                                     StrokeThickness="0"
                                     StrokeShape="RoundRectangle 18">
-                                <!-- Check circle icon -->
                                 <Label Text="check_circle"
                                        FontFamily="MaterialIcons"
-                                       TextColor="{Binding Step2IconColor}"
+                                       TextColor="{Binding Steps[1].IconColor}"
                                        FontSize="16"
                                        HorizontalOptions="Center" VerticalOptions="Center"/>
                             </Border>
@@ -110,13 +107,12 @@
                             <Border Grid.Column="2"
                                     WidthRequest="36" HeightRequest="36"
                                     HorizontalOptions="Center"
-                                    BackgroundColor="{Binding Step3Background}"
+                                    BackgroundColor="{Binding Steps[2].Background}"
                                     StrokeThickness="0"
                                     StrokeShape="RoundRectangle 18">
-                                <!-- Restaurant icon -->
                                 <Label Text="restaurant"
                                        FontFamily="MaterialIcons"
-                                       TextColor="{Binding Step3IconColor}"
+                                       TextColor="{Binding Steps[2].IconColor}"
                                        FontSize="16"
                                        HorizontalOptions="Center" VerticalOptions="Center"/>
                             </Border>
@@ -125,13 +121,12 @@
                             <Border Grid.Column="3"
                                     WidthRequest="36" HeightRequest="36"
                                     HorizontalOptions="Center"
-                                    BackgroundColor="{Binding Step4Background}"
+                                    BackgroundColor="{Binding Steps[3].Background}"
                                     StrokeThickness="0"
                                     StrokeShape="RoundRectangle 18">
-                                <!-- Shopping bag icon -->
                                 <Label Text="shopping_bag"
                                        FontFamily="MaterialIcons"
-                                       TextColor="{Binding Step4IconColor}"
+                                       TextColor="{Binding Steps[3].IconColor}"
                                        FontSize="16"
                                        HorizontalOptions="Center" VerticalOptions="Center"/>
                             </Border>
@@ -142,30 +137,30 @@
                             <Label Grid.Column="0"
                                    Text="Fizetésre&#x0a;vár"
                                    FontSize="10" FontAttributes="Bold"
-                                   TextColor="{Binding Step1LabelColor}"
+                                   TextColor="{Binding Steps[0].LabelColor}"
                                    HorizontalOptions="Center"
                                    HorizontalTextAlignment="Center"/>
                             <Label Grid.Column="1"
                                    Text="Fizetve"
                                    FontSize="10" FontAttributes="Bold"
-                                   TextColor="{Binding Step2LabelColor}"
+                                   TextColor="{Binding Steps[1].LabelColor}"
                                    HorizontalOptions="Center"
                                    HorizontalTextAlignment="Center"/>
                             <Label Grid.Column="2"
                                    Text="Készítjük"
                                    FontSize="10" FontAttributes="Bold"
-                                   TextColor="{Binding Step3LabelColor}"
+                                   TextColor="{Binding Steps[2].LabelColor}"
                                    HorizontalOptions="Center"
                                    HorizontalTextAlignment="Center"/>
                             <Label Grid.Column="3"
                                    Text="Átvehető"
                                    FontSize="10" FontAttributes="Bold"
-                                   TextColor="{Binding Step4LabelColor}"
+                                   TextColor="{Binding Steps[3].LabelColor}"
                                    HorizontalOptions="Center"
                                    HorizontalTextAlignment="Center"/>
                         </Grid>
 
-                        <!-- WS debug indicator -->
+                        <!-- WS status indicator -->
                         <VerticalStackLayout Grid.Row="2" Margin="0,14,0,0" Spacing="4">
                             <HorizontalStackLayout HorizontalOptions="Center" Spacing="6">
                                 <Ellipse WidthRequest="8" HeightRequest="8"
@@ -189,7 +184,6 @@
                         StrokeShape="RoundRectangle 12"
                         Padding="12">
                     <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
-                        <!-- Clock icon -->
                         <Label Text="schedule"
                                FontFamily="MaterialIcons"
                                TextColor="{StaticResource Primary}"

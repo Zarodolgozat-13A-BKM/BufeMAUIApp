@@ -38,6 +38,14 @@ public class OrderItemDisplayModel
     public string PriceLabel { get; init; } = string.Empty;
 }
 
+// Holds the visual state of a single stepper step
+public partial class StepState : ObservableObject
+{
+    [ObservableProperty] private Color background = Colors.Transparent;
+    [ObservableProperty] private Color iconColor = Colors.Gray;
+    [ObservableProperty] private Color labelColor = Colors.Gray;
+}
+
 [QueryProperty("OrderIdentifierNumber", "OrderId")]
 public partial class OrderStatusViewModel : ObservableObject
 {
@@ -56,23 +64,13 @@ public partial class OrderStatusViewModel : ObservableObject
 
     [ObservableProperty] private string deliveryDateLabel = "–";
     [ObservableProperty] private string totalLabel = "–";
+
     public ObservableCollection<OrderItemDisplayModel> OrderItems { get; } = new();
 
-    [ObservableProperty] private Color step1Background = Colors.Transparent;
-    [ObservableProperty] private Color step1IconColor = Colors.Gray;
-    [ObservableProperty] private Color step1LabelColor = Colors.Gray;
-
-    [ObservableProperty] private Color step2Background = Colors.Transparent;
-    [ObservableProperty] private Color step2IconColor = Colors.Gray;
-    [ObservableProperty] private Color step2LabelColor = Colors.Gray;
-
-    [ObservableProperty] private Color step3Background = Colors.Transparent;
-    [ObservableProperty] private Color step3IconColor = Colors.Gray;
-    [ObservableProperty] private Color step3LabelColor = Colors.Gray;
-
-    [ObservableProperty] private Color step4Background = Colors.Transparent;
-    [ObservableProperty] private Color step4IconColor = Colors.Gray;
-    [ObservableProperty] private Color step4LabelColor = Colors.Gray;
+    // Steps[0] = "fizetésre vár", [1] = "fizetve", [2] = "készítjük", [3] = "átvehető"
+    public ObservableCollection<StepState> Steps { get; } = new(
+        Enumerable.Range(0, 4).Select(_ => new StepState())
+    );
 
     [ObservableProperty] private Color wsStatusColor = Colors.Gray;
     [ObservableProperty] private string wsStatusText = "Csatlakozás…";
@@ -83,8 +81,7 @@ public partial class OrderStatusViewModel : ObservableObject
     {
         ShowCachedOrderData();
 
-        // The channel name follows the same pattern as the web app:
-        // private-ordersOfUser.<base64(email)>
+        // Channel name matches the web app pattern: private-ordersOfUser.<base64(email)>
         var emailBase64 = Convert.ToBase64String(
             System.Text.Encoding.UTF8.GetBytes(UserService.Email ?? string.Empty));
         var channelName = $"private-ordersOfUser.{emailBase64}";
@@ -121,7 +118,6 @@ public partial class OrderStatusViewModel : ObservableObject
 
     private async Task OnOrderStateChangedAsync(string eventDataJson)
     {
-
         using var doc = JsonDocument.Parse(eventDataJson);
 
         if (!doc.RootElement.TryGetProperty("order_id", out var orderIdEl))
@@ -139,7 +135,6 @@ public partial class OrderStatusViewModel : ObservableObject
 
         if (updatedOrder is null) return;
 
-        // Update the UI on the main thread
         MainThread.BeginInvokeOnMainThread(() =>
         {
             UpdateOrderDetails(updatedOrder);
@@ -181,7 +176,6 @@ public partial class OrderStatusViewModel : ObservableObject
         var inactiveColor = GetAppResource<Color>("SurfaceVariant");
         var inactiveFgColor = GetAppResource<Color>("OnSurfaceVariant");
 
-        // Map the status string to a step number (1–4)
         var currentStep = status?.ToLowerInvariant() switch
         {
             StatusWaitingForPayment => 1,
@@ -191,21 +185,12 @@ public partial class OrderStatusViewModel : ObservableObject
             _ => 1,
         };
 
-        // Apply colours to each step
-        for (int step = 1; step <= 4; step++)
+        for (int i = 0; i < Steps.Count; i++)
         {
-            bool isActive = step <= currentStep;
-            var bg = isActive ? primaryColor : inactiveColor;
-            var fg = isActive ? onPrimaryColor : inactiveFgColor;
-            var label = isActive ? primaryColor : inactiveFgColor;
-
-            switch (step)
-            {
-                case 1: (Step1Background, Step1IconColor, Step1LabelColor) = (bg, fg, label); break;
-                case 2: (Step2Background, Step2IconColor, Step2LabelColor) = (bg, fg, label); break;
-                case 3: (Step3Background, Step3IconColor, Step3LabelColor) = (bg, fg, label); break;
-                case 4: (Step4Background, Step4IconColor, Step4LabelColor) = (bg, fg, label); break;
-            }
+            bool isActive = i < currentStep;
+            Steps[i].Background = isActive ? primaryColor : inactiveColor;
+            Steps[i].IconColor = isActive ? onPrimaryColor : inactiveFgColor;
+            Steps[i].LabelColor = isActive ? primaryColor : inactiveFgColor;
         }
     }
 
