@@ -4,8 +4,8 @@
              xmlns:models="clr-namespace:BufeApp.Models"
              xmlns:pages="clr-namespace:BufeApp.Pages"
              x:Class="BufeApp.Pages.ProfilePage"
-             Shell.NavBarIsVisible="True"
-             Shell.TabBarIsVisible="False"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="True"
              Title="">
 
     <Grid BackgroundColor="{AppThemeBinding Light={StaticResource BgLight}, Dark={StaticResource BgDark}}">

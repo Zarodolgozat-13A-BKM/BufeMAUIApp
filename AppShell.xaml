@@ -21,22 +21,22 @@
     <!-- TabBar for main navigation -->
     <TabBar Route="MainTabs">
         <ShellContent
-            Title="Home"
+            Title="Otthon"
             Icon="home.svg"
             ContentTemplate="{DataTemplate local:MainPage}"
             Route="MainPage" />
 
         <ShellContent
-            Title="Cart"
+            Title="Kosár"
             Icon="cart.svg"
             ContentTemplate="{DataTemplate pages:CartPage}"
             Route="CartPage" />
 
         <ShellContent
-            Title="Loyalty"
-            Icon="star.svg"
-            ContentTemplate="{DataTemplate pages:LoyaltyPage}"
-            Route="LoyaltyPage" />
+            Title="Profil"
+            Icon="profile.svg"
+            ContentTemplate="{DataTemplate pages:ProfilePage}"
+            Route="ProfilePage" />
     </TabBar>
 
 </Shell>
