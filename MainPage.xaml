@@ -35,9 +35,6 @@
                 <!-- Header with profile -->
                 <Grid ColumnDefinitions="Auto, *" Padding="20,16,20,10">
                     <HorizontalStackLayout Spacing="12">
-                        <HorizontalStackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding GoToProfileCommand}" />
-                        </HorizontalStackLayout.GestureRecognizers>
                         <Grid HeightRequest="50" HorizontalOptions="Center">
     <Border Stroke="{StaticResource Primary}" StrokeThickness="2" Opacity="0.2"
         HeightRequest="44" WidthRequest="44"

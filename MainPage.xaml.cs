@@ -424,12 +424,6 @@ namespace BufeApp
         }
 
         [RelayCommand]
-        private async Task GoToProfileAsync()
-        {
-            await Shell.Current.GoToAsync(nameof(ProfilePage));
-        }
-
-        [RelayCommand]
         private async Task GoToCartAsync()
         {
             await Shell.Current.GoToAsync($"///{nameof(CartPage)}");
