@@ -129,7 +129,6 @@
                                                                TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}"/>
                                                     </Border>
 
-                                                    <!-- Total + reorder button -->
                                                     <!-- Total + action button -->
                                                     <Grid Margin="0,8,0,0">
                                                         <Label Text="{Binding TotalPrice, StringFormat='{0} Ft'}"
@@ -167,7 +166,6 @@
                                                                 HorizontalOptions="End"
                                                                 VerticalOptions="Center"
                                                                 IsVisible="{Binding IsInProgress}">
-
                                                             <Border.GestureRecognizers>
                                                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type pages:ProfilePage}}, Path=ViewStatusCommand}"
                                                                                       CommandParameter="{Binding .}"/>
@@ -188,6 +186,41 @@
                             </VerticalStackLayout>
                         </ScrollView>
                     </Border>
+
+                    <!-- Pagination Controls -->
+                    <Grid ColumnDefinitions="Auto,*,Auto" IsVisible="{Binding HasMultiplePages}">
+                        <Label Grid.Column="0"
+                               Text="chevron_left"
+                               FontFamily="MaterialIcons"
+                               FontSize="28"
+                               TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}"
+                               Opacity="{Binding HasPrevPage, Converter={StaticResource BoolToOpacityConverter}}"
+                               VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding PrevPageCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <Label Grid.Column="1"
+                               Text="{Binding PageInfo}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Light={StaticResource TextSecLight}, Dark={StaticResource TextSecDark}}"/>
+
+                        <Label Grid.Column="2"
+                               Text="chevron_right"
+                               FontFamily="MaterialIcons"
+                               FontSize="28"
+                               TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}"
+                               Opacity="{Binding HasNextPage, Converter={StaticResource BoolToOpacityConverter}}"
+                               VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding NextPageCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+
                 </VerticalStackLayout>
 
                 <!-- Appearance & System -->
