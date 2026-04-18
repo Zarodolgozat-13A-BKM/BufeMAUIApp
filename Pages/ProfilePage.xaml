@@ -194,7 +194,7 @@
                                FontFamily="MaterialIcons"
                                FontSize="28"
                                TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}"
-                               Opacity="{Binding HasPrevPage, Converter={StaticResource BoolToOpacityConverter}}"
+                               IsVisible="{Binding HasPrevPage}"
                                VerticalOptions="Center">
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding PrevPageCommand}"/>
@@ -213,7 +213,7 @@
                                FontFamily="MaterialIcons"
                                FontSize="28"
                                TextColor="{AppThemeBinding Light={StaticResource TextMainLight}, Dark={StaticResource White}}"
-                               Opacity="{Binding HasNextPage, Converter={StaticResource BoolToOpacityConverter}}"
+                               IsVisible="{Binding HasNextPage}"
                                VerticalOptions="Center">
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding NextPageCommand}"/>

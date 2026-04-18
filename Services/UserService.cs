@@ -54,6 +54,7 @@ namespace BufeApp.Services
                 Name = userData.full_name;
                 Email = userData.email;
                 ReverbKey = reverbKey.key;
+                await LoadOrdersAsync();
             }
             else
             {
