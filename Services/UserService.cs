@@ -15,6 +15,9 @@ namespace BufeApp.Services
         public static string ReverbKey { get; set; }
 
         public static List<OrderModel> Orders { get; set; } = new();
+        public static int CurrentPage { get; set; } = 1;
+        public static int LastPage { get; set; } = 1;
+        public static int TotalOrders { get; set; } = 0;
 
         public static bool IsUserLoggedIn()
         {
@@ -30,10 +33,10 @@ namespace BufeApp.Services
         {
             var loginRequest = new { username = Username, password = Password };
             var loginResponse = await ApiService.PostAsync<object, LoginResponse>(ApiService.LoginEndpoint, loginRequest);
-            if(loginResponse != null && !string.IsNullOrEmpty(loginResponse.AccessToken))
+            if (loginResponse != null && !string.IsNullOrEmpty(loginResponse.AccessToken))
             {
                 BearerToken = loginResponse.AccessToken;
-                await SetUserData(); // Implement this method to fetch and set user data
+                await SetUserData();
                 await StorageService.SetSecureValue("BearerToken", BearerToken);
             }
             else
@@ -71,7 +74,6 @@ namespace BufeApp.Services
 
         public static async Task LogoutUser()
         {
-            //send post to logout endpoint with bearer token
             var logoutResponse = await ApiService.PostAsync<object, object>(ApiService.LogoutEndpoint, null, BearerToken);
             if (logoutResponse != null)
             {
@@ -86,10 +88,25 @@ namespace BufeApp.Services
             }
         }
 
-        public static async Task LoadOrdersAsync()
+        public static async Task LoadOrdersAsync(int page = 1)
         {
-            var result = await ApiService.GetAsync<List<OrderModel>>(ApiService.OrdersEndpoint, BearerToken);
-            Orders = result ?? new List<OrderModel>();
+            var result = await ApiService.GetAsync<PaginatedResponse<OrderModel>>(
+                $"{ApiService.OrdersEndpoint}?page={page}", BearerToken);
+
+            if (result != null)
+            {
+                Orders = result.Data ?? new List<OrderModel>();
+                CurrentPage = result.Meta?.CurrentPage ?? page;
+                LastPage = result.Meta?.LastPage ?? 1;
+                TotalOrders = result.Meta?.Total ?? Orders.Count;
+            }
+            else
+            {
+                Orders = new List<OrderModel>();
+                CurrentPage = 1;
+                LastPage = 1;
+                TotalOrders = 0;
+            }
         }
     }
 }
