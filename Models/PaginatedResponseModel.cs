@@ -30,10 +30,10 @@ namespace BufeApp.Models
         public int PerPage { get; set; }
 
         [JsonPropertyName("from")]
-        public int From { get; set; }
+        public int? From { get; set; }
 
         [JsonPropertyName("to")]
-        public int To { get; set; }
+        public int? To { get; set; }
     }
 
     public class PaginationLinks
