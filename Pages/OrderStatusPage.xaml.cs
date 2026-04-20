@@ -124,16 +124,20 @@ public partial class OrderStatusViewModel : ObservableObject
             return;
 
         var orderId = orderIdEl.GetInt32();
-
-        // Fetch the latest version of all our orders from the API
-        var freshOrders = await ApiService.GetAsync<List<OrderModel>>(
-            ApiService.OrdersEndpoint, UserService.BearerToken);
-
-        // Find the specific order we are currently displaying
-        var updatedOrder = freshOrders?.FirstOrDefault(
-            o => o.OrderIdentifierNumber == OrderIdentifierNumber);
+        var updatedOrder = await ApiService.GetAsync<OrderModel>(
+            $"{ApiService.OrdersEndpoint}/{orderId}", UserService.BearerToken);
 
         if (updatedOrder is null) return;
+
+        if (updatedOrder.OrderIdentifierNumber != OrderIdentifierNumber) return;
+
+        if(UserService.Orders.FirstOrDefault(o => o.Id == updatedOrder.Id) is OrderModel existing)
+        {
+            existing.Status = updatedOrder.Status;
+            existing.DeliveryDate = updatedOrder.DeliveryDate;
+            existing.Items = updatedOrder.Items;
+            existing.TotalPrice = updatedOrder.TotalPrice;
+        }
 
         MainThread.BeginInvokeOnMainThread(() =>
         {
